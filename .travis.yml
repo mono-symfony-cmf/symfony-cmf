@@ -93,7 +93,6 @@ install:
           set -e
           echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}"
           tfold tty-group $PHPUNIT --group tty
-          fi
       }
 
 script:
