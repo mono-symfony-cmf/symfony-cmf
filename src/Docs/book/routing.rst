@@ -334,6 +334,15 @@ as soon as you add any other configuration to the ``dynamic`` entry.
 
 .. note::
 
+    This example uses a controller which is defined as a service. You can also
+    configure a controller by using a fully qualified class name:
+    ``CmfContentBundle:Content:index``.
+    
+    For more information on using controllers as a service read cook book 
+    section `How to Define Controllers as Services`_
+
+.. note::
+
     Internally, the routing component maps these configuration options to
     several ``RouteEnhancerInterface`` instances. The actual scope of these
     enhancers is much wider, and you can find more information about them in
@@ -449,8 +458,11 @@ follows::
     namespace Acme\DemoBundle\DataFixtures\PHPCR;
 
     use Doctrine\ODM\PHPCR\DocumentManager;
+    use Doctrine\Common\DataFixtures\FixtureInterface;
+    use Doctrine\Common\Persistence\ObjectManager;
     use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
     use Symfony\Cmf\Bundle\ContentBundle\Doctrine\Phpcr\StaticContent;
+    use PHPCR\Util\NodeHelper;
 
     class LoadRoutingData implements FixtureInterface
     {
@@ -459,6 +471,14 @@ follows::
          */
         public function load(ObjectManager $dm)
         {
+            if (!$dm instanceof DocumentManager) {
+                $class = get_class($dm);
+                throw new \RuntimeException("Fixture requires a PHPCR ODM DocumentManager instance, instance of '$class' given.");
+            }
+
+            $session = $dm->getPhpcrSession();
+            NodeHelper::createPath($session, '/cms/routes');
+
             $route = new Route();
             $route->setParentDocument($dm->find(null, '/cms/routes'));
             $route->setName('projects');
@@ -467,8 +487,10 @@ follows::
             $content = new StaticContent();
             $content->setParentDocument($dm->find(null, '/cms/content'));
             $content->setName('my-content');
+            $content->setTitle('My Content');
+            $content->setBody('Some Content');
             $dm->persist($content);
-            $route->setRouteContent($content);
+            $route->setContent($content);
 
             // now define an id parameter; do not forget the leading slash if you
             // want /projects/{id} and not /projects{id}
@@ -476,7 +498,7 @@ follows::
             $route->setRequirement('id', '\d+');
             $route->setDefault('id', 1);
 
-            $dm->persist($route),
+            $dm->persist($route);
             $dm->flush();
         }
     }
@@ -484,8 +506,17 @@ follows::
 This will give you a document that matches the URL ``/projects/<number>`` but
 also ``/projects`` as there is a default for the id parameter.
 
+.. caution::
+
+    As you can see, the code explicitely creates the ``/cms/routes`` path.
+    The RoutingBundle only creates this path automatically if the Sonata Admin
+    was enabled in the routing configuration using an :ref:`initializer
+    <phpcr-odm-repository-initializers>`. Otherwise, it'll assume you do
+    something yourself to create the path (by configuring an initializer or
+    doing it in a fixture like this).
+
 Because you defined the ``{id}`` route parameter, your controller can expect an
-``$id`` parameter. Additionally, because you called setRouteContent on the
+``$id`` parameter. Additionally, because you called ``setContent`` on the
 route, your controller can expect the ``$contentDocument`` parameter.
 The content could be used to define an intro section that is the same for each
 project or other shared data. If you don't need content, you can just not set it
@@ -507,3 +538,4 @@ For more information on the Routing component of Symfony CMF, please refer to:
 .. _`Doctrine ORM`: http://www.doctrine-project.org/projects/orm.html
 .. _`PHPCR-ODM`: http://www.doctrine-project.org/projects/phpcr-odm.html
 .. _`Routing`: http://symfony.com/doc/current/components/routing/introduction.html
+.. _`How to Define Controllers as Services`: http://symfony.com/doc/current/cookbook/controller/service.html

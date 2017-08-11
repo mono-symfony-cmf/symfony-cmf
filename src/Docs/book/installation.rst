@@ -60,7 +60,7 @@ and then get the Symfony CMF code with it (this may take a while):
 
 .. code-block:: bash
 
-    $ php composer.phar create-project symfony-cmf/standard-edition <path-to-install> ~1.1
+    $ composer create-project symfony-cmf/standard-edition <path-to-install> "~1.2"
     $ cd <path-to-install>
 
 .. note::
@@ -76,7 +76,7 @@ to configure the permissions and then run the ``install`` command:
 
 .. code-block:: bash
 
-    $ php composer.phar install
+    $ composer install
 
 2) GIT
 ~~~~~~
@@ -94,11 +94,19 @@ dependencies, use the ``install`` command:
 
 .. code-block:: bash
 
-    $ php composer.phar install
+    $ composer install
 
+To try out things, you can accept the default values for all questions you are
+asked about the parameters.yml. Revisit that file later when you know more
+about Jackalope.
+
+Setup
+-----
+
+You are almost there. A few more steps need to be done to be ready.
 
 Set up the Database
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 The next step is to set up the database. If you want to use SQLite as your
 database backend just go ahead and run the following:
@@ -115,7 +123,20 @@ folder, containing the database content. The two commands after it will setup
 PHPCR and the final command will load some fixtures, so you can access the
 Standard Edition using a web server.
 
-The project should now be accessible on your web server. If you have PHP 5.4
+Preparing Assetic
+~~~~~~~~~~~~~~~~~
+
+To use the frontend editing in ``prod`` environment, you need to tell Assetic
+to dump the assets to the filesystem:
+
+.. code-block:: bash
+
+    $ php app/console --env=prod assetic:dump
+
+Configure a Webserver
+~~~~~~~~~~~~~~~~~~~~~
+
+The project is now ready to be served by your web server. If you have PHP 5.4
 installed you can alternatively use the PHP internal web server:
 
 .. code-block:: bash
@@ -128,6 +149,20 @@ And then access the CMF via:
 
     http://localhost:8000
 
+If you run an Apache installation as described in the `Symfony cookbook article on setup`_,
+your URL will look like this:
+
+.. code-block:: text
+
+    http://localhost/app_dev.php
+
+.. note::
+
+    Adding the ``app_dev.php`` to the url in your browser is important to actually
+    see the test page. Because the AcmeDemoBundle is only configured to work with the
+    Development Environment. (If you have a look at ``AppKernel.php`` you can easily
+    spot why)
+
 .. sidebar:: Using Other Database Backends
 
     If you prefer to use another database backend, for example MySQL, run the
@@ -135,7 +170,8 @@ And then access the CMF via:
     or set your database connection parameters in ``app/config/parameters.yml``.
     Make sure you leave the ``database_path`` property at ``null`` in order to
     use another driver than SQLite. Leaving the field blank in the
-    web-configurator will set it to ``null``.
+    web-configurator will set it to ``null``. You also need to uncomment lines
+    in ``app/config/config.yml`` in section ``doctrine.dbal``.
 
 .. note::
 
@@ -214,12 +250,21 @@ Adding new pages
 
 Symfony CMF SE does not provide any admin tools to create new pages. If you
 are interested in adding an admin UI one solution can be found in
-:doc:`../cookbook/creating_a_cms/sonata-admin`. However, if all you want
+:doc:`../tutorial/sonata-admin`. However, if all you want
 is a simple way to add new pages that you can then edit via the inline
-editing, then you can use the SimpleCmsBundle ``page`` migrator. The Symfony
-CMF SE ships with an example YAML file stored in
-``app/Resources/data/pages/test.yml``. The contents of this file can be loaded
-into the PHPCR database by calling:
+editing, then you can use the SimpleCmsBundle ``page`` migrator. For example,
+to add a page called "Testing", creating a file called
+``app/Resources/data/pages/test.yml`` with the following contents:
+
+.. code-block:: yaml
+
+    label: "Testing"
+    title: "Testing"
+    body: |
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Morbi eleifend, ipsum eget facilisis lacinia, lorem dui venenatis quam, at vulputate purus erat sit amet elit.</p>
+
+The contents of this file can be loaded into the PHPCR database by calling:
 
 .. code-block:: bash
 
@@ -244,3 +289,4 @@ and then run the following command:
 .. _`guidelines in the symfony book`: http://symfony.com/doc/master/book/installation.html#configuration-and-setup
 .. _`the Symfony2 book`: http://symfony.com/doc/current/book/
 .. _`Fixtures`: http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
+.. _`Symfony cookbook article on setup`: http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html

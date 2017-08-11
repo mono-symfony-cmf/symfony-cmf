@@ -37,23 +37,24 @@ The result will be the PHPCR tree:
 
     ROOT:
       cms:
-        content:
-        blocks:
-            hero_unit:
-            quick_tour:
-            configure:
-            demo:
         simple:
-        home:
-        demo:
-        quick_tour:
-        login:
-        menu:
+          about:
+          contact:
+            map:
+            team:
+          quick_tour:
+          dynamic:
+          docs:
+          demo:
+          demo_redirect:
+          hardcoded_dynamic:
+          hardcoded_static:
 
 Each data is called a *node* in PHPCR. In this tree, there are 13 nodes and
 one ROOT node (created by PHPCR). You may have already seen the document you
 created in the previous section, it's called ``quick_tour`` (and it's path is
-``/cms/simple/quick_tour``).
+``/cms/simple/quick_tour``). When using the SimpleCmsBundle, all nodes are
+stored in the ``/cms/simple`` path.
 
 Each node has properties, which contain the data. The content, title and label
 you set for your page are saved in such properties for the ``quick_tour``
@@ -110,11 +111,17 @@ by creating a new class in the AcmeDemoBundle::
 The ``$documentManager`` is the object which will persist the document to
 PHPCR. But first, you have to create a new Page document::
 
+    use Doctrine\ODM\PHPCR\DocumentManager;
     use Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr\Page;
 
     // ...
     public function load(ObjectManager $documentManager)
     {
+        if (!$documentManager instanceof DocumentManager) {
+            $class = get_class($documentManager);
+            throw new \RuntimeException("Fixture requires a PHPCR ODM DocumentManager instance, instance of '$class' given.");
+        }
+
         $page = new Page(); // create a new Page object (document)
         $page->setName('new_page'); // the name of the node
         $page->setLabel('Another new Page');
@@ -129,6 +136,11 @@ it as its parent::
     // ...
     public function load(ObjectManager $documentManager)
     {
+        if (!$documentManager instanceof DocumentManager) {
+            $class = get_class($documentManager);
+            throw new \RuntimeException("Fixture requires a PHPCR ODM DocumentManager instance, instance of '$class' given.");
+        }
+
         // ...
 
         // get root document (/cms/simple)
@@ -143,6 +155,11 @@ document using the Doctrine API::
     // ...
     public function load(ObjectManager $documentManager)
     {
+        if (!$documentManager instanceof DocumentManager) {
+            $class = get_class($documentManager);
+            throw new \RuntimeException("Fixture requires a PHPCR ODM DocumentManager instance, instance of '$class' given.");
+        }
+
         // ...
         $documentManager->persist($page); // add the Page in the queue
         $documentManager->flush(); // add the Page to PHPCR

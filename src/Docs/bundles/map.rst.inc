@@ -11,6 +11,7 @@ library or they introduce a complete new concept.
   * :doc:`block/create_your_own_blocks`
   * :doc:`block/cache`
   * :doc:`block/relation_to_sonata_block_bundle`
+  * :doc:`block/configuration`
 
 * :doc:`core/index`
 
@@ -20,18 +21,21 @@ library or they introduce a complete new concept.
   * :doc:`core/templating`
   * :doc:`core/persistence`
   * :doc:`core/forms`
+  * :doc:`core/configuration`
 
 * :doc:`create/index`
 
   * :doc:`create/introduction`
   * :doc:`create/other-editors`
   * :doc:`create/developing-hallo`
+  * :doc:`create/configuration`
 
 * :doc:`media/index`
 
   * :doc:`media/introduction`
   * :doc:`media/form_types`
   * :doc:`media/adapters/index`
+  * :doc:`media/configuration`
 
 * :doc:`menu/index`
 
@@ -40,34 +44,39 @@ library or they introduce a complete new concept.
   * :doc:`menu/menu_factory`
   * :doc:`menu/menu_provider`
   * :doc:`menu/voters`
+  * :doc:`menu/sonata_admin`
+  * :doc:`menu/configuration`
 
 * :doc:`routing/index`
 
   * :doc:`routing/introduction`
   * :doc:`routing/dynamic`
   * :doc:`routing/dynamic_customize`
+  * :doc:`routing/configuration`
 
-* :doc:`routing_auto/index` (in development)
+* :doc:`routing_auto/index`
 
   * :doc:`routing_auto/introduction`
-  * :doc:`routing_auto/providers`
-  * :doc:`routing_auto/exists_actions`
-  * :doc:`routing_auto/not_exists_actions`
-  * :doc:`routing_auto/customization`
+  * :doc:`routing_auto/token_providers`
+  * :doc:`routing_auto/conflict_resolvers`
+  * :doc:`routing_auto/defunct_route_handlers`
 
 * :doc:`search/index`
 
   * :doc:`search/introduction`
+  * :doc:`search/configuration`
 
 * :doc:`seo/index`
 
   * :doc:`seo/introduction`
   * :doc:`seo/seo_aware`
   * :doc:`seo/extractors`
+  * :doc:`seo/configuration`
 
 * :doc:`tree_browser/index`
 
   * :doc:`tree_browser/introduction`
+  * :doc:`tree_browser/configuration`
 
 Showcase Bundles
 ~~~~~~~~~~~~~~~~
@@ -77,20 +86,20 @@ show a different way of implementing a concept. You can use these bundles in
 your project, but you can also get ideas from these bundles to create your own
 bundle based on the key bundles.
 
-* **BlogBundle** (in development)
-
-  * :doc:`blog`
-
 * :doc:`content/index`
 
   * :doc:`content/introduction`
+  * :doc:`content/configuration`
+  * :doc:`content/exposing_content_via_rest`
 
 * :doc:`simple_cms/index`
 
   * :doc:`simple_cms/introduction`
   * :doc:`simple_cms/multilang`
   * :doc:`simple_cms/rendering`
+  * :doc:`simple_cms/menus`
   * :doc:`simple_cms/extending_page_class`
+  * :doc:`simple_cms/configuration`
 
 Contributed Bundles
 ~~~~~~~~~~~~~~~~~~~
@@ -106,6 +115,7 @@ help with integrating PHPCR concepts into the Symfony Framework.
   * :doc:`phpcr_odm/fixtures_initializers`
   * :doc:`phpcr_odm/multilang`
   * :doc:`phpcr_odm/multiple_sessions`
+  * :doc:`phpcr_odm/configuration`
 
 * SonataDoctrinePHPCRAdminBundle_
 

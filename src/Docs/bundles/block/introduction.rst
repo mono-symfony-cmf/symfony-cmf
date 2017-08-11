@@ -2,8 +2,8 @@
     single: Block; Bundles
     single: BlockBundle
 
-The BlockBundle
-===============
+BlockBundle
+===========
 
     This bundle provides integration with `SonataBlockBundle`_. It is used to
     manage fragments of content, so-called blocks, that are persisted in a
@@ -191,7 +191,7 @@ your block in the repository. You can do so with the following code snippet::
     $myBlock->setTitle('My first block');
     $myBlock->setBody('Hello block world!');
 
-    $documentManager->persist($myBlock);
+    $dm->persist($myBlock);
 
 Note the ``sidebarBlock`` is the identifier we chose for the block. Together
 with the parent document of the block, this defines the unique identifier of
@@ -413,6 +413,7 @@ Read on
 * :doc:`create_your_own_blocks`
 * :doc:`cache`
 * :doc:`relation_to_sonata_block_bundle`
+* :doc:`configuration`
 
 .. _`symfony-cmf/block-bundle`: https://packagist.org/packages/symfony-cmf/block-bundle
 .. _`with composer`: http://getcomposer.org

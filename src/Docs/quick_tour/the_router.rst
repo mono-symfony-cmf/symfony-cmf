@@ -47,7 +47,7 @@ other examples:
             /about       # /about Route
             /contact     # /contact Route
                 /team    # /contact/team Route
-                /docs    # /docs Route
+                /docs    # /contact/docs Route
 
 OK, you got it? The only thing the Router has to do is prefix the route with a
 specific path prefix and load that document. In the case of the SimpleCmsBundle,
@@ -151,6 +151,9 @@ Now you can add a new ``Route`` to the tree using Doctrine::
 
     use Doctrine\Common\Persistence\ObjectManager;
     use Doctrine\Common\DataFixtures\FixtureInterface;
+    use Doctrine\ODM\PHPCR\DocumentManager;
+    
+    use PHPCR\Util\NodeHelper;
 
     use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
@@ -158,6 +161,14 @@ Now you can add a new ``Route`` to the tree using Doctrine::
     {
         public function load(ObjectManager $documentManager)
         {
+            if (!$documentManager instanceof DocumentManager) {
+                $class = get_class($documentManager);
+                throw new \RuntimeException("Fixture requires a PHPCR ODM DocumentManager instance, instance of '$class' given.");
+            }
+            
+            $session = $documentManager->getPhpcrSession();
+            NodeHelper::createPath($session, '/cms/routes');
+
             $routesRoot = $documentManager->find(null, '/cms/routes');
 
             $route = new Route();
@@ -167,7 +178,7 @@ Now you can add a new ``Route`` to the tree using Doctrine::
             // $route->setParentDocument($routesRoot);
             $route->setPosition($routesRoot, 'new-route');
 
-            $page = $documentManager->find(null, '/cms/routes/quick_tour');
+            $page = $documentManager->find(null, '/cms/simple/quick_tour');
             $route->setContent($page);
 
             $documentManager->persist($route); // put $route in the queue

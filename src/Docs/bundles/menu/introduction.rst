@@ -11,8 +11,7 @@ features:
 * Render menus stored in the persistence layer;
 * Generate menu node URLs from linked Content or Route.
 
-Note that only the Doctrine PHPCR-ODM persistence layer is supported in the
-1.0 release.
+Note that only the Doctrine PHPCR-ODM persistence layer is currently supported.
 
 .. caution::
 
@@ -71,7 +70,7 @@ each of which specifies a URI::
     use PHPCR\Util\NodeHelper;
 
     // this node should be created automatically, see note below this example
-    $menuParent = $dm->find(null, '/cms/menu');
+    $menuParent = $manager->find(null, '/cms/menu');
 
     $menu = new Menu();
     $menu->setName('main-menu');
@@ -169,6 +168,16 @@ example is specified. This will render an unordered list as follows:
     Twig in the ``knp_menu`` configuration section.
 
 For more information see the `rendering menus`_ section of the KnpMenuBundle documentation.
+
+Read On
+-------
+
+* :doc:`menu_documents`
+* :doc:`menu_factory`
+* :doc:`menu_provider`
+* :doc:`voters`
+* :doc:`sonata_admin`
+* :doc:`configuration`
 
 .. _`KnpMenu`: https://github.com/knplabs/KnpMenu
 .. _`KnpMenuBundle`: https://github.com/knplabs/KnpMenuBundle

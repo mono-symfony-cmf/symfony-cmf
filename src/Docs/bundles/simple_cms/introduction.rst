@@ -59,7 +59,9 @@ Sections
 
 * :doc:`multilang`
 * :doc:`rendering`
+* :doc:`menus`
 * :doc:`extending_page_class`
+* :doc:`configuration`
 
 .. _`Symfony CMF Standard Edition`: https://github.com/symfony-cmf/standard-edition
 .. _`CMF website`: https://github.com/symfony-cmf/cmf-website/
