@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingAutoBundle\DependencyInjection;
 
@@ -26,7 +25,9 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $treeBuilder->root('cmf_routing_auto')
+            ->addDefaultsIfNotSet()
             ->children()
+                ->scalarNode('adapter')->info('Use a specific adapter, overrides any implicit selection')->end()
                 ->booleanNode('auto_mapping')->defaultTrue()->end()
                 ->arrayNode('mapping')
                     ->fixXmlConfig('resource')

@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingAutoBundle\Command;
 
@@ -26,7 +25,7 @@ class RefreshCommand extends ContainerAwareCommand
         $this
             ->setName('cmf:routing:auto:refresh')
             ->setDescription('Refresh auto-routeable documents')
-            ->setHelp(<<<HERE
+            ->setHelp(<<<'HERE'
 WARNING: Experimental!
 
 This command iterates over all Documents that are mapped by the auto
@@ -53,7 +52,7 @@ HERE
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -82,7 +81,6 @@ HERE
         }
 
         foreach (array_keys($mapping) as $classFqn) {
-
             $output->writeln(sprintf('<info>Processing class: </info> %s', $classFqn));
 
             $qb = $dm->createQueryBuilder();

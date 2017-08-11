@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingAutoBundle\DependencyInjection;
 
@@ -22,7 +21,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 class CmfRoutingAutoExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -53,18 +52,29 @@ class CmfRoutingAutoExtension extends Extension
         $container->setParameter('cmf_routing_auto.metadata.loader.resources', $resources);
 
         $hasProvider = false;
+
+        $adapterName = null;
+        if (isset($config['adapter'])) {
+            $adapterName = $config['adapter'];
+        }
+
         if ($this->isConfigEnabled($container, $config['persistence']['phpcr'])) {
             $hasProvider = true;
             $loader->load('phpcr-odm.xml');
+            if (null === $adapterName) {
+                $adapterName = 'doctrine_phpcr_odm';
+            }
             $container->setParameter('cmf_routing_auto.persistence.phpcr.route_basepath', $config['persistence']['phpcr']['route_basepath']);
         }
 
-        if (!$hasProvider) {
-            throw new InvalidConfigurationException(
-                'The RoutingAutoBundle requires that you enable one of the persistence layers in your application configuration. ' .
-                'See the documentation for more information'
-            );
+        if (false === $hasProvider && null === $adapterName) {
+            throw new InvalidConfigurationException(sprintf(
+                'No adapter has been configured, you either need to enable a persistence layer or '.
+                'explicitly specify an adapter using the "adapter" configuration key.'
+            ));
         }
+
+        $container->setParameter('cmf_routing_auto.adapter_name', $adapterName);
     }
 
     protected function findMappingFiles($bundles)

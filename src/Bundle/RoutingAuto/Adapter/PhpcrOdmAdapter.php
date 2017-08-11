@@ -3,27 +3,23 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingAutoBundle\Adapter;
 
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Doctrine\Common\Util\ClassUtils;
-use PHPCR\InvalidItemStateException;
 use Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface;
 use Symfony\Cmf\Component\RoutingAuto\UriContext;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Symfony\Cmf\Component\RoutingAuto\AdapterInterface;
-use Symfony\Cmf\Bundle\RoutingAutoBundle\Model\AutoRedirectRoute;
 
 /**
- * Adapter for PHPCR-ODM
+ * Adapter for PHPCR-ODM.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
@@ -54,7 +50,7 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLocales($contentDocument)
     {
@@ -66,7 +62,7 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function translateObject($contentDocument, $locale)
     {
@@ -76,15 +72,15 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function generateAutoRouteTag(UriContext $uriContext)
     {
-        return $uriContext->getLocale() ? : self::TAG_NO_MULTILANG;
+        return $uriContext->getLocale() ?: self::TAG_NO_MULTILANG;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function migrateAutoRouteChildren(AutoRouteInterface $srcAutoRoute, AutoRouteInterface $destAutoRoute)
     {
@@ -95,12 +91,12 @@ class PhpcrOdmAdapter implements AdapterInterface
         $srcAutoRouteChildren = $srcAutoRouteNode->getNodes();
 
         foreach ($srcAutoRouteChildren as $srcAutoRouteChild) {
-            $session->move($srcAutoRouteChild->getPath(), $destAutoRouteNode->getPath() . '/' . $srcAutoRouteChild->getName());
+            $session->move($srcAutoRouteChild->getPath(), $destAutoRouteNode->getPath().'/'.$srcAutoRouteChild->getName());
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function removeAutoRoute(AutoRouteInterface $autoRoute)
     {
@@ -111,7 +107,7 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createAutoRoute($uri, $contentDocument, $autoRouteTag)
     {
@@ -123,11 +119,10 @@ class PhpcrOdmAdapter implements AdapterInterface
                 $basePath
             ));
         }
-
         $segments = preg_split('#/#', $uri, null, PREG_SPLIT_NO_EMPTY);
         $headName = array_pop($segments);
         foreach ($segments as $segment) {
-            $basePath .= '/' . $segment;
+            $basePath .= '/'.$segment;
             $document = $this->dm->find(null, $basePath);
 
             if (null === $document) {
@@ -139,7 +134,7 @@ class PhpcrOdmAdapter implements AdapterInterface
             $parentDocument = $document;
         }
 
-        $path = $basePath . '/' . $headName;
+        $path = $basePath.'/'.$headName;
         $existingDocument = $this->dm->find(null, $path);
 
         if ($existingDocument) {
@@ -154,7 +149,7 @@ class PhpcrOdmAdapter implements AdapterInterface
 
             throw new \RuntimeException(
                 sprintf(
-                    'Encountered existing PHPCR-ODM document at path "%s" of class "%s", the route tree should ' .
+                    'Encountered existing PHPCR-ODM document at path "%s" of class "%s", the route tree should '.
                     'contain only instances of AutoRouteInterface.',
                     $path,
                     get_class($existingDocument)
@@ -173,7 +168,7 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createRedirectRoute(AutoRouteInterface $referringAutoRoute, AutoRouteInterface $newRoute)
     {
@@ -182,7 +177,7 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRealClassName($className)
     {
@@ -190,7 +185,7 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function compareAutoRouteContent(AutoRouteInterface $autoRoute, $contentDocument)
     {
@@ -202,36 +197,37 @@ class PhpcrOdmAdapter implements AdapterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getReferringAutoRoutes($contentDocument)
     {
-         return $this->dm->getReferrers($contentDocument, null, null, null, 'Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface');
+        return $this->dm->getReferrers($contentDocument, null, null, null, 'Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface');
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findRouteForUri($uri)
     {
         return $this->dm->find(
-            'Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface', 
+            'Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface',
             $this->getPathFromUri($uri)
         );
     }
 
     private function getPathFromUri($uri)
     {
-        return $this->baseRoutePath . $uri;
+        return $this->baseRoutePath.$uri;
     }
 
     /**
      * Convert the given generic document to an auto route document.
      *
      * @param Generic $document
-     * @param object $contentDocument
-     * @param string $autoRouteTag
-     * @param string $routeType
+     * @param object  $contentDocument
+     * @param string  $autoRouteTag
+     * @param string  $routeType
+     *
      * @return AutoRouteInterface
      */
     private function migrateGenericToAutoRoute(Generic $document, $contentDocument, $autoRouteTag, $routeType)
@@ -247,7 +243,7 @@ class PhpcrOdmAdapter implements AdapterInterface
         if (!$autoRoute instanceof $autoRouteClassName) {
             throw new \RuntimeException(
                 sprintf(
-                    'Failed to migrate existing, non-managed, PHPCR node at "%s" to a managed document implementing ' .
+                    'Failed to migrate existing, non-managed, PHPCR node at "%s" to a managed document implementing '.
                     'the AutoRouteInterface. It is an instance of "%s".',
                     $document->getId(),
                     get_class($autoRoute)
