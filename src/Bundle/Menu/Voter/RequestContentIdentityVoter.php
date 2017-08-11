@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\MenuBundle\Voter;
 
@@ -38,7 +37,7 @@ class RequestContentIdentityVoter implements VoterInterface
 
     /**
      * @param string $requestKey The key to look up the content in the request
-     *      attributes.
+     *                           attributes.
      */
     public function __construct($requestKey)
     {

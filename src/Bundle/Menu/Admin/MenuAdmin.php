@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\MenuBundle\Admin;
 
@@ -17,7 +16,6 @@ use Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu;
 
 class MenuAdmin extends AbstractMenuNodeAdmin
 {
-
     /**
      * {@inheritDoc}
      */
@@ -35,6 +33,7 @@ class MenuAdmin extends AbstractMenuNodeAdmin
                     'root' => $this->menuRoot,
                     'edit_in_overlay' => false,
                     'create_in_overlay' => false,
+                    'delete_in_overlay' => false
                 ), array(
                     'help' => 'help.items_help'
                 ))
@@ -47,7 +46,7 @@ class MenuAdmin extends AbstractMenuNodeAdmin
     {
         /** @var $new Menu */
         $new = parent::getNewInstance();
-        $new->setParent($this->getModelManager()->find(null, $this->menuRoot));
+        $new->setParentDocument($this->getModelManager()->find(null, $this->menuRoot));
 
         return $new;
     }

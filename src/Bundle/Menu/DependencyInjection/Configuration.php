@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\MenuBundle\DependencyInjection;
 
@@ -33,6 +32,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->scalarNode('menu_basepath')->defaultValue('/cms/menu')->end()
                                 ->scalarNode('content_basepath')->defaultValue('/cms/content')->end()
+                                ->integerNode('prefetch')->defaultValue(10)->end()
                                 ->scalarNode('manager_name')->defaultNull()->end()
                                 ->scalarNode('menu_document_class')->defaultValue('Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu')->end()
                                 ->scalarNode('node_document_class')->defaultValue('Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode')->end()
@@ -43,15 +43,14 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->scalarNode('menu_admin_class')->defaultValue('Symfony\Cmf\Bundle\MenuBundle\Admin\MenuAdmin')->end()
                                 ->scalarNode('node_admin_class')->defaultValue('Symfony\Cmf\Bundle\MenuBundle\Admin\MenuNodeAdmin')->end()
-                                ->scalarNode('content_basepath')->defaultNull()->end()
-                                ->scalarNode('admin_recursive_breadcrumbs')->defaultTrue()->end()
+                                ->booleanNode('admin_recursive_breadcrumbs')->defaultTrue()->end()
                             ->end()
                         ->end()
                     ->end()
                 ->end()
 
                 ->scalarNode('content_url_generator')->defaultValue('router')->end()
-                ->scalarNode('allow_empty_items')->defaultValue(false)->end()
+                ->booleanNode('allow_empty_items')->defaultFalse()->end()
 
                 ->arrayNode('voters')
                     ->children()
@@ -62,6 +61,11 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('uri_prefix')->defaultFalse()->end()
                     ->end()
+                ->end()
+
+                ->arrayNode('publish_workflow')
+                    ->addDefaultsIfNotSet()
+                    ->canBeDisabled()
                 ->end()
             ->end()
         ;

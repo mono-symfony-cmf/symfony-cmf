@@ -3,28 +3,29 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\MenuBundle;
 
-use Knp\Menu\Silex\RouterAwareFactory;
+use Knp\Menu\MenuFactory;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\NodeInterface;
 use Knp\Menu\MenuItem;
 
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
-
 use Psr\Log\LoggerInterface;
 
+use Symfony\Cmf\Bundle\MenuBundle\Event\Events;
+use Symfony\Cmf\Bundle\MenuBundle\Model\Menu;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+
 use Symfony\Cmf\Bundle\MenuBundle\Voter\VoterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Cmf\Bundle\MenuBundle\Event\CreateMenuItemFromNodeEvent;
 
 /**
  * This factory builds menu items from the menu nodes and builds urls based on
@@ -36,7 +37,7 @@ use Symfony\Cmf\Bundle\MenuBundle\Voter\VoterInterface;
  * The createItem method uses a voting process to decide whether the menu item
  * is the current item.
  */
-class ContentAwareFactory extends RouterAwareFactory
+class ContentAwareFactory extends MenuFactory
 {
     /**
      * @var UrlGeneratorInterface
@@ -61,18 +62,6 @@ class ContentAwareFactory extends RouterAwareFactory
     private $logger;
 
     /**
-     * @var SecurityContextInterface
-     */
-    private $securityContext;
-
-    /**
-     * The permission to check for when doing the publish workflow check.
-     *
-     * @var string
-     */
-    private $publishWorkflowPermission = PublishWorkflowChecker::VIEW_ATTRIBUTE;
-
-    /**
      * Whether to return null or a MenuItem without any URL if no URL can be
      * found for a MenuNode.
      *
@@ -81,25 +70,24 @@ class ContentAwareFactory extends RouterAwareFactory
     private $allowEmptyItems;
 
     /**
-     * @param UrlGeneratorInterface $generator     for the parent class
-     * @param UrlGeneratorInterface $contentRouter to generate routes when
-     *      content is set
-     * @param SecurityContextInterface $securityContext the publish workflow
-     *      checker to check if menu items are published.
-     * @param LoggerInterface $logger
+     * @param UrlGeneratorInterface    $generator     for the parent class
+     * @param UrlGeneratorInterface    $contentRouter to generate routes when
+     *                                                content is set
+     * @param EventDispatcherInterface $dispatcher    to dispatch the CREATE_ITEM_FROM_NODE event.
+     * @param LoggerInterface          $logger
      */
     public function __construct(
         UrlGeneratorInterface $generator,
         UrlGeneratorInterface $contentRouter,
-        SecurityContextInterface $securityContext,
+        EventDispatcherInterface $dispatcher,
         LoggerInterface $logger
     )
     {
-        parent::__construct($generator);
+        $this->generator = $generator;
         $this->contentRouter = $contentRouter;
-        $this->securityContext = $securityContext;
-        $this->logger = $logger;
         $this->linkTypes = array('route', 'uri', 'content');
+        $this->dispatcher = $dispatcher;
+        $this->logger = $logger;
     }
 
     /**
@@ -122,17 +110,6 @@ class ContentAwareFactory extends RouterAwareFactory
     public function setAllowEmptyItems($allowEmptyItems)
     {
         $this->allowEmptyItems = $allowEmptyItems;
-    }
-
-    /**
-     * What attribute to use in the publish workflow check. This typically
-     * is VIEW or VIEW_ANONYMOUS.
-     *
-     * @param string $attribute
-     */
-    public function setPublishWorkflowPermission($attribute)
-    {
-        $this->publishWorkflowPermission = $attribute;
     }
 
     /**
@@ -159,27 +136,52 @@ class ContentAwareFactory extends RouterAwareFactory
     }
 
     /**
-     * Create a MenuItem from a NodeInterface instance
+     * Create a MenuItem from a NodeInterface instance.
      *
      * @param NodeInterface $node
      *
-     * @return MenuItem|null if allowEmptyItems is false and this node has
-     *     neither URL nor route nor a content that has a route, this method
-     *     returns null.
+     * @return MenuItem|null If allowEmptyItems is false and this node has
+     *                       neither URL nor route nor a content that has a
+     *                       route, returns null.
      */
     public function createFromNode(NodeInterface $node)
     {
-        $item = $this->createItem($node->getName(), $node->getOptions());
+        $event = new CreateMenuItemFromNodeEvent($node, $this);
+        $this->dispatcher->dispatch(Events::CREATE_ITEM_FROM_NODE, $event);
+
+        if ($event->isSkipNode()) {
+            if ($node instanceof Menu) {
+                // create an empty menu root to avoid the knp menu from failing.
+                return $this->createItem('');
+            }
+
+            return null;
+        }
+
+        $item = $event->getItem() ?: $this->createItem($node->getName(), $node->getOptions());
 
         if (empty($item)) {
             return null;
         }
 
-        foreach ($node->getChildren() as $childNode) {
-            if (!$this->securityContext->isGranted($this->publishWorkflowPermission, $childNode)) {
-                continue;
-            }
+        if ($event->isSkipChildren()) {
+            return $item;
+        }
 
+        return $this->addChildrenFromNode($node->getChildren(), $item);
+    }
+
+    /**
+     * Create menu items from a list of menu nodes and add them to $item.
+     *
+     * @param NodeInterface[] $node The menu nodes to create.
+     * @param ItemInterface   $item The menu item to add the children to.
+     *
+     * @return ItemInterface
+     */
+    public function addChildrenFromNode($nodes, ItemInterface $item)
+    {
+        foreach ($nodes as $childNode) {
             if ($childNode instanceof NodeInterface) {
                 $child = $this->createFromNode($childNode);
                 if (!empty($child)) {
@@ -200,9 +202,11 @@ class ContentAwareFactory extends RouterAwareFactory
      *
      * @param string $name    the menu item name
      * @param array  $options options for the menu item, we care about
-     *                               'content'
+     *                        'content'
      *
-     * @return MenuItem|null returns null if no route can be built for this menu item
+     * @return MenuItem|null Returns null if no route can be built for this menu item,
+     *
+     * @throws \RuntimeException If the stored link type is not known.
      */
     public function createItem($name, array $options = array())
     {
@@ -241,6 +245,22 @@ class ContentAwareFactory extends RouterAwareFactory
                 break;
             case 'route':
                 unset($options['uri']);
+
+                try {
+                    $options['uri'] = $this->generator->generate(
+                        $options['route'],
+                        $options['routeParameters'],
+                        $options['routeAbsolute']
+                    );
+
+                    unset($options['route']);
+                } catch (RouteNotFoundException $e) {
+                    $this->logger->error(sprintf('%s : %s', $name, $e->getMessage()));
+
+                    if (!$this->allowEmptyItems) {
+                        return null;
+                    }
+                }
                 break;
             default:
                 throw new \RuntimeException(sprintf('Internal error: unexpected linkType "%s"', $options['linkType']));
@@ -285,7 +305,7 @@ class ContentAwareFactory extends RouterAwareFactory
      * @param string $linkType
      *
      * @throws \InvalidArgumentException if $linkType is not one of the known
-     *      link types
+     *                                   link types
      */
     protected function validateLinkType($linkType)
     {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="CmfMenuBundle.en.xliff">
+  <file source-language="en" target-language="sl" datatype="plaintext" original="file.ext">
     <body>
       <trans-unit id="dashboard.cmf">
         <source>dashboard.cmf</source>
@@ -66,10 +66,6 @@
         <source>list.label_route</source>
         <target>Pot</target>
       </trans-unit>
-      <trans-unit id="list.label_locales">
-        <source>list.label_locales</source>
-        <target>Lokalizacije</target>
-      </trans-unit>
       <trans-unit id="form.group_general">
         <source>form.group_general</source>
         <target>Splošno</target>
@@ -129,10 +125,6 @@
       <trans-unit id="form.label_menu_nodes">
         <source>form.label_menu_nodes</source>
         <target>Meni</target>
-      </trans-unit>
-      <trans-unit id="form.label_locale">
-        <source>form.label_locale</source>
-        <target>Lokalizacija</target>
       </trans-unit>
     </body>
   </file>

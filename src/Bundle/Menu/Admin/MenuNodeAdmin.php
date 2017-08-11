@@ -3,18 +3,16 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\MenuBundle\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-use Symfony\Cmf\Bundle\MenuBundle\Model\MenuNode;
 use Symfony\Cmf\Bundle\MenuBundle\Model\Menu;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -51,7 +49,7 @@ class MenuNodeAdmin extends AbstractMenuNodeAdmin
             return $menuNodeNode;
         }
 
-        $parentDoc = $this->getSubject()->getParent();
+        $parentDoc = $this->getSubject()->getParentDocument();
         $pool = $this->getConfigurationPool();
         $parentAdmin = $pool->getAdminByClass(
             ClassUtils::getClass($parentDoc)

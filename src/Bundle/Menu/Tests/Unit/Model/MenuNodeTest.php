@@ -3,14 +3,14 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\MenuBundle\Tests\Unit\Model;
+
 use Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode;
 
 class MenuNodeTest extends \PHPUnit_Framework_Testcase
@@ -25,7 +25,7 @@ class MenuNodeTest extends \PHPUnit_Framework_Testcase
         $this->parentNode = new MenuNode;
         $this->node = new MenuNode;
         $this->node->setId('/foo/bar')
-            ->setParent($this->parentNode)
+            ->setParentDocument($this->parentNode)
             ->setName('test')
             ->setLabel('Test')
             ->setUri('http://www.example.com')
@@ -44,7 +44,7 @@ class MenuNodeTest extends \PHPUnit_Framework_Testcase
 
     public function testGetters()
     {
-        $this->assertSame($this->parentNode, $this->node->getParent());
+        $this->assertSame($this->parentNode, $this->node->getParentDocument());
         $this->assertEquals('test', $this->node->getName());
         $this->assertEquals('Test', $this->node->getLabel());
         $this->assertEquals('http://www.example.com', $this->node->getUri());
@@ -57,7 +57,7 @@ class MenuNodeTest extends \PHPUnit_Framework_Testcase
 
         $this->parentNode = new MenuNode;
         $this->node->setPosition($this->parentNode, 'FOOO');
-        $this->assertSame($this->parentNode, $this->node->getParent());
+        $this->assertSame($this->parentNode, $this->node->getParentDocument());
         $this->assertEquals('FOOO', $this->node->getName());
         $this->assertEquals(array('link' => 'knil'), $this->node->getLinkAttributes());
         $this->assertEquals(array('label' => 'lebal'), $this->node->getLabelAttributes());
@@ -77,7 +77,7 @@ class MenuNodeTest extends \PHPUnit_Framework_Testcase
 
         $children = $m->getChildren();
         $this->assertCount(2, $children);
-        $this->assertSame($m, $children[0]->getParent());
+        $this->assertSame($m, $children[0]->getParentDocument());
         $this->assertSame($c2, $ret);
     }
 

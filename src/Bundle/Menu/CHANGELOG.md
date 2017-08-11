@@ -1,6 +1,56 @@
 Changelog
 =========
 
+1.1.1
+-----
+
+* **2014-05-14**: [BC BREAK when extending Model] Removed parent from
+  MenuNodeBase classes as they are not required by knp menu.
+
+1.1.0
+-----
+
+Release 1.1.0
+
+1.1.0-RC3
+---------
+
+* **2014-04-30**: Moved parent handling from MenuNodeBase to MenuNode to conform
+  with the CMF rules of base models being the minimal model. HierarchyInterface
+  on PHPCR MenuNode.
+
+1.1.0-RC2
+---------
+
+* **2014-04-11**: drop Symfony 2.2 compatibility
+
+1.1.0-RC1
+---------
+
+* **2014-04-04**: The menu factory now raises an event when a menu item is
+  built from a menu node. The event can be used to change the behaviour or
+  skip building the menu item altogether.
+
+* **2014-03-24**: setParent() and getParent() are now deprecated.
+  Use setParentObject() and getParentObject() instead.
+  When using Sonata admin, you can enable the ChildExtension from the CoreBundle.
+
+* **2014-01-10**: The PhpcrMenuProvider now attempts to prefetch the whole menu
+  node tree to reduce the number of requests to the PHPCR storage. You can
+  tweak the behaviour with the configuration setting
+  `cmf_menu.persistence.phpcr.prefetch`.
+
+* **2013-11-28**: Added referenceable mixin by default to PHPCR Menu and
+  MenuNode classes. Migration as follows:
+
+       $ php app/console doctrine:phpcr:nodes:update \
+           --query="SELECT * FROM [nt:base] WHERE [phpcr:class] = 'Symfony\\Cmf\\Bundle\\MenuBundle\\Doctrine\\Phpcr\\Menu' OR [phpcr:class] = 'Symfony\\Cmf\\Bundle\\MenuBundle\\Doctrine\\Phpcr\\MenuNode'" \
+           --apply-closure="$node->addMixin('mix:referenceable');"
+
+* **2013-11-25**: [PublishWorkflow] added a `MenuContentVoter`, this voter
+  decides that a menu node is not published if the content it is pointing to is
+  not published.
+
 1.0.1
 -----
 

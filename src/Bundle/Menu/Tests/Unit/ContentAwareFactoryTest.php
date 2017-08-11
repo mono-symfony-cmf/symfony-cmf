@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\MenuBundle\Tests\Unit;
 use Symfony\Cmf\Bundle\MenuBundle\ContentAwareFactory;
@@ -17,8 +16,8 @@ class ContentAwareFactoryTest extends \PHPUnit_Framework_Testcase
 {
     private $urlGenerator;
     private $contentUrlGenerator;
-    private $securityContext;
     private $logger;
+    private $dispatcher;
 
     private $node1;
     private $node2;
@@ -33,19 +32,18 @@ class ContentAwareFactoryTest extends \PHPUnit_Framework_Testcase
         $this->contentUrlGenerator = $this->getMock(
             'Symfony\Component\Routing\Generator\UrlGeneratorInterface'
         );
-        $this->securityContext = $this->getMock(
-            'Symfony\Component\Security\Core\SecurityContextInterface'
-        );
         $this->logger = $this->getMock(
             'Psr\Log\LoggerInterface'
+        );
+        $this->dispatcher = $this->getMock(
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface'
         );
 
         $this->factory = new ContentAwareFactory(
             $this->urlGenerator,
             $this->contentUrlGenerator,
-            $this->securityContext,
-            $this->logger,
-            false // refactore this empty items option
+            $this->dispatcher,
+            $this->logger
         );
 
         $this->node1 = $this->getMock('Knp\Menu\NodeInterface');
@@ -79,9 +77,9 @@ class ContentAwareFactoryTest extends \PHPUnit_Framework_Testcase
             ->method('generate')
             ->will($this->returnValue('foobar'));
 
-        $this->node1->expects($this->once())
+        $this->node1->expects($this->any())
             ->method('getOptions')->will($this->returnValue(array()));
-        $this->node3->expects($this->once())
+        $this->node3->expects($this->any())
             ->method('getOptions')->will($this->returnValue(array()));
 
         $this->node1->expects($this->once())
@@ -95,27 +93,22 @@ class ContentAwareFactoryTest extends \PHPUnit_Framework_Testcase
             ->method('getChildren')
             ->will($this->returnValue(array()));
 
-        $mock = $this->securityContext->expects($this->at(0))
-            ->method('isGranted')
-            ->with('VIEW', $this->node2)
-        ;
-
         if ($options['node2_is_published']) {
-            $mock->will($this->returnValue(true));
-            $this->node2->expects($this->once())
+            $this->node2->expects($this->any())
                 ->method('getOptions')->will($this->returnValue(array()));
             $this->node2->expects($this->once())
                 ->method('getChildren')
                 ->will($this->returnValue(array()));
         } else {
-            $mock->will($this->returnValue(false));
+            $node2 = $this->node2;
+            $this->dispatcher->expects($this->any())
+                ->method('dispatch')
+                ->will($this->returnCallback(function ($name, $event) use ($options, $node2) {
+                    if ($event->getNode() === $node2) {
+                        $event->setSkipNode(true);
+                    }
+                }));
         }
-
-        $this->securityContext->expects($this->at(1))
-            ->method('isGranted')
-            ->with('VIEW', $this->node3)
-            ->will($this->returnValue(true))
-        ;
 
         $res = $this->factory->createFromNode($this->node1);
         $this->assertInstanceOf('Knp\Menu\MenuItem', $res);

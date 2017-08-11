@@ -3,46 +3,51 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\MenuBundle\Tests\Resources\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
+use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
 use Knp\Menu\NodeInterface;
 
+use Symfony\Cmf\Bundle\CoreBundle\Model\ChildInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Cmf\Bundle\MenuBundle\Model\MenuNodeReferrersInterface;
 
 /**
- * @PHPCRODM\Document(referenceable=true)
+ * @PHPCR\Document(referenceable=true)
  */
 class Content implements MenuNodeReferrersInterface, RouteReferrersReadInterface
 {
     /**
-     * @PHPCRODM\Id(strategy="assigned")
+     * @PHPCR\Id(strategy="assigned")
      */
     protected $id;
 
     /**
-     * @PHPCRODM\String()
+     * @PHPCR\String()
      */
     protected $title;
 
     /**
-     * @PHPCRODM\ParentDocument()
+     * @PHPCR\ParentDocument()
      */
     protected $parent;
 
     /**
-     * @PHPCRODM\Referrers(
+     * @PHPCR\Nodename()
+     */
+    protected $name;
+
+    /**
+     * @PHPCR\Referrers(
      *     referringDocument="Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode",
      *     referencedBy="content",
      *     cascade="persist"
@@ -51,7 +56,7 @@ class Content implements MenuNodeReferrersInterface, RouteReferrersReadInterface
     protected $menuNodes;
 
     /**
-     * @PHPCRODM\Referrers(
+     * @PHPCR\Referrers(
      *     referringDocument="Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route",
      *     referencedBy="content"
      * )
@@ -99,7 +104,6 @@ class Content implements MenuNodeReferrersInterface, RouteReferrersReadInterface
         $this->routes->add($route);
     }
 
-
     public function removeMenuNode(NodeInterface $menuNode)
     {
         $this->menuNodes->remove($menuNode);
@@ -109,11 +113,27 @@ class Content implements MenuNodeReferrersInterface, RouteReferrersReadInterface
     {
         foreach ($this->routes as $route) {
         }
+
         return $this->routes;
     }
 
-    public function getParent()
+    public function setParentDocument($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    public function getParentDocument()
     {
         return $this->parent;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 }

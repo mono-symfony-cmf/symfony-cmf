@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\MenuBundle\DependencyInjection;
 
@@ -39,6 +38,10 @@ class CmfMenuExtension extends Extension
 
         if ($config['persistence']['phpcr']['enabled']) {
             $this->loadPhpcr($config['persistence']['phpcr'], $loader, $container);
+        }
+
+        if ($config['publish_workflow']['enabled']) {
+            $loader->load('publish-workflow.xml');
         }
     }
 
@@ -75,6 +78,7 @@ class CmfMenuExtension extends Extension
             'menu_basepath' => 'menu_basepath',
             'content_basepath' => 'content_basepath',
             'manager_name' => 'manager_name',
+            'prefetch' => 'prefetch',
             'admin_recursive_breadcrumbs' => 'admin_recursive_breadcrumbs',
         );
 

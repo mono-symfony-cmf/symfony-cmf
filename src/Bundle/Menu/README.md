@@ -1,6 +1,6 @@
 # Symfony CMF Menu Bundle
 
-[![Build Status](https://secure.travis-ci.org/symfony-cmf/MenuBundle.png)](http://travis-ci.org/symfony-cmf/MenuBundle)
+[![Build Status](https://secure.travis-ci.org/symfony-cmf/MenuBundle.png?branch=1.1)](http://travis-ci.org/symfony-cmf/MenuBundle)
 [![Latest Stable Version](https://poser.pugx.org/symfony-cmf/menu-bundle/version.png)](https://packagist.org/packages/symfony-cmf/menu-bundle)
 [![Total Downloads](https://poser.pugx.org/symfony-cmf/menu-bundle/d/total.png)](https://packagist.org/packages/symfony-cmf/menu-bundle)
 
@@ -11,7 +11,7 @@ The MenuBundle provides menus from a doctrine object manager with the help of Kn
 
 ## Requirements
 
-* Symfony 2.2.x
+* Symfony 2.3+
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
