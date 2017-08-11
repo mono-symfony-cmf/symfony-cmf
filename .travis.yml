@@ -89,6 +89,9 @@ install:
       if [[ ! $PHP = hhvm* ]]; then php -i; else hhvm --php -r 'print_r($_SERVER);print_r(ini_get_all());'; fi
 
     - |
+      # run composer update on main repository
+      $COMPOSER_UP
+    - |
       run_tests () {
           set -e
           echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
