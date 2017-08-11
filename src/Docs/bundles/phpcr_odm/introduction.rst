@@ -62,11 +62,11 @@ Besides the ``DoctrinePHPCRBundle`` you also need to instantiate the base
     {
         public function registerBundles()
         {
-            $bundles = array(
+            $bundles = [
                 // ...
                 new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
                 new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            );
+            ];
 
             // ...
         }
@@ -139,15 +139,15 @@ with the DoctrineBundle. For detailed information, see the
     .. code-block:: php
 
         // app/config/config.php
-        $configuration->loadFromExtension('doctrine', array(
-            'dbal' => array(
+        $configuration->loadFromExtension('doctrine', [
+            'dbal' => [
                 'driver'   => '%database_driver%',
                 'host'     => '%database_host%',
                 'dbname'   => '%database_name%',
                 'user'     => '%database_user%',
                 'password' => '%database_password%',
-            ),
-        ));
+            ],
+        ]);
 
 Jackalope Doctrine DBAL provides a PHPCR implementation without any
 installation requirements beyond any of the RDBMS supported by Doctrine.
@@ -210,31 +210,31 @@ Once you set up Doctrine DBAL, you can configure Jackalope:
     .. code-block:: php
 
         // app/config/config.php
-        $container->loadFromExtension('doctrine_phpcr', array(
-            'session' => array(
-                'backend' => array(
+        $container->loadFromExtension('doctrine_phpcr', [
+            'session' => [
+                'backend' => [
                     'type'       => 'doctrinedbal',
                     //'connection': 'default',
                     'logging'    => true,
                     'profiling'  => true,
-                    //'caches' => array(
+                    //'caches' => [
                     //    'meta' => 'doctrine_cache.providers.phpcr_meta'
                     //    'nodes' => 'doctrine_cache.providers.phpcr_nodes'
-                    //),
-                ),
+                    //],
+                ],
                 'workspace' => 'default',
                 'username'  => 'admin',
                 'password'  => 'admin',
-            ),
-        ));
+            ],
+        ]);
 
 Now make sure the database exists and initialize it:
 
 .. code-block:: bash
 
     # without Doctrine ORM
-    php app/console doctrine:database:create
-    php app/console doctrine:phpcr:init:dbal
+    php bin/console doctrine:database:create
+    php bin/console doctrine:phpcr:init:dbal
 
 .. tip::
 
@@ -257,8 +257,8 @@ so that you can create migrations.
 .. code-block:: bash
 
     # Using Doctrine ORM
-    php app/console doctrine:database:create
-    php app/console doctrine:schema:create
+    php bin/console doctrine:database:create
+    php bin/console doctrine:schema:create
 
 .. note::
 
@@ -301,12 +301,12 @@ here, the ODM services will not be loaded.
     .. code-block:: php
 
         // app/config/config.php
-        $container->loadFromExtension('doctrine_phpcr', array(
-            'odm' => array(
+        $container->loadFromExtension('doctrine_phpcr', [
+            'odm' => [
                 'auto_mapping' => true,
                 'auto_generate_proxy_classes' => '%kernel.debug%',
-            ),
-        ));
+            ],
+        ]);
 
 Unless you disable ``auto_mapping``, you can place your documents in the
 ``Document`` folder inside your bundles and use annotations or name the
@@ -328,7 +328,7 @@ bundles:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:repository:init
+    $ php bin/console doctrine:phpcr:repository:init
 
 You only need to run this command once when you created a new repository. (But
 nothing goes wrong if you run it on each deployment for example.)
@@ -373,15 +373,15 @@ debug toolbar:
     .. code-block:: php
 
         // app/config/config.yml
-        $container->loadFromExtension('doctrine_phpcr', array(
-            'session' => array(
-                'backend' => array(
+        $container->loadFromExtension('doctrine_phpcr', [
+            'session' => [
+                'backend' => [
                     // ...
                     'logging'   => true,
                     'profiling' => true,
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
 
 Now that you can see the effects of changes, you can try if adjusting the global
 fetch depth reduces the number and duration for queries. Set the option
@@ -422,7 +422,7 @@ PHPCR sessions.
 Some of these commands are specific to a backend or to the ODM. Those commands
 will only be available if such a backend is configured.
 
-Use ``app/console help <command>`` to see all options each of the commands
+Use ``php bin/console help <command>`` to see all options each of the commands
 has.
 
 * **doctrine:phpcr:document:migrate-class**: Command to migrate document classes;
@@ -462,13 +462,13 @@ Running `SQL2 queries`_ against the repository:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:workspace:query "SELECT title FROM [nt:unstructured] WHERE NAME() = 'home'"
+    $ php bin/console doctrine:phpcr:workspace:query "SELECT title FROM [nt:unstructured] WHERE NAME() = 'home'"
 
 Dumping nodes under ``/cms/simple`` including their properties:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:node:dump /cms/simple --props
+    $ php bin/console doctrine:phpcr:node:dump /cms/simple --props
 
 .. _phpcr-odm-backup-restore:
 
@@ -479,7 +479,7 @@ To export all repository data into a file, you can use:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:workspace:export --path /cms /path/to/backup.xml
+    $ php bin/console doctrine:phpcr:workspace:export --path /cms /path/to/backup.xml
 
 .. note::
 
@@ -491,7 +491,7 @@ To restore this backup you can run:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:workspace:import /path/to/backup.xml
+    $ php bin/console doctrine:phpcr:workspace:import /path/to/backup.xml
 
 Note that you can also export and import parts of your repository by choosing a
 different path on export and specifying the ``--parentpath`` option to the
@@ -502,7 +502,7 @@ remove the target node first:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:node:remove /cms
+    $ php bin/console doctrine:phpcr:node:remove /cms
 
 Read On
 -------
