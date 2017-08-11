@@ -4,7 +4,7 @@
 // Cache-Id: https://github.com/symfony/phpunit-bridge/commit/29fa7b8196870591f35e1554dd69def482e01fb2
 
 if (!file_exists(__DIR__.'/vendor/symfony/phpunit-bridge/bin/simple-phpunit')) {
-    echo "Unable to find the `simple-phpunit` script in `vendor/symfony/phpunit-bridge/bin/`.\nPlease run `composer update` before running this command.\n";
+    echo "Unable to find the `simple-phpunit` script in `vendor/bin/`.\nPlease run `composer update` before running this command.\n";
     exit(1);
 }
 if (\PHP_VERSION_ID >= 70000 && !getenv('SYMFONY_PHPUNIT_VERSION')) {
@@ -12,4 +12,4 @@ if (\PHP_VERSION_ID >= 70000 && !getenv('SYMFONY_PHPUNIT_VERSION')) {
 }
 
 putenv('SYMFONY_PHPUNIT_DIR='.__DIR__.'/.phpunit');
-require __DIR__.'/vendor/symfony/phpunit-bridge/bin/simple-phpunit';
+require __DIR__.'/vendor/bin/simple-phpunit';
