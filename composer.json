@@ -1,0 +1,13 @@
+{
+    "name": "mono-symfony-cmf/symfony-cmf",
+    "description": "Monorepo of Symfony CMF",
+    "type": "framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ElectricMaxxx",
+            "email": "maximilian.berghoff@gmx.de"
+        }
+    ],
+    "require": {}
+}
