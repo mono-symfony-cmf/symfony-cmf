@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -24,6 +25,11 @@ use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
  */
 class CmfSeoExtension extends Extension
 {
+    /**
+     * @var string
+     */
+    private $defaultAlternateLocaleProviderId;
+
     /**
      * {@inheritDoc}
      */
@@ -56,6 +62,8 @@ class CmfSeoExtension extends Extension
                 $config['persistence']['phpcr']['manager_name']
             );
             $sonataBundles[] = 'SonataDoctrinePHPCRAdminBundle';
+
+            $this->loadPhpcr($config['persistence']['phpcr'], $loader, $container);
         }
 
         if ($this->isConfigEnabled($container, $config['persistence']['orm'])) {
@@ -69,6 +77,10 @@ class CmfSeoExtension extends Extension
 
         if (count($sonataBundles) && $config['sonata_admin_extension']['enabled']) {
             $this->loadSonataAdmin($config['sonata_admin_extension'], $loader, $container, $sonataBundles);
+        }
+
+        if ($this->isConfigEnabled($container, $config['alternate_locale'])) {
+            $this->loadAlternateLocaleProvider($config['alternate_locale'], $container);
         }
     }
 
@@ -93,6 +105,12 @@ class CmfSeoExtension extends Extension
             }
             if (!$found) {
                 return;
+            }
+
+            if (!isset($bundles['BurgovKeyValueFormBundle'])) {
+                throw new InvalidConfigurationException(
+                    'To use advanced menu options, you need the burgov/key-value-form-bundle in your project.'
+                );
             }
         }
 
@@ -130,5 +148,49 @@ class CmfSeoExtension extends Extension
     public function getXsdValidationBasePath()
     {
         return __DIR__.'/../Resources/config/schema';
+    }
+
+    /**
+     * @param $config
+     * @param XmlFileLoader $loader
+     * @param ContainerBuilder $container
+     */
+    private function loadPhpcr($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['CmfRoutingBundle'])) {
+            $loader->load('phpcr-alternate-locale.xml');
+            if (!$this->defaultAlternateLocaleProviderId) {
+                $this->defaultAlternateLocaleProviderId = 'cmf_seo.alternate_locale.provider_phpcr';
+            }
+        }
+    }
+
+    /**
+     * When setting a custom alternate locale provider with its id, this one will
+     * be injected to the content listener.
+     *
+     * When using phpcr-odm a default provider will be set, when choosing no own one.
+     *
+     * @param array             $config
+     * @param ContainerBuilder $container
+     */
+    private function loadAlternateLocaleProvider($config, ContainerBuilder $container)
+    {
+
+        $alternateLocaleProvider = empty($config['provider_id'])
+            ? $this->defaultAlternateLocaleProviderId
+            : $config['provider_id'];
+
+
+        if ($alternateLocaleProvider) {
+            $definition = $container->getDefinition('cmf_seo.event_listener.seo_content');
+            $definition
+                ->addMethodCall(
+                    'setAlternateLocaleProvider',
+                    array($container->getDefinition($alternateLocaleProvider))
+                )
+            ;
+        }
     }
 }
