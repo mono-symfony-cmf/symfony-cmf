@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the Symfony CMF package.
+ *
+ * (c) 2011-2013 Symfony CMF
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+
 namespace Symfony\Cmf\Component\Routing\Tests\Enhancer;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +28,10 @@ class FieldByClassEnhancerTest extends CmfUnitTestCase
 
     public function setUp()
     {
-        $this->document = $this->buildMock('Symfony\\Cmf\\Component\\Routing\\Tests\\Enhancer\\RouteObject');
+        $this->document = $this->buildMock('Symfony\Cmf\Component\Routing\Tests\Enhancer\RouteObject');
 
-        $mapping = array('Symfony\\Cmf\\Component\\Routing\\Tests\\Enhancer\\RouteObject'
-                            => 'symfony_cmf_content.controller:indexAction');
+        $mapping = array('Symfony\Cmf\Component\Routing\Tests\Enhancer\RouteObject'
+                            => 'cmf_content.controller:indexAction');
 
         $this->mapper = new FieldByClassEnhancer('_content', '_controller', $mapping);
 
@@ -34,7 +44,7 @@ class FieldByClassEnhancerTest extends CmfUnitTestCase
         $defaults = array('_content' => $this->document);
         $expected = array(
             '_content' => $this->document,
-            '_controller' => 'symfony_cmf_content.controller:indexAction',
+            '_controller' => 'cmf_content.controller:indexAction',
         );
         $this->assertEquals($expected, $this->mapper->enhance($defaults, $this->request));
     }
