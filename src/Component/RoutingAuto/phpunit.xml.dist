@@ -4,11 +4,12 @@
 <phpunit
     colors="true"
     bootstrap="vendor/autoload.php"
+    beStrictAboutTestsThatDoNotTestAnything="true"
     >
 
     <testsuites>
         <testsuite name="RoutingAuto Component Test Suite">
-            <directory>./Tests</directory>
+            <directory>./tests</directory>
         </testsuite>
 
         <testsuite name="RoutingAutoBundle Test Suite">
