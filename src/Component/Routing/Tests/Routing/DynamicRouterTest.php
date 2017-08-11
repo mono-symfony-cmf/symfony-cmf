@@ -29,6 +29,9 @@ class DynamicRouterTest extends CmfUnitTestCase
     /** @var DynamicRouter */
     protected $router;
     protected $context;
+    /**
+     * @var Request
+     */
     public $request;
 
     protected $url = '/foo/bar';
@@ -89,15 +92,14 @@ class DynamicRouterTest extends CmfUnitTestCase
     {
         $name = 'my_route_name';
         $parameters = array('foo' => 'bar');
-        $absolute = true;
 
         $this->generator->expects($this->once())
             ->method('generate')
-            ->with($name, $parameters, $absolute)
+            ->with($name, $parameters, DynamicRouter::ABSOLUTE_URL)
             ->will($this->returnValue('http://test'))
         ;
 
-        $url = $this->router->generate($name, $parameters, $absolute);
+        $url = $this->router->generate($name, $parameters, DynamicRouter::ABSOLUTE_URL);
         $this->assertEquals('http://test', $url);
     }
 
@@ -148,7 +150,7 @@ class DynamicRouterTest extends CmfUnitTestCase
         $expected = array('this' => 'that');
         $this->enhancer->expects($this->once())
             ->method('enhance')
-            ->with($this->equalTo($routeDefaults), $this->equalTo($this->request))
+            ->with($this->equalTo($routeDefaults), $this->equalTo($this->request, 1))
             ->will($this->returnValue($expected))
         ;
 

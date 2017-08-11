@@ -1,6 +1,6 @@
 # Symfony CMF Routing Component
 
-[![Build Status](https://secure.travis-ci.org/symfony-cmf/Routing.png?branch=1.2)](http://travis-ci.org/symfony-cmf/Routing)
+[![Build Status](https://secure.travis-ci.org/symfony-cmf/Routing.png?branch=master)](http://travis-ci.org/symfony-cmf/Routing)
 [![Latest Stable Version](https://poser.pugx.org/symfony-cmf/routing/version.png)](https://packagist.org/packages/symfony-cmf/routing)
 [![Total Downloads](https://poser.pugx.org/symfony-cmf/routing/d/total.png)](https://packagist.org/packages/symfony-cmf/routing)
 
@@ -14,7 +14,7 @@ It provides:
 Even though it has Symfony in its name, the Routing component does not need the
 full Symfony2 Framework and can be used in standalone projects.
 
-For Symfon2 projects, an optional
+For Symfony 2 projects, an optional
 [RoutingBundle](https://github.com/symfony-cmf/RoutingBundle)
 is also available.
 
