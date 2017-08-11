@@ -1,0 +1,14 @@
+cmf_core:
+    multilang:
+        locales: ['en', 'de', 'fr']
+
+cmf_routing:
+    dynamic:
+        enabled: true
+        persistence:
+            phpcr: ~
+
+cmf_content:
+    persistence:
+        phpcr:
+            content_basepath: /test/contents

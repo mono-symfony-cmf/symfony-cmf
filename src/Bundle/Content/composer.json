@@ -12,32 +12,36 @@
         }
     ],
     "require": {
-        "php": "^5.3.9|^7.0",
-        "symfony/framework-bundle": "^2.3|3.*",
-        "symfony-cmf/core-bundle": "^1.1",
-        "symfony-cmf/menu-bundle": "^1.1|2.*",
-        "symfony-cmf/routing-bundle": "^1.2"
+        "php": "^5.6|^7.0",
+        "symfony/framework-bundle": "^2.8|^3.0",
+        "symfony-cmf/core-bundle": "^2.0",
+        "symfony-cmf/menu-bundle": "^2.0",
+        "symfony-cmf/routing-bundle": "^2.0"
     },
     "require-dev": {
-        "symfony-cmf/testing": "^1.3",
-        "sonata-project/doctrine-phpcr-admin-bundle": "^1.1",
-        "symfony/monolog-bundle": "^2.3"
+        "doctrine/phpcr-odm": "^1.4",
+        "symfony-cmf/testing": "^2.0",
+        "symfony/phpunit-bridge": "^3.2"
     },
     "suggest": {
         "friendsofsymfony/rest-bundle": "Improved handling for different output formats",
         "doctrine/phpcr-odm": "To persist content with the PHP content repository",
         "doctrine/phpcr-bundle": "To integrate PHPCR-ODM with Symfony",
-        "sonata-project/doctrine-phpcr-admin-bundle": "To provide admin interfaces for the content (^1.1)",
-        "egeloen/ckeditor-bundle": "to provide a CKEditor in the admin interface"
+        "symfony-cmf/sonata-admin-integration-bundle": "To provide admin interfaces for the content"
     },
     "autoload": {
         "psr-4": {
-            "Symfony\\Cmf\\Bundle\\ContentBundle\\": ""
+            "Symfony\\Cmf\\Bundle\\ContentBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\ContentBundle\\Tests\\": "tests/"
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.3-dev"
+            "dev-master": "2.0-dev"
         }
     }
 }

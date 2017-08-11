@@ -1,6 +1,25 @@
 Changelog
 =========
 
+2.0.0
+-----
+
+Released 2.0.0
+
+2.0.0-RC2
+---------
+
+* **2017-02-06**: [BC BREAK] Controller excpects the template to be called
+  `$template` and no longer `$contentTemplate`. If you use the CmfRoutingBundle,
+  you don't need to do anything as it was renamed there as well. If you extend
+  this controller or have a different routing, you need to adjust.
+
+2.0.0-RC1
+---------
+
+* **2016-12-07**: [BC BREAK] Moved all Sonata admin integration to the
+  CmfSonataAdminIntegrationBundle
+
 1.3.0
 -----
 
