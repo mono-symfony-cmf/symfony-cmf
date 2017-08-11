@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,10 +11,11 @@
 
 namespace Symfony\Cmf\Bundle\ContentBundle\Doctrine\Phpcr;
 
+use Doctrine\ODM\PHPCR\HierarchyInterface;
 use PHPCR\NodeInterface;
 use Symfony\Cmf\Bundle\ContentBundle\Model\StaticContentBase as ModelStaticContentBase;
 
-class StaticContentBase extends ModelStaticContentBase
+class StaticContentBase extends ModelStaticContentBase implements HierarchyInterface
 {
     /**
      * PHPCR parent document
@@ -37,12 +38,34 @@ class StaticContentBase extends ModelStaticContentBase
      */
     protected $node;
 
+    /**
+     * @deprecated Use setParentDocument instead.
+     */
     public function setParent($parent)
+    {
+        $this->setParentDocument($parent);
+    }
+
+    /**
+     * @deprecated Use getParentDocument instead.
+     */
+    public function getParent()
+    {
+        return $this->getParentDocument();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setParentDocument($parent)
     {
         $this->parent = $parent;
     }
 
-    public function getParent()
+    /**
+     * {@inheritDoc}
+     */
+    public function getParentDocument()
     {
         return $this->parent;
     }

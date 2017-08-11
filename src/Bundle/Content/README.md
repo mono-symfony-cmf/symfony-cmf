@@ -1,6 +1,6 @@
 # Symfony CMF Content Bundle
 
-[![Build Status](https://secure.travis-ci.org/symfony-cmf/ContentBundle.png)](http://travis-ci.org/symfony-cmf/ContentBundle)
+[![Build Status](https://secure.travis-ci.org/symfony-cmf/ContentBundle.png?branch=1.1)](http://travis-ci.org/symfony-cmf/ContentBundle)
 [![Latest Stable Version](https://poser.pugx.org/symfony-cmf/content-bundle/version.png)](https://packagist.org/packages/symfony-cmf/content-bundle)
 [![Total Downloads](https://poser.pugx.org/symfony-cmf/content-bundle/d/total.png)](https://packagist.org/packages/symfony-cmf/content-bundle)
 
@@ -11,7 +11,7 @@ The ContentBundle provides a document for static content and the controller to r
 
 ## Requirements
 
-* Symfony 2.2.x
+* Symfony 2.3+
 * See also the `require` section of [composer.json](composer.json)
 
 ## Documentation
