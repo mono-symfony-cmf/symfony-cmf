@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,6 @@ namespace Symfony\Cmf\Bundle\ContentBundle\Doctrine\Phpcr;
 
 use Doctrine\ODM\PHPCR\HierarchyInterface;
 use PHPCR\NodeInterface;
-
 use Symfony\Cmf\Bundle\ContentBundle\Model\StaticContent as ModelStaticContent;
 
 /**
@@ -22,21 +21,21 @@ use Symfony\Cmf\Bundle\ContentBundle\Model\StaticContent as ModelStaticContent;
 class StaticContent extends ModelStaticContent implements HierarchyInterface
 {
     /**
-     * PHPCR parent document
+     * PHPCR parent document.
      *
      * @var object
      */
     protected $parent;
 
     /**
-     * PHPCR document name
+     * PHPCR document name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * PHPCR node
+     * PHPCR node.
      *
      * @var NodeInterface
      */
@@ -47,6 +46,8 @@ class StaticContent extends ModelStaticContent implements HierarchyInterface
      */
     public function setParent($parent)
     {
+        @trigger_error(__METHOD__.' is deprecated since 1.1 and will be removed in 2.0. Use setParentDocument() instead.');
+
         $this->setParentDocument($parent);
     }
 
@@ -55,11 +56,13 @@ class StaticContent extends ModelStaticContent implements HierarchyInterface
      */
     public function getParent()
     {
+        @trigger_error(__METHOD__.' is deprecated since 1.1 and will be removed in 2.0. Use getParentDocument() instead.');
+
         return $this->getParentDocument();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParentDocument($parent)
     {
@@ -67,7 +70,7 @@ class StaticContent extends ModelStaticContent implements HierarchyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParentDocument()
     {
@@ -85,7 +88,7 @@ class StaticContent extends ModelStaticContent implements HierarchyInterface
     }
 
     /**
-     * Get the underlying PHPCR node of this document
+     * Get the underlying PHPCR node of this document.
      *
      * @return NodeInterface
      */

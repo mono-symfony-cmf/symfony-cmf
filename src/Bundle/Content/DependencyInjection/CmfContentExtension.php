@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,13 +30,43 @@ class CmfContentExtension extends Extension
         }
 
         if (isset($config['default_template'])) {
-            $container->setParameter($this->getAlias() . '.default_template', $config['default_template']);
+            $container->setParameter($this->getAlias().'.default_template', $config['default_template']);
         }
+
+        $this->loadIvoryCKEditor($config['ivory_ckeditor'], $container);
+    }
+
+    protected function loadIvoryCKEditor(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter($this->getAlias().'.ivory_ckeditor.config', array());
+
+        $bundles = $container->getParameter('kernel.bundles');
+        if ('auto' === $config['enabled'] && !isset($bundles['IvoryCKEditorBundle'])) {
+            return;
+        }
+
+        if (true === $config['enabled'] && !isset($bundles['IvoryCKEditorBundle'])) {
+            $message = 'IvoryCKEditorBundle integration was explicitely enabled, but the bundle is not available';
+
+            if (class_exists('Ivory\CKEditorBundle\IvoryCKEditorBundle')) {
+                $message .= ' (did you forget to register the bundle in the AppKernel?)';
+            }
+
+            throw new \LogicException($message.'.');
+        }
+
+        if (false === $config['enabled'] || !isset($bundles['IvoryCKEditorBundle'])) {
+            return;
+        }
+
+        $container->setParameter($this->getAlias().'.ivory_ckeditor.config', array(
+            'config_name' => $config['config_name'],
+        ));
     }
 
     public function loadPhpcr($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
-        $container->setParameter($this->getAlias() . '.backend_type_phpcr', true);
+        $container->setParameter($this->getAlias().'.backend_type_phpcr', true);
 
         $keys = array(
             'document_class' => 'document.class',
@@ -47,7 +77,7 @@ class CmfContentExtension extends Extension
 
         foreach ($keys as $sourceKey => $targetKey) {
             if (isset($config[$sourceKey])) {
-                $container->setParameter($this->getAlias() . '.persistence.phpcr.'.$targetKey, $config[$sourceKey]);
+                $container->setParameter($this->getAlias().'.persistence.phpcr.'.$targetKey, $config[$sourceKey]);
             }
         }
 

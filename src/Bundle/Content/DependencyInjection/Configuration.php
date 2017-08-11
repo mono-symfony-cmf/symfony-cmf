@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -39,6 +39,19 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('ivory_ckeditor')
+                    ->addDefaultsIfNotSet()
+                    ->treatFalseLike(array('enabled' => false))
+                    ->treatTrueLike(array('enabled' => true))
+                    ->treatNullLike(array('enabled' => 'auto'))
+                    ->children()
+                        ->enumNode('enabled')
+                            ->values(array(true, false, 'auto'))
+                            ->defaultValue('auto')
+                        ->end()
+                        ->scalarNode('config_name')->defaultValue('cmf_content')->end()
                     ->end()
                 ->end()
             ->end()

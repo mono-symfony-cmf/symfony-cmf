@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -49,7 +49,7 @@ class StaticContentAdminTest extends BaseTestCase
         $form = $button->form();
         $node = $form->getFormNode();
         $actionUrl = $node->getAttribute('action');
-        $uniqId = substr(strchr($actionUrl, '='), 1);
+        $uniqId = substr(strstr($actionUrl, '='), 1);
 
         $form[$uniqId.'[parent]'] = '/test/contents';
         $form[$uniqId.'[name]'] = 'foo-test';

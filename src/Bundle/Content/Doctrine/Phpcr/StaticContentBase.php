@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,21 +18,21 @@ use Symfony\Cmf\Bundle\ContentBundle\Model\StaticContentBase as ModelStaticConte
 class StaticContentBase extends ModelStaticContentBase implements HierarchyInterface
 {
     /**
-     * PHPCR parent document
+     * PHPCR parent document.
      *
      * @var string
      */
     protected $parent;
 
     /**
-     * PHPCR document name
+     * PHPCR document name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * PHPCR node
+     * PHPCR node.
      *
      * @var NodeInterface
      */
@@ -43,6 +43,8 @@ class StaticContentBase extends ModelStaticContentBase implements HierarchyInter
      */
     public function setParent($parent)
     {
+        @trigger_error(__METHOD__.' is deprecated since 1.1 and will be removed in 2.0. Use setParentDocument() instead.');
+
         $this->setParentDocument($parent);
     }
 
@@ -51,11 +53,13 @@ class StaticContentBase extends ModelStaticContentBase implements HierarchyInter
      */
     public function getParent()
     {
+        @trigger_error(__METHOD__.' is deprecated since 1.1 and will be removed in 2.0. Use getParentDocument() instead.');
+
         return $this->getParentDocument();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParentDocument($parent)
     {
@@ -63,7 +67,7 @@ class StaticContentBase extends ModelStaticContentBase implements HierarchyInter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParentDocument()
     {
@@ -81,7 +85,7 @@ class StaticContentBase extends ModelStaticContentBase implements HierarchyInter
     }
 
     /**
-     * Get the underlying PHPCR node of this document
+     * Get the underlying PHPCR node of this document.
      *
      * @return NodeInterface
      */

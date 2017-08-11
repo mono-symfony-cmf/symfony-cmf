@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,12 +15,18 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-
 use Symfony\Cmf\Bundle\ContentBundle\Model\StaticContentBase;
 
 class StaticContentAdmin extends Admin
 {
     protected $translationDomain = 'CmfContentBundle';
+
+    private $ivoryCkeditor = array();
+
+    public function setIvoryCkeditor($config)
+    {
+        $this->ivoryCkeditor = (array) $config;
+    }
 
     public function getExportFormats()
     {
@@ -42,7 +48,11 @@ class StaticContentAdmin extends Admin
                 ->add('parent', 'doctrine_phpcr_odm_tree', array('root_node' => $this->getRootPath(), 'choice_list' => array(), 'select_root_node' => true))
                 ->add('name', 'text')
                 ->add('title', 'text')
-                ->add('body', 'textarea')
+                ->add(
+                    'body',
+                    $this->ivoryCkeditor ? 'ckeditor' : 'textarea',
+                    $this->ivoryCkeditor
+                )
             ->end()
         ;
     }
@@ -51,7 +61,7 @@ class StaticContentAdmin extends Admin
     {
         $datagridMapper
             ->add('title', 'doctrine_phpcr_string')
-            ->add('name',  'doctrine_phpcr_nodename')
+            ->add('name', 'doctrine_phpcr_nodename')
         ;
     }
 
