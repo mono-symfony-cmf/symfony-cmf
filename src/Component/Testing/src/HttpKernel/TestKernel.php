@@ -3,17 +3,14 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\Testing\HttpKernel;
 
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
@@ -52,37 +49,31 @@ abstract class TestKernel extends Kernel
             'Doctrine\Bundle\DoctrineBundle\DoctrineBundle',
         ));
 
-        $this->registerBundleSet('sonata_admin', array(
+        $baseSonataBundles = array(
             'Sonata\BlockBundle\SonataBlockBundle',
             'Sonata\CoreBundle\SonataCoreBundle',
             'Sonata\AdminBundle\SonataAdminBundle',
-            'Sonata\jQueryBundle\SonatajQueryBundle',
             'Knp\Bundle\MenuBundle\KnpMenuBundle',
+            'FOS\JsRoutingBundle\FOSJsRoutingBundle',
+        );
+
+        if (class_exists('Sonata\jQueryBundle\SonatajQueryBundle')) {
+            $baseSonataBundles[] = 'Sonata\jQueryBundle\SonatajQueryBundle';
+        }
+
+        $this->registerBundleSet('sonata_admin', array_merge(array(
             'Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle',
             'Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle',
-            'FOS\JsRoutingBundle\FOSJsRoutingBundle',
-        ));
+        ), $baseSonataBundles));
 
-        $this->registerBundleSet('sonata_admin_orm', array(
-            'Sonata\BlockBundle\SonataBlockBundle',
-            'Sonata\CoreBundle\SonataCoreBundle',
-            'Sonata\AdminBundle\SonataAdminBundle',
-            'Sonata\jQueryBundle\SonatajQueryBundle',
-            'Knp\Bundle\MenuBundle\KnpMenuBundle',
-            'FOS\JsRoutingBundle\FOSJsRoutingBundle',
+        $this->registerBundleSet('sonata_admin_orm', array_merge(array(
             'Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle',
-        ));
+        ), $baseSonataBundles));
 
-        $this->registerBundleSet('sonata_admin_phpcr', array(
-            'Sonata\BlockBundle\SonataBlockBundle',
-            'Sonata\CoreBundle\SonataCoreBundle',
-            'Sonata\AdminBundle\SonataAdminBundle',
-            'Sonata\jQueryBundle\SonatajQueryBundle',
-            'Knp\Bundle\MenuBundle\KnpMenuBundle',
+        $this->registerBundleSet('sonata_admin_phpcr', array_merge(array(
             'Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle',
             'Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle',
-            'FOS\JsRoutingBundle\FOSJsRoutingBundle',
-        ));
+        ), $baseSonataBundles));
 
         parent::__construct($env, $debug);
         $this->configure();
@@ -95,12 +86,11 @@ abstract class TestKernel extends Kernel
      *    $this->requireBundleSets('default', 'phpcr_odm');
      *    $this->addBundle(new MyBundle);
      *    $this->addBundles(array(new Bundle1, new Bundle2));
-     *
      */
     abstract protected function configure();
 
     /**
-     * Register a set of bundles with the given name
+     * Register a set of bundles with the given name.
      *
      * This method does not add the bundles to the kernel,
      * it just makes a set available.
@@ -129,6 +119,10 @@ abstract class TestKernel extends Kernel
      */
     public function requireBundleSet($name)
     {
+        if ('sonata_admin' === $name) {
+            @trigger_error('The "sonata_admin" bundleset is deprecated since version 1.1 and will be removed in 2.0. Use the "sonata_admin_phpcr" bundleset instead.', E_USER_DEPRECATED);
+        }
+
         if (!isset($this->bundleSets[$name])) {
             throw new \InvalidArgumentException(sprintf(
                 'Bundle set %s has not been registered, available bundle sets: %s',
@@ -145,12 +139,12 @@ abstract class TestKernel extends Kernel
                 ));
             }
 
-            $this->requiredBundles[$bundle] = new $bundle;
+            $this->requiredBundles[$bundle] = new $bundle();
         }
     }
 
     /**
-     * Add concrete bundles to the kernel
+     * Add concrete bundles to the kernel.
      */
     public function addBundles(array $bundles)
     {
@@ -160,7 +154,7 @@ abstract class TestKernel extends Kernel
     }
 
     /**
-     * Add a concrete bundle to the kernel
+     * Add a concrete bundle to the kernel.
      */
     public function addBundle(BundleInterface $bundle)
     {
@@ -168,7 +162,7 @@ abstract class TestKernel extends Kernel
     }
 
     /**
-     * {inheritDoc}
+     * {inheritDoc}.
      *
      * Here we return our list of bundles
      */
@@ -178,7 +172,7 @@ abstract class TestKernel extends Kernel
     }
 
     /**
-     * Returns the KernelDir of the CHILD class, 
+     * Returns the KernelDir of the CHILD class,
      * i.e. the concrete implementation in the bundles
      * src/ directory (or wherever).
      */
@@ -187,6 +181,7 @@ abstract class TestKernel extends Kernel
         $refl = new \ReflectionClass($this);
         $fname = $refl->getFileName();
         $kernelDir = dirname($fname);
+
         return $kernelDir;
     }
 
@@ -194,7 +189,7 @@ abstract class TestKernel extends Kernel
     {
         return implode('/', array(
             $this->getKernelDir(),
-            'cache'
+            'cache',
         ));
     }
 }

@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\Testing\Functional\DbManager;
 
@@ -19,6 +18,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\DataFixtures\ProxyReferenceRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 class PHPCR
 {
@@ -39,9 +39,9 @@ class PHPCR
     }
 
     /**
-     * Return the PHPCR ODM registry
+     * Return the PHPCR ODM registry.
      *
-     * @return Symfony\Bridge\Doctrine\RegistryInterface
+     * @return ManagerRegistry
      */
     public function getRegistry()
     {
@@ -50,6 +50,7 @@ class PHPCR
 
     /**
      * @param null|string $managerName
+     *
      * @return DocumentManager
      */
     public function getOm($managerName = null)
@@ -62,40 +63,37 @@ class PHPCR
     }
 
     /**
-     * Purge the database
+     * Purge the database.
      *
-     * @param boolean $initialize If the ODM repository initializers should be executed.
+     * @param bool $initialize If the ODM repository initializers should be executed.
      */
     public function purgeRepository($initialize = false)
     {
-        $purger = new PHPCRPurger();
         $this->getExecutor($initialize)->purge();
     }
 
     /**
-     * Load fixtures
+     * Load fixtures.
      *
      * @param array $classNames Fixture classes to load
-     * @param boolean $initialize  If the ODM repository initializers should be executed.
+     * @param bool  $initialize If the ODM repository initializers should be executed.
      */
     public function loadFixtures(array $classNames, $initialize = false)
     {
-        $this->purgeRepository();
-
-        $loader = new ContainerAwareLoader($this->container);;
+        $loader = new ContainerAwareLoader($this->container);
 
         foreach ($classNames as $className) {
             $this->loadFixtureClass($loader, $className);
         }
 
-        $this->getExecutor($initialize)->execute($loader->getFixtures(), true);
+        $this->getExecutor($initialize)->execute($loader->getFixtures(), false);
     }
 
     /**
      * Load the named fixture class with the given loader.
      *
      * @param \Doctrine\Common\DataFixtures\Loader $loader
-     * @param string $className
+     * @param string                               $className
      */
     public function loadFixtureClass($loader, $className)
     {
@@ -110,6 +108,7 @@ class PHPCR
 
         if ($loader->hasFixture($fixture)) {
             unset($fixture);
+
             return;
         }
 
@@ -139,7 +138,7 @@ class PHPCR
     }
 
     /**
-     * Return the PHPCR Executor class
+     * Return the PHPCR Executor class.
      *
      * @return PHPCRExecutor
      */

@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\Testing\Unit;
 
@@ -42,7 +41,7 @@ abstract class XmlSchemaTestCase extends \PHPUnit_Framework_TestCase
 
                 return $dom;
             }
-            
+
             if (!$dom instanceof \DOMDocument) {
                 throw new \InvalidArgumentException(sprintf('The first argument of assertSchemaAcceptsXml should be instances of \DOMDocument, "%s" given', get_class($dom)));
             }

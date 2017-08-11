@@ -3,23 +3,24 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\Testing\Document;
 
 use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCRODM;
 
+@trigger_error('The '.__NAMESPACE.'\Content document is deprecated as of version 1.1 and will be removed in 2.0.', E_USER_DEPRECATED);
+
 /**
- * Test content document
+ * Test content document.
  *
  * Very simple, referenceable document.
  *
- * @deprecated This Document is deprecated as of 1.1 and will be removed in 
+ * @deprecated This Document is deprecated as of 1.1 and will be removed in
  * 2.0. Move the fixture to your own bundle instead.
  *
  * @PHPCRODM\Document(referenceable=true)
@@ -76,14 +77,13 @@ class Content
         return $this->name;
     }
 
-    public function getTitle() 
+    public function getTitle()
     {
         return $this->title;
     }
-    
+
     public function setTitle($title)
     {
         $this->title = $title;
     }
 }
-

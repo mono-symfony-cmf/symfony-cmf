@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\Testing\Unit\Constraint;
 
@@ -52,12 +51,14 @@ class SchemaAcceptsXml extends \PHPUnit_Framework_Constraint
         return count($this->xml);
     }
 
-    public function toString() { }
+    public function toString()
+    {
+    }
 
     protected function failureDescription($schemaFile)
     {
         return sprintf(
-            "Xml is accepted by the XML schema \"%s\"",
+            'Xml is accepted by the XML schema "%s"',
             $schemaFile
         );
     }

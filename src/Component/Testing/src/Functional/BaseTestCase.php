@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\Testing\Functional;
 
@@ -26,7 +25,7 @@ use Symfony\Component\DependencyInjection\Container;
 abstract class BaseTestCase extends WebTestCase
 {
     /**
-     * Use this property to save the DbManagers
+     * Use this property to save the DbManagers.
      *
      * @var array
      */
@@ -128,7 +127,7 @@ abstract class BaseTestCase extends WebTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * This is overriden to set the default environment to 'phpcr'
      */
@@ -140,5 +139,22 @@ abstract class BaseTestCase extends WebTestCase
         }
 
         return parent::createKernel($options);
+    }
+
+    protected function assertResponseSuccess(Response $response)
+    {
+        libxml_use_internal_errors(true);
+
+        $dom = new \DomDocument();
+        $dom->loadHTML($response->getContent());
+
+        $xpath = new \DOMXpath($dom);
+        $result = $xpath->query('//div[contains(@class,"text-exception")]/h1');
+        $exception = null;
+        if ($result->length) {
+            $exception = $result->item(0)->nodeValue;
+        }
+
+        $this->assertEquals(200, $response->getStatusCode(), $exception ? 'Exception: "'.$exception.'"' : null);
     }
 }

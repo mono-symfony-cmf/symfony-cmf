@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\Testing\Functional\DbManager;
 
@@ -17,7 +16,6 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\ProxyReferenceRepository;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -58,7 +56,7 @@ class ORM
     }
 
     /**
-     * Gets the Doctrine ManagerRegistry
+     * Gets the Doctrine ManagerRegistry.
      *
      * @return ManagerRegistry
      */
@@ -68,9 +66,10 @@ class ORM
     }
 
     /**
-     * Gets the Doctrine ObjectManager
+     * Gets the Doctrine ObjectManager.
      *
      * @param null $managerName
+     *
      * @return ObjectManager
      */
     public function getOm($managerName = null)
@@ -83,7 +82,7 @@ class ORM
     }
 
     /**
-     * Purge the database
+     * Purge the database.
      */
     public function purgeDatabase()
     {
@@ -94,13 +93,13 @@ class ORM
 
     /**
      * Loads fixture classes.
-     * 
+     *
      * @param string[] $classNames
      */
     public function loadFixtures(array $classNames)
     {
         $this->purgeDatabase();
-        $loader = new ContainerAwareLoader($this->container);;
+        $loader = new ContainerAwareLoader($this->container);
 
         foreach ($classNames as $className) {
             $this->loadFixtureClass($loader, $className);
@@ -111,7 +110,7 @@ class ORM
 
     /**
      * Loads a single fixture.
-     * 
+     *
      * @param Loader $loader
      * @param string $className
      */
@@ -128,6 +127,7 @@ class ORM
 
         if ($loader->hasFixture($fixture)) {
             unset($fixture);
+
             return;
         }
 
@@ -141,7 +141,7 @@ class ORM
     }
 
     /**
-     * Return the ORM Executor class
+     * Return the ORM Executor class.
      *
      * @return ORMExecutor
      */

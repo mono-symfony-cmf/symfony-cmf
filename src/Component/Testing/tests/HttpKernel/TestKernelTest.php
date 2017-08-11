@@ -3,17 +3,13 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\Testing\Tests\HttpKernel;
-
-use Symfony\Cmf\Component\Testing\HttpKernel\TestKernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 class TestKernelTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,7 +28,6 @@ class TestKernelTest extends \PHPUnit_Framework_TestCase
      */
     public function testBundleSetRequire(array $bundleSets, $count)
     {
-        $this->kernel->init();
         $this->kernel->requireBundleSets($bundleSets);
         $bundles = $this->kernel->registerBundles();
         $this->assertCount($count, $bundles);
@@ -60,7 +55,6 @@ class TestKernelTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequireInvalidBundleSet()
     {
-        $this->kernel->init();
         $this->kernel->requireBundleSet('foobar');
     }
 }
