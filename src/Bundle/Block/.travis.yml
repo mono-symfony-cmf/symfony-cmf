@@ -1,33 +1,31 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
-  - 5.6
   - 7.0
-  - hhvm
 
 sudo: false
 
 cache:
   directories:
+    - .phpunit
     - $HOME/.composer/cache/files
 
 env:
-  global: SYMFONY_DEPRECATIONS_HELPER=weak
-  matrix: SYMFONY_VERSION=2.8.*
+  matrix: SYMFONY_VERSION=3.2.*
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=11
+    - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml" SYMFONY_PHPUNIT_VERSION=5.7
 
 matrix:
   include:
+    - php: 7.1
+      env: DEPS=dev SYMFONY_VERSION=3.3.*
     - php: 5.6
-      env: DEPS=dev SYMFONY_VERSION=2.8.*
-    - php: 5.3
-      env: COMPOSER_FLAGS="--prefer-lowest"
-    - php: 5.6
-      env: SYMFONY_VERSION=2.3.*
-    - php: 5.6
-      env: SYMFONY_VERSION=2.7.*
+      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION=2.8.* SYMFONY_DEPRECATIONS_HELPER=weak
+    - php: 7.1
+      env: SYMFONY_VERSION=3.1.*
+    - php: hhvm
+      dist: trusty
   fast_finish: true
 
 before_install:
@@ -41,8 +39,7 @@ install: composer update --prefer-dist $COMPOSER_FLAGS
 
 before_script: vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
-script: phpunit
+script: vendor/bin/simple-phpunit
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"
-  email: "symfony-cmf-devs@googlegroups.com"
