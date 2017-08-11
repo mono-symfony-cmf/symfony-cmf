@@ -96,7 +96,7 @@ install:
     - |
       run_tests () {
           set -e
-          if [[ !$TEST_THEM_ALL ]]; then
+          if [[ 1 != $TEST_THEM_ALL ]]; then
             # Test changed components only:
             echo "Changed: $CHAGEDCOMPONENTS\n"
             echo "$CHAGEDCOMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
