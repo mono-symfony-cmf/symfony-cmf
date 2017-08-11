@@ -1,0 +1,30 @@
+{
+    "name": "symfony-cmf/slugifier-api",
+    "description": "Provides a basic slugifier interface to transform text into strings suitable for URLs",
+    "keywords": ["slugify", "urlize"],
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/slugifier-api/contributors"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.0"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^3.2"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Cmf\\Api\\Slugifier\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Symfony\\Cmf\\Api\\Slugifier\\Tests\\": "tests/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}
