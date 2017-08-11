@@ -3,15 +3,15 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr;
 
+use PHPCR\NodeInterface;
 use Symfony\Cmf\Bundle\MediaBundle\Doctrine\Phpcr\Image;
 use Symfony\Cmf\Bundle\MediaBundle\ImageInterface;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
@@ -61,10 +61,14 @@ class ImagineBlock extends AbstractBlock implements TranslatableInterface
      * Set label
      *
      * @param string $label
+     *
+     * @return $this
      */
     public function setLabel($label)
     {
         $this->label = $label;
+
+        return $this;
     }
 
     /**
@@ -81,10 +85,14 @@ class ImagineBlock extends AbstractBlock implements TranslatableInterface
      * Set link url
      *
      * @param string $url
+     *
+     * @return $this
      */
     public function setLinkUrl($url)
     {
         $this->linkUrl = $url;
+
+        return $this;
     }
 
     /**
@@ -101,10 +109,14 @@ class ImagineBlock extends AbstractBlock implements TranslatableInterface
      * Sets the Imagine filter which is going to be used
      *
      * @param string $filter
+     *
+     * @return $this
      */
     public function setFilter($filter)
     {
         $this->filter = $filter;
+
+        return $this;
     }
 
     /**
@@ -128,11 +140,15 @@ class ImagineBlock extends AbstractBlock implements TranslatableInterface
      * without an image, though.
      *
      * @param ImageInterface|UploadedFile|null $image optional the image to update
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException If the $image parameter can not be handled.
      */
     public function setImage($image = null)
     {
         if (!$image) {
-            return;
+            return $this;
         }
 
         if (!$image instanceof ImageInterface && !$image instanceof UploadedFile) {
@@ -149,11 +165,14 @@ class ImagineBlock extends AbstractBlock implements TranslatableInterface
             // TODO: https://github.com/doctrine/phpcr-odm/pull/262
             $this->image->copyContentFromFile($image);
         } elseif ($image instanceof ImageInterface) {
+            $image->setName('image'); // ensure document has right name
             $this->image = $image;
         } else {
             $this->image = new Image();
             $this->image->copyContentFromFile($image);
         }
+
+        return $this;
     }
 
     /**
@@ -169,7 +188,7 @@ class ImagineBlock extends AbstractBlock implements TranslatableInterface
     /**
      * Get node
      *
-     * @return \PHPCR\NodeInterface
+     * @return NodeInterface
      */
     public function getNode()
     {

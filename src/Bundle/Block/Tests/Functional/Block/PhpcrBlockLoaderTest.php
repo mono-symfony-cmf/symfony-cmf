@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Tests\Functional\Block;
 
@@ -241,8 +240,6 @@ class PhpcrBlockLoaderTest extends \PHPUnit_Framework_TestCase
         ->with(PublishWorkflowChecker::VIEW_ATTRIBUTE, $this->equalTo($altBlock))
         ->will($this->returnValue(true))
     ;
-
-
 
         $registryMock = $this->getMockBuilder('Doctrine\Bundle\PHPCRBundle\ManagerRegistry')
             ->disableOriginalConstructor()

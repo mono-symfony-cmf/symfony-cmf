@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr;
 
@@ -41,10 +40,14 @@ class SimpleBlock extends AbstractBlock implements TranslatableInterface
      * Set title
      *
      * @param string $title
+     *
+     * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
@@ -61,10 +64,14 @@ class SimpleBlock extends AbstractBlock implements TranslatableInterface
      * Set body
      *
      * @param string $body
+     *
+     * @return $this
      */
     public function setBody($body)
     {
         $this->body = $body;
+
+        return $this;
     }
 
     /**

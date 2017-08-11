@@ -17,6 +17,11 @@
                 <target>Bloc conteneur</target>
             </trans-unit>
 
+            <trans-unit id="dashboard.label_menu_block">
+                <source>dashboard.label_menu_block</source>
+                <target>Bloc menu</target>
+            </trans-unit>
+
             <trans-unit id="dashboard.label_reference_block">
                 <source>dashboard.label_reference_block</source>
                 <target>Bloc référence</target>
@@ -37,8 +42,8 @@
                 <target>Bloc image</target>
             </trans-unit>
 
-            <trans-unit id="dashboard.label_text_block">
-                <source>dashboard.label_text_block</source>
+            <trans-unit id="dashboard.label_string_block">
+                <source>dashboard.label_string_block</source>
                 <target>Bloc texte</target>
             </trans-unit>
 
@@ -102,6 +107,26 @@
                 <target>Supprimer</target>
             </trans-unit>
 
+            <trans-unit id="breadcrumb.link_menu_block_list">
+                <source>breadcrumb.link_menu_block_list</source>
+                <target>Blocs menues</target>
+            </trans-unit>
+
+            <trans-unit id="breadcrumb.link_menu_block_create">
+                <source>breadcrumb.link_menu_block_create</source>
+                <target>Créer</target>
+            </trans-unit>
+
+            <trans-unit id="breadcrumb.link_menu_block_edit">
+                <source>breadcrumb.link_menu_block_edit</source>
+                <target>Éditer</target>
+            </trans-unit>
+
+            <trans-unit id="breadcrumb.link_menu_block_delete">
+                <source>breadcrumb.link_menu_block_delete</source>
+                <target>Supprimer</target>
+            </trans-unit>
+
             <trans-unit id="breadcrumb.link_reference_block_list">
                 <source>breadcrumb.link_reference_block_list</source>
                 <target>Blocs référence</target>
@@ -142,23 +167,23 @@
                 <target>Supprimer</target>
             </trans-unit>
 
-            <trans-unit id="breadcrumb.link_text_block_list">
-                <source>breadcrumb.link_text_block_list</source>
+            <trans-unit id="breadcrumb.link_string_block_list">
+                <source>breadcrumb.link_string_block_list</source>
                 <target>Blocs textes</target>
             </trans-unit>
 
-            <trans-unit id="breadcrumb.link_text_block_create">
-                <source>breadcrumb.link_text_block_create</source>
+            <trans-unit id="breadcrumb.link_string_block_create">
+                <source>breadcrumb.link_string_block_create</source>
                 <target>Créer</target>
             </trans-unit>
 
-            <trans-unit id="breadcrumb.link_text_block_edit">
-                <source>breadcrumb.link_text_block_edit</source>
+            <trans-unit id="breadcrumb.link_string_block_edit">
+                <source>breadcrumb.link_string_block_edit</source>
                 <target>Éditer</target>
             </trans-unit>
 
-            <trans-unit id="breadcrumb.link_text_block_delete">
-                <source>breadcrumb.link_text_block_delete</source>
+            <trans-unit id="breadcrumb.link_string_block_delete">
+                <source>breadcrumb.link_string_block_delete</source>
                 <target>Supprimer</target>
             </trans-unit>
 
@@ -207,11 +232,6 @@
                 <target>Titre</target>
             </trans-unit>
 
-            <trans-unit id="list.label_locales">
-                <source>list.label_locales</source>
-                <target>Langues</target>
-            </trans-unit>
-
             <trans-unit id="form.group_general">
                 <source>form.group_general</source>
                 <target>Général</target>
@@ -220,11 +240,6 @@
             <trans-unit id="form.group_metadata">
                 <source>form.group_metadata</source>
                 <target>Metadata</target>
-            </trans-unit>
-
-            <trans-unit id="form.label_locale">
-                <source>form.label_locale</source>
-                <target>Langue</target>
             </trans-unit>
 
             <trans-unit id="form.label_parent_document">
@@ -250,6 +265,11 @@
             <trans-unit id="form.label_referenced_block">
                 <source>form.label_referenced_block</source>
                 <target>Bloc référencé</target>
+            </trans-unit>
+
+            <trans-unit id="form.label_menu_block">
+                <source>form.label_menu_block</source>
+                <target>Bloc de menu</target>
             </trans-unit>
 
             <trans-unit id="form.label_action_name">

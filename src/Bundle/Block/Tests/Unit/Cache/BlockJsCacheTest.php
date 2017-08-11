@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Tests\Unit\Cache;
 
@@ -72,20 +71,20 @@ class BlockJsCacheTest extends \PHPUnit_Framework_TestCase
 
         $cacheElement = $cache->set($keys, 'data');
 
-        $this->assertInstanceOf('Sonata\CacheBundle\Cache\CacheElement', $cacheElement);
+        $this->assertInstanceOf('Sonata\Cache\CacheElement', $cacheElement);
 
         $this->assertTrue($cache->has(array('id' => 7)));
 
         $cacheElement = $cache->get($keys);
 
-        $this->assertInstanceOf('Sonata\CacheBundle\Cache\CacheElement', $cacheElement);
+        $this->assertInstanceOf('Sonata\Cache\CacheElement', $cacheElement);
 
         $expected = <<<EXPECTED
 <div id="block-cms-content-home-additionalInfoBlock" >
     <script type="text/javascript">
         /*<![CDATA[*/
 
-            (function() {
+            (function () {
                 var b = document.createElement('script');
                 b.type = 'text/javascript';
                 b.async = true;

@@ -1,10 +1,31 @@
 Changelog
 =========
 
+1.1.0
+-----
+
+Release 1.1.0
+
+1.1.0-RC2
+---------
+
+* **2014-04-11**: drop Symfony 2.2 compatibility
+
+1.1.0-RC1
+---------
+
+* **2014-03-24**: Blocks now support the ChildExtension to simplify attaching blocks
+  in Sonata Admin. Activate the ChildExtension from the CoreBundle to profit from this.
+
+* **2014-03-24**: [Dependencies]: Updated to the new SonataBlockBundle that
+  requires the SonataCoreBundle.
+
+* **2014-03-23**: Added a Repository Initializer for the block basepath
+
 1.0.0-RC4
 ---------
 
-* **2013-10-04**: [Sonata Admin]: Removed overwritten baseRouteName and 
+* **2013-10-04**: [Sonata Admin]: Removed overwritten baseRouteName and
   baseRoutePattern in the block admins. The names now follow the convention,
   becoming cmf_block_actionblock instead of cmf_block_action and so on.
 

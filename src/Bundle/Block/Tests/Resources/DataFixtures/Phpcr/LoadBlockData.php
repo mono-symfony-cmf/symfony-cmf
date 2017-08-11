@@ -3,39 +3,36 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\BlockBundle\Tests\Resources\DataFixtures\PHPCR;
+namespace Symfony\Cmf\Bundle\BlockBundle\Tests\Resources\DataFixtures\Phpcr;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ODM\PHPCR\Document\Generic;
+use PHPCR\Util\NodeHelper;
 use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\ActionBlock;
 use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\ContainerBlock;
+use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\MenuBlock;
 use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\ReferenceBlock;
 use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\SimpleBlock;
-use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\StringBlock;
+use Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu;
+use Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode;
 
 /**
  * @author David Buchmann <david@liip.ch>
  */
-class LoadBlockData implements FixtureInterface, DependentFixtureInterface
+class LoadBlockData implements FixtureInterface
 {
-    public function getDependencies()
-    {
-        return array(
-            'Symfony\Cmf\Component\Testing\DataFixtures\PHPCR\LoadBaseData',
-        );
-    }
-
     public function load(ObjectManager $manager)
     {
+        NodeHelper::createPath($manager->getPhpcrSession(), '/test');
+
         $root = $manager->find(null, '/test');
         $parent = new Generic;
         $parent->setParent($root);
@@ -102,6 +99,41 @@ class LoadBlockData implements FixtureInterface, DependentFixtureInterface
         $block->setParentDocument($parent);
         $block->setName('reference-block-2');
         $block->setReferencedBlock($actionBlockTwo);
+        $block->setPublishable(false);
+        $manager->persist($block);
+
+        // Menu Nodes
+        NodeHelper::createPath($manager->getPhpcrSession(), '/test/menus');
+        $menuRoot = $manager->find(null, '/test/menus');
+        $menu = new Menu;
+        $menu->setName('test-menu');
+        $menu->setLabel('Test Menu');
+        $menu->setParentDocument($menuRoot);
+        $manager->persist($menu);
+
+        $menuNodeOne = new MenuNode();
+        $menuNodeOne->setName('menu-node-1');
+        $menuNodeOne->setLabel("menu-node-1");
+        $menuNodeOne->setParentDocument($menu);
+        $manager->persist($menuNodeOne);
+
+        $menuNodeTwo = new MenuNode();
+        $menuNodeTwo->setName('menu-node-2');
+        $menuNodeTwo->setLabel("menu-node-2");
+        $menuNodeTwo->setParentDocument($menu);
+        $manager->persist($menuNodeTwo);
+
+        //Menu
+        $block = new MenuBlock();
+        $block->setParentDocument($parent);
+        $block->setName('menu-block-1');
+        $block->setMenuNode($menuNodeOne);
+        $manager->persist($block);
+
+        $block = new MenuBlock();
+        $block->setParentDocument($parent);
+        $block->setName('menu-block-2');
+        $block->setMenuNode($menuNodeTwo);
         $block->setPublishable(false);
         $manager->persist($block);
 

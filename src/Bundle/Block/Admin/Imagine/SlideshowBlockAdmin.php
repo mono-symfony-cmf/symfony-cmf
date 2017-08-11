@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Admin\Imagine;
 
@@ -47,7 +46,8 @@ class SlideshowBlockAdmin extends AbstractBlockAdmin
         parent::configureListFields($listMapper);
         $listMapper
             ->addIdentifier('id', 'text')
-            ->add('title', 'text');
+            ->add('title', 'text')
+        ;
     }
 
     /**
@@ -58,7 +58,8 @@ class SlideshowBlockAdmin extends AbstractBlockAdmin
         parent::configureFormFields($formMapper);
         $formMapper
             ->with('form.group_general')
-                ->add('title', 'text')
+                ->add('title', 'text', array('required' => false))
+            ->end()
             ->with('Items')
                 ->add('children', 'sonata_type_collection',
                     array(),
@@ -106,7 +107,7 @@ class SlideshowBlockAdmin extends AbstractBlockAdmin
     /**
      * Generate a most likely unique name
      *
-     * TODO: have blocks use the autoname annotation - https://github.com/symfony-cmf/BlockBundle/issues/149 
+     * TODO: have blocks use the autoname annotation - https://github.com/symfony-cmf/BlockBundle/issues/149
      *
      * @return string
      */

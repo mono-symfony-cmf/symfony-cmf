@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr;
 
@@ -59,10 +58,14 @@ class ActionBlock extends AbstractBlock
 
     /**
      * @param string $actionName
+     *
+     * @return $this
      */
     public function setActionName($actionName)
     {
         $this->actionName = $actionName;
+
+        return $this;
     }
 
     /**
@@ -83,10 +86,14 @@ class ActionBlock extends AbstractBlock
      * rendering the action.
      *
      * @param array $params
+     *
+     * @return $this
      */
     public function setRequestParams(array $params)
     {
         $this->requestParams = $params;
+
+        return $this;
     }
 
     /**
@@ -110,8 +117,9 @@ class ActionBlock extends AbstractBlock
      *
      * @param Request               $request      the master request
      * @param BlockContextInterface $blockContext passed in case an extending
-     *      block needs the context to determine values to pass to the
-     *      subrequest.
+     *                                            block needs the context to
+     *                                            determine values to pass to
+     *                                            the subrequest.
      *
      * @return array List of arguments to pass to the subrequest.
      */

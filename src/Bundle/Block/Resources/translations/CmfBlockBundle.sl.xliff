@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <file source-language="en" target-language="sl" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="dashboard.cmf">
                 <source>dashboard.cmf</source>
@@ -14,6 +14,11 @@
 
             <trans-unit id="dashboard.label_container_block">
                 <source>dashboard.label_container_block</source>
+                <target>Vsebinski blok</target>
+            </trans-unit>
+
+            <trans-unit id="dashboard.label_menu_block">
+                <source>dashboard.label_menu_block</source>
                 <target>Vsebinski blok</target>
             </trans-unit>
 
@@ -99,6 +104,26 @@
 
             <trans-unit id="breadcrumb.link_container_block_delete">
                 <source>breadcrumb.link_container_block_delete</source>
+                <target>Izbriši</target>
+            </trans-unit>
+
+            <trans-unit id="breadcrumb.link_menu_block_list">
+                <source>breadcrumb.link_menu_block_list</source>
+                <target>Menu bloki</target>
+            </trans-unit>
+
+            <trans-unit id="breadcrumb.link_menu_block_create">
+                <source>breadcrumb.link_menu_block_create</source>
+                <target>Ustvari</target>
+            </trans-unit>
+
+            <trans-unit id="breadcrumb.link_menu_block_edit">
+                <source>breadcrumb.link_menu_block_edit</source>
+                <target>Uredi</target>
+            </trans-unit>
+
+            <trans-unit id="breadcrumb.link_menu_block_delete">
+                <source>breadcrumb.link_menu_block_delete</source>
                 <target>Izbriši</target>
             </trans-unit>
 
@@ -207,11 +232,6 @@
                 <target>Naslov</target>
             </trans-unit>
 
-            <trans-unit id="list.label_locales">
-                <source>list.label_locales</source>
-                <target>Lokalizacije</target>
-            </trans-unit>
-
             <trans-unit id="form.group_general">
                 <source>form.group_general</source>
                 <target>Splošno</target>
@@ -220,11 +240,6 @@
             <trans-unit id="form.group_metadata">
                 <source>form.group_metadata</source>
                 <target>Meta podatki</target>
-            </trans-unit>
-
-            <trans-unit id="form.label_locale">
-                <source>form.label_locale</source>
-                <target>Lokalizacija</target>
             </trans-unit>
 
             <trans-unit id="form.label_parent_document">
@@ -250,6 +265,11 @@
             <trans-unit id="form.label_referenced_block">
                 <source>form.label_referenced_block</source>
                 <target>Povezan blok</target>
+            </trans-unit>
+
+            <trans-unit id="form.label_menu_block">
+                <source>form.label_menu_block</source>
+                <target>Meni blok</target>
             </trans-unit>
 
             <trans-unit id="form.label_action_name">

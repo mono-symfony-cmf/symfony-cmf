@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Block;
 
@@ -25,15 +24,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ContainerBlockService extends BaseBlockService implements BlockServiceInterface
 {
-
+    /**
+     * @var BlockRendererInterface
+     */
     protected $blockRenderer;
+
+    /**
+     * @var string
+     */
     protected $template = 'CmfBlockBundle:Block:block_container.html.twig';
 
     /**
-     * @param string                                                     $name
-     * @param \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating
-     * @param \Sonata\BlockBundle\Block\BlockRendererInterface           $blockRenderer
-     * @param string|null                                                $template
+     * @param string                 $name
+     * @param EngineInterface        $templating
+     * @param BlockRendererInterface $blockRenderer
+     * @param string|null            $template      To overwrite the default template.
      */
     public function __construct($name, EngineInterface $templating, BlockRendererInterface $blockRenderer, $template = null)
     {

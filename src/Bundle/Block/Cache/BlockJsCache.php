@@ -3,20 +3,19 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Cache;
 
 use Sonata\BlockBundle\Block\BlockContextManagerInterface;
 use Sonata\BlockBundle\Block\BlockLoaderInterface;
 use Sonata\BlockBundle\Block\BlockRendererInterface;
-use Sonata\CacheBundle\Cache\CacheElement;
-use Sonata\CacheBundle\Cache\CacheInterface;
+use Sonata\Cache\CacheElement;
+use Sonata\Cache\CacheAdapterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -24,7 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * Cache a block through Javascript code
  */
-class BlockJsCache implements CacheInterface
+class BlockJsCache implements CacheAdapterInterface
 {
     protected $router;
     protected $blockRenderer;
@@ -164,7 +163,7 @@ CONTENT
     <script type="text/javascript">
         /*<![CDATA[*/
 
-            (function() {
+            (function () {
                 var b = document.createElement('script');
                 b.type = 'text/javascript';
                 b.async = true;
