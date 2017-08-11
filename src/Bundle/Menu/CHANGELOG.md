@@ -1,6 +1,19 @@
 Changelog
 =========
 
+1.2.0-RC1
+---------
+
+* **2014-07-11**: Added MenuOptionsExtension that adds the editing feature of menu options in Sonata Admin
+* **2014-06-06**: Updated to PSR-4 autoloading
+
+1.2.x
+-----
+
+* **2014-05-21**: [BC BREAK when extending BaseMenuNode] addChild and
+  removeChild now accepts every Knp\Menu\NodeInterface instead of only
+  MenuNode.
+
 1.1.1
 -----
 

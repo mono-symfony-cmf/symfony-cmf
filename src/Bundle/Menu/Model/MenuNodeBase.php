@@ -365,11 +365,11 @@ class MenuNodeBase implements NodeInterface
     /**
      * Add a child menu node under this node.
      *
-     * @param MenuNode $child
+     * @param NodeInterface $child
      *
-     * @return MenuNode The newly added child node.
+     * @return NodeInterface The newly added child node.
      */
-    public function addChild(MenuNode $child)
+    public function addChild(NodeInterface $child)
     {
         $this->children[] = $child;
 
@@ -379,13 +379,15 @@ class MenuNodeBase implements NodeInterface
     /**
      * Remove a child menu node
      *
-     * @param MenuNode $child
+     * @param NodeInterface $child
      *
      * @return MenuNodeBase $this
      */
-    public function removeChild(MenuNode $child)
+    public function removeChild(NodeInterface $child)
     {
         $this->children->removeElement($child);
+
+        return $this;
     }
 
     /**
@@ -558,6 +560,17 @@ class MenuNodeBase implements NodeInterface
     }
 
     /**
+     * Whether this menu node can be displayed, meaning it is set to display
+     * and it does have a non-empty label.
+     *
+     * @return boolean
+     */
+    public function isDisplayable()
+    {
+        return $this->getDisplay() && $this->getLabel();
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getOptions()
@@ -568,12 +581,12 @@ class MenuNodeBase implements NodeInterface
             'label' => $this->getLabel(),
             'attributes' => $this->getAttributes(),
             'childrenAttributes' => $this->getChildrenAttributes(),
-            'display' => $this->display,
-            'displayChildren' => $this->displayChildren,
+            'display' => $this->isDisplayable(),
+            'displayChildren' => $this->getDisplayChildren(),
             'routeParameters' => $this->getRouteParameters(),
-            'routeAbsolute' => $this->routeAbsolute,
-            'linkAttributes' => $this->linkAttributes,
-            'labelAttributes' => $this->labelAttributes,
+            'routeAbsolute' => $this->getRouteAbsolute(),
+            'linkAttributes' => $this->getLinkAttributes(),
+            'labelAttributes' => $this->getLabelAttributes(),
         );
     }
 }
