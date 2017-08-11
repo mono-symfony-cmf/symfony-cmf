@@ -182,7 +182,7 @@ install:
           fi
       }
 
-before_script: (cd src/Component/Testing && composer upadate && bin/travis/phpcr_odm_doctrine_dbal.sh)
+before_script: (cd src/Component/Testing && composer update && bin/travis/phpcr_odm_doctrine_dbal.sh)
 
 script:
     - (run_tests)
