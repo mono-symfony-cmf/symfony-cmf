@@ -3,7 +3,7 @@ Controllers and Templates
 
 Go to the URL http://localhost:8000/page/home in your browser - this should be
 your page, but it says that it cannot find a controller. In other words it has
-found the *page referencing route* for your page but Symfony does not know what
+found the *route referencing the page* for your page but Symfony does not know what
 to do with it.
 
 You can map a default controller for all instances of ``Page``:
@@ -71,8 +71,8 @@ object and all the ``Posts`` to the view::
          */
         public function pageAction($contentDocument)
         {
-            $dm = $this->get('doctrine_phpcr')->getManager();
-            $posts = $dm->getRepository('Acme\BasicCmsBundle\Document\Post')->findAll();
+            $dm = $this->get('doctrine_phpcr')->getManagerForClass('AcmeBasicCmsBundle:Post');
+            $posts = $dm->getRepository('AcmeBasicCmsBundle:Post')->findAll();
 
             return array(
                 'page'  => $contentDocument,
@@ -83,7 +83,7 @@ object and all the ``Posts`` to the view::
 
 The ``Page`` object is passed automatically as ``$contentDocument``.
 
-Add a corresponding twig template (note that this works because you use the
+Add a corresponding Twig template (note that this works because you use the
 ``@Template`` annotation):
 
 .. configuration-block::
@@ -125,3 +125,12 @@ router and because it implements the ``RouteReferrersReadInterface`` the
 
 Click on a ``Post`` and you will have the same error that you had before when
 viewing the page at ``/home`` and you can resolve it in the same way.
+
+.. tip::
+
+    If you have different content classes with different templates, but you
+    don't need specific controller logic, you can configure
+    ``templates_by_class`` instead of ``controllers_by_class`` to let the
+    default controller render a specific template. See
+    :ref:`bundles-routing-dynamic_router-enhancer` for more information on
+    this.

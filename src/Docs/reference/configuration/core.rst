@@ -31,7 +31,7 @@ is the following configuration:
                     manager_registry:     doctrine_phpcr
                     manager_name:         ~
                     use_sonata_admin:     auto
-                    translation_strategy:  ~
+                    translation_strategy: ~
 
     .. code-block:: xml
 
@@ -58,12 +58,58 @@ is the following configuration:
         $container->loadFromExtension('cmf_core', array(
             'persistence' => array(
                 'phpcr' => array(
-                    'enabled' => false,
-                    'basepath' => '/cms/simple',
-                    'manager_registry' => 'doctrine_phpcr',
-                    'manager_name' => null,
-                    'use_sonata_admin' => 'auto',
+                    'enabled'              => false,
+                    'basepath'             => '/cms/simple',
+                    'manager_registry'     => 'doctrine_phpcr',
+                    'manager_name'         => null,
+                    'use_sonata_admin'     => 'auto',
                     'translation_strategy' => null,
+                ),
+            ),
+        ));
+
+orm
+...
+
+This defines the persistence driver. The default configuration of persistence
+is the following configuration:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        cmf_core:
+            persistence:
+                orm:
+                    enabled:          false
+                    manager_name:     ~
+                    use_sonata_admin: auto
+
+    .. code-block:: xml
+
+        <?xml version="1.0" charset="UTF-8" ?>
+        <container xmlns="http://symfony.com/schema/dic/services">
+
+            <config xmlns="http://cmf.symfony.com/schema/dic/core">
+                <persistence>
+                    <phpcr
+                        enabled="false"
+                        manager-name="null"
+                        use-sonata-admin="auto"
+                    />
+                </persistence>
+            </config>
+
+        </container>
+
+    .. code-block:: php
+
+        $container->loadFromExtension('cmf_core', array(
+            'persistence' => array(
+                'phpcr' => array(
+                    'enabled'          => false,
+                    'manager_name'     => null,
+                    'use_sonata_admin' => 'auto',
                 ),
             ),
         ));
@@ -186,8 +232,8 @@ bundles that use this configuration:
 
             <config xmlns="http://cmf.symfony.com/schema/dic/core">
                 <multilang>
-                    <locales>en</locales>
-                    <locales>fr</locales>
+                    <locale>en</locale>
+                    <locale>fr</locale>
                 </multilang>
             </config>
         </container>
@@ -223,10 +269,10 @@ only published routes and content can be accessed.
 
         cmf_core:
             publish_workflow:
-                enabled:              true
-                checker_service:      cmf_core.publish_workflow.checker.default
-                view_non_published_role:  ROLE_CAN_VIEW_NON_PUBLISHED
-                request_listener:     true
+                enabled:                 true
+                checker_service:         cmf_core.publish_workflow.checker.default
+                view_non_published_role: ROLE_CAN_VIEW_NON_PUBLISHED
+                request_listener:        true
 
     .. code-block:: xml
 
@@ -247,9 +293,74 @@ only published routes and content can be accessed.
 
         $container->loadFromExtension('cmf_core', array(
             'publish_workflow' => array(
-                'enabled' => true,
-                'checker_service' => 'cmf_core.publish_workflow.checker.default',
+                'enabled'                 => true,
+                'checker_service'         => 'cmf_core.publish_workflow.checker.default',
                 'view_non_published_role' => 'ROLE_CAN_VIEW_NON_PUBLISHED',
-                'request_listener' => true,
+                'request_listener'        => true,
             ),
         ));
+
+Sonata Admin
+------------
+
+This section configures the Sonata Admin Extensions, see:
+
+* :ref:`Publish Workflow Admin Extensions <bundle-core-workflow-admin-extensions>`;
+* :ref:`Translatable Admin Extension <bundle-core-translatable-admin-extension>`.
+* :ref:`Child Admin Extension <bundle-core-child-admin-extension>`.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        cmf_core:
+            sonata_admin:
+                extensions:
+                    publishable:
+                        form_group: form.group_publish_workflow
+                    publish_time:
+                        form_group: form.group_general
+                    translatable:
+                        form_group: form.group_general
+
+    .. code-block:: xml
+
+        <?xml version="1.0" charset="UTF-8" ?>
+        <container xmlns="http://symfony.com/schema/dic/services">
+
+            <config xmlns="http://cmf.symfony.com/schema/dic/core">
+                <sonata-admin>
+                    <extension>
+                        <publishable form-group="form.group_publish_workflow" />
+                        <publish-time form-group="form.group_general" />
+                        <translatable form-group="form.group_general" />
+                    </extension>
+                </sonata-admin>
+            </config>
+        </container>
+
+    .. code-block:: php
+
+        $container->loadFromExtension('cmf_core', array(
+            'sonata_admin' => array(
+                'extensions' => array(
+                    'publishable' => array(
+                        'form_group' => 'form.group_publish_workflow',
+                    ),
+                    'publish_time' => array(
+                        'form_group' => 'form.group_general',
+                    ),
+                    'translatable' => array(
+                        'form_group' => 'form.group_general',
+                    ),
+                ),
+            ),
+        ));
+
+form_group
+~~~~~~~~~~
+
+**type**: ``string`` **default**: as in above example.
+
+Defines which form group the fields from this extension will appear in within
+the Sonata Admin edit interface.

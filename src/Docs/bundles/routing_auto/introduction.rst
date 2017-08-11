@@ -20,6 +20,28 @@ Installation
 You can install this bundle `with composer`_ using the
 `symfony-cmf/routing-auto-bundle`_ package.
 
+This bundle is based on the :doc:`../routing/index`, and you need to
+instantiate both bundles::
+
+    // app/AppKernel.php
+
+    // ...
+    class AppKernel extends Kernel
+    {
+        public function registerBundles()
+        {
+            $bundles = array(
+                // ...
+                new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+                new Symfony\Cmf\Bundle\RoutingAutoBundle\CmfRoutingAutoBundle(),
+            );
+
+            // ...
+        }
+
+        // ...
+    }
+
 Features
 --------
 
@@ -97,7 +119,7 @@ The configuration for the example above could be as follows:
 .. configuration-block::
 
     .. code-block:: yaml
-    
+
         # app/config/config.yml
         cmf_routing_auto:
             mappings:
@@ -133,7 +155,7 @@ The configuration for the example above could be as follows:
                 <mapping class="Acme\ForumBundle\Document\Topic">
 
                     <content-path>
-                        <!-- corresponds first path unit in diagram:  my-forum -->
+                        <!-- corresponds first path unit in diagram: my-forum -->
                         <path-unit name="forum_path">
                             <provider name="specified">
                                 <option name="path" value="my-forum" />

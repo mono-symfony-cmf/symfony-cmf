@@ -15,10 +15,31 @@ including the ability to edit them. See :doc:`types`.
 Installation
 ------------
 
-You can install the bundle in 2 different ways:
+You can install this bundle `with composer`_ using the
+`symfony-cmf/block-bundle`_ package.
 
-* Use the official Git repository (https://github.com/symfony-cmf/BlockBundle);
-* Install it via Composer (``symfony-cmf/block-bundle`` on `Packagist`_).
+As the bundle is using the `SonataBlockBundle`_, you need to instantiate some
+sonata bundles in addition to the CmfBlockBundle::
+
+    // app/AppKernel.php
+
+    // ...
+    class AppKernel extends Kernel
+    {
+        public function registerBundles()
+        {
+            $bundles = array(
+                // ...
+                new Sonata\BlockBundle\SonataBlockBundle(),
+                new Sonata\CoreBundle\SonataCoreBundle(),
+                new Symfony\Cmf\Bundle\BlockBundle\CmfBlockBundle(),
+            );
+
+            // ...
+        }
+
+        // ...
+    }
 
 .. _bundle-block-configuration:
 
@@ -191,7 +212,7 @@ Block Context
 
 The BlockContext contains all information and the block document needed to
 render the block. It aggregates and merges all settings from configuration,
-the block service, the block document and settings passed to the twig template
+the block service, the block document and settings passed to the Twig template
 helper. Therefore, use the BlockContext to get or alter a setting if needed.
 
 .. _bundle-block-service:
@@ -212,7 +233,7 @@ service. It is only relevant when
 Block rendering
 ---------------
 
-Rendering is handled by the SonataBlockBundle ``sonata_block_render`` twig
+Rendering is handled by the SonataBlockBundle ``sonata_block_render`` Twig
 function. The block name is either an absolute PHPCR path or the name of the
 block relative to the ``cmfMainContent`` document.
 
@@ -271,7 +292,7 @@ response object - typically by rendering a Twig template.
 Embedding Blocks in WYSIWYG Content
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The CmfBlockBundle provides a twig filter ``cmf_embed_blocks`` that
+The CmfBlockBundle provides a Twig filter ``cmf_embed_blocks`` that
 looks through the content and looks for special tags to render blocks. To use
 the tag, you need to apply the ``cmf_embed_blocks`` filter to your output. If
 you can, render your blocks directly in the template. This feature is only a
@@ -296,7 +317,7 @@ might be a CMF bundle at some point for this).
     Make sure to only place this filter where you display the content and not
     where editing it, as otherwise your users would start to edit the rendered
     output of their blocks.
-    This feature conflicts with the frontend editing provided by CreateBundle,
+    This feature conflicts with the front-end editing provided by CreateBundle,
     as create.js operates on the rendered content as displayed to the user.
     There is an ongoing `discussion how to fix this`_.
 
@@ -368,6 +389,16 @@ See also the :ref:`the configuration reference <reference-config-block-twig-cmf-
     block and returns an empty string for each failed block instead. The errors
     are logged at level WARNING.
 
+SonataAdminBundle Integration
+-----------------------------
+
+The BlockBundle also provides Admin classes to enable creating, editing and
+removing blocks from the admin panel. To enable the admin, use the
+``cmf_block.persistence.phpcr.use_sonata_admin`` setting. Both the
+:ref:`BlockBundle <bundles-block-types-admin_extension>` and
+:ref:`CoreBundle <bundles-core-persistence>` provide several extensions for
+SonataAdminBundle.
+
 Examples
 --------
 
@@ -383,7 +414,8 @@ Read on
 * :doc:`cache`
 * :doc:`relation_to_sonata_block_bundle`
 
-.. _`Packagist`: https://packagist.org/packages/symfony-cmf/block-bundle
+.. _`symfony-cmf/block-bundle`: https://packagist.org/packages/symfony-cmf/block-bundle
+.. _`with composer`: http://getcomposer.org
 .. _`Symfony CMF Sandbox`: https://github.com/symfony-cmf/cmf-sandbox
 .. _`prepended configuration`: http://symfony.com/doc/current/components/dependency_injection/compilation.html#prepending-configuration-passed-to-the-extension
 .. _`SonataBlockBundle`: https://github.com/sonata-project/SonataBlockBundle

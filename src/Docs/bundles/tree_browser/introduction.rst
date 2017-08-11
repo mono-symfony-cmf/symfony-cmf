@@ -6,7 +6,7 @@ TreeBrowserBundle
 =================
 
     The TreeBrowserBundle provides a tree navigation on top of a PHPCR
-    repository. The frontend implementation is based on the jQuery plugin
+    repository. The front-end implementation is based on the jQuery plugin
     `jsTree`_.
 
 This bundle consists of two parts:
@@ -148,8 +148,7 @@ from the admin tree:
 
         {% render 'sonata.admin.doctrine_phpcr.tree_controller:treeAction' with {
             'root':     sitePath ~ "/menu",
-            'selected': menuNodeId,
-            '_locale':  app.request.locale
+            'selected': menuNodeId
         } %}
         <script type="text/javascript">
             $(document).ready(function() {
@@ -169,7 +168,6 @@ from the admin tree:
         $view['actions']->render('sonata.admin.doctrine_phpcr.tree_controller:treeAction', array(
             'root'     => $sitePath . '/menu',
             'selected' => $menuNodeId,
-            '_locale'  => $app->getRequest()->getLocale()
         ))?>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -239,5 +237,5 @@ For example, if your want to open a custom action:
 .. _`admin_tree.js`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/views/Tree/tree.html.twig
 .. _`select_tree.js`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/views/Form/form_admin_fields.html.twig
 .. _`PhpcrOdmTree`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Tree/PhpcrOdmTree.php
-.. _`jsTree`: http://www.jstree.com/documentation
+.. _`jsTree`: http://www.jstree.com/
 .. _SonataDoctrinePHPCRAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html

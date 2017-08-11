@@ -460,12 +460,12 @@ follows::
         public function load(ObjectManager $dm)
         {
             $route = new Route();
-            $route->setParent($dm->find(null, '/cms/routes'));
+            $route->setParentDocument($dm->find(null, '/cms/routes'));
             $route->setName('projects');
 
             // link a content to the route
             $content = new StaticContent();
-            $content->setParent($dm->find(null, '/cms/content'));
+            $content->setParentDocument($dm->find(null, '/cms/content'));
             $content->setName('my-content');
             $dm->persist($content);
             $route->setRouteContent($content);
@@ -502,7 +502,7 @@ For more information on the Routing component of Symfony CMF, please refer to:
 * :doc:`../components/routing/introduction` for most of the actual functionality implementation
 * :doc:`../bundles/routing/introduction` for Symfony2 integration bundle for Routing Bundle
 * Symfony2's `Routing`_ component page
-* :doc:`../cookbook/handling_multilang_documents` for some notes on multilingual routing
+* :doc:`../book/handling_multilang` for some notes on multilingual routing
 
 .. _`Doctrine ORM`: http://www.doctrine-project.org/projects/orm.html
 .. _`PHPCR-ODM`: http://www.doctrine-project.org/projects/phpcr-odm.html

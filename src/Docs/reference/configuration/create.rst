@@ -1,7 +1,7 @@
 CreateBundle configuration
 ==========================
 
-The CreateBundle provides frontend editing based on create.js and CreatePHP.
+The CreateBundle provides front-end editing based on create.js and CreatePHP.
 It can be configured under the ``cmf_create`` key in your application
 configuration. When using XML you should use the
 ``http://cmf.symfony.com/schema/dic/create`` namespace.
@@ -18,33 +18,49 @@ Configuration
 Security
 ~~~~~~~~
 
-The controller that receives save requests from create.js requires the user to
-have a specific role to control who is allowed to edit content. As it would
+The controller that receives save requests from create.js does a security check
+to determine whether the current user is allowed to edit content. As it would
 not be convenient to show the create.js editor to users not allowed to edit the
-site, the controller loading the create.js javascripts with the
-``includeJSFilesAction`` also checks this role. If the image controller is
-activated, it checks for this role as well.
+site, the controller loading the create.js JavaScript files with the
+``includeJSFilesAction`` also uses the same security check, as does the image
+upload controller if it is activated.
+
+The default security check checks if the user has a specified role. If nothing
+is configured, the default role is ``ROLE_ADMIN``. If you set the parameter to
+boolean ``false``, every user will be allowed to save changes through the REST
+controller.
+
+A last option is to configure your own ``checker_service`` to be used instead
+of the role based check.
+
+For more information, see the
+:ref:`security section in the bundle doc <bundle_create_introduction_access_control>`.
 
 .. configuration-block::
 
     .. code-block:: yaml
 
         cmf_create:
-            role: ROLE_ADMIN
+            security:
+                role:            ROLE_ADMIN
+                checker_service: ~
 
     .. code-block:: xml
 
         <?xml version="1.0" charset="UTF-8" ?>
         <container xmlns="http://symfony.com/schema/dic/services">
-            <config xmlns="http://cmf.symfony.com/schema/dic/create"
-                role="ROLE_ADMIN"
-            />
+            <config xmlns="http://cmf.symfony.com/schema/dic/create">
+                <security role="ROLE_ADMIN" checker-service="null" />
+            </config>
         </container>
 
     .. code-block:: php
 
         $container->loadFromExtension('cmf_create', array(
-            'role' => 'ROLE_ADMIN',
+            'security' => array(
+                'role'            => 'ROLE_ADMIN',
+                'checker_service' => null,
+            ),
         ));
 
 .. _config-create-persistence:
@@ -63,8 +79,8 @@ persistence configuration has the following configuration:
             object_mapper_service_id: ~
             persistence:
                 phpcr:
-                    enabled:              false
-                    manager_name:         ~
+                    enabled:      false
+                    manager_name: ~
                     image:
                         enabled:          false
                         model_class:      ~
@@ -97,13 +113,13 @@ persistence configuration has the following configuration:
         $container->loadFromExtension('cmf_create', array(
             'persistence' => array(
                 'phpcr' => array(
-                    'enabled' => false,
+                    'enabled'      => false,
                     'manager_name' => null,
                     'image' => array(
-                        'enabled' => false,
-                        'model_class' => null,
+                        'enabled'          => false,
+                        'model_class'      => null,
                         'controller_class' => 'Symfony\Cmf\Bundle\CreateBundle\Controller\ImageController',
-                        'basepath' => '/cms/media',
+                        'basepath'         => '/cms/media',
                     ),
                 ),
             ),
@@ -149,7 +165,7 @@ Metadata Handling
             rdf_config_dirs:
                 - "%kernel.root_dir%/Resources/rdf-mappings"
             map:
-                '<http://rdfs.org/sioc/ns#Post>': 'Symfony\Cmf\Bundle\ContentBundle\Doctrine\Phpcr\StaticContent'
+                "<http://rdfs.org/sioc/ns#Post>": "Symfony\Cmf\Bundle\ContentBundle\Doctrine\Phpcr\StaticContent"
 
     .. code-block:: xml
 
@@ -165,16 +181,16 @@ Metadata Handling
     .. code-block:: php
 
         $container->loadFromExtension('cmf_create', array(
-            'auto_mapping' => true,
+            'auto_mapping'    => true,
             'rdf_config_dirs' => array('%kernel.root_dir%/Resources/rdf-mappings'),
-            'map' => array('<http://rdfs.org/sioc/ns#Post>' => 'Symfony\Cmf\Bundle\ContentBundle\Doctrine\Phpcr\StaticContent'),
+            'map'             => array('<http://rdfs.org/sioc/ns#Post>' => 'Symfony\Cmf\Bundle\ContentBundle\Doctrine\Phpcr\StaticContent'),
         ));
 
 auto_mapping
 """"""""""""
 
 If not set to false, the CreateBundle will look for mapping files in every
-bundle in the directory ``Resource/rdf-mappings``.
+bundle in the directory ``Resources/rdf-mappings``.
 
 rdf_config_dirs
 """""""""""""""
@@ -206,10 +222,10 @@ setting is the ``plain_text_types``.
     .. code-block:: yaml
 
         cmf_create:
-            plain_text_types: ['dcterms:title']
+            plain_text_types: ["dcterms:title"]
             editor_base_path: /bundles/cmfcreate/vendor/ckeditor/
-            fixed_toolbar: true
-            stanbol_url: http://dev.iks-project.eu:8081
+            fixed_toolbar:    true
+            stanbol_url:      http://dev.iks-project.eu:8081
 
     .. code-block:: xml
 
@@ -228,8 +244,8 @@ setting is the ``plain_text_types``.
         $container->loadFromExtension('cmf_create', array(
             'plain_text_types' => array('dcterms:title'),
             'editor_base_path' => '/bundles/cmfcreate/vendor/ckeditor/',
-            'fixed_toolbar' => true,
-            'stanbol_url' => 'http://dev.iks-project.eu:8081',
+            'fixed_toolbar'    => true,
+            'stanbol_url'      => 'http://dev.iks-project.eu:8081',
         ));
 
 plain_text_types

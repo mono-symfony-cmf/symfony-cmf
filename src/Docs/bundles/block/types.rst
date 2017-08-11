@@ -106,7 +106,7 @@ SimpleBlock
 -----------
 
 Just a text block with a ``title`` and a ``body``. The default template
-renders both title and body with the twig ``raw`` filter, meaning HTML is
+renders both title and body with the Twig ``raw`` filter, meaning HTML is
 allowed in those fields.
 
 This block is useful to edit static text fragments and for example display
@@ -135,6 +135,22 @@ This block simply has the method ``setReferencedBlock`` that accepts any
 block mapped by the persistence layer as argument. If you set this to
 something that is not a valid block, the problem is only detected when
 rendering the block.
+
+.. _bundles-block-menu:
+
+.. versionadded:: 1.1
+    The MenuBlock was introduced in CmfBlockBundle 1.1.
+
+MenuBlock
+---------
+
+This block has no content of its own, but points to a target menu or
+menu entry. When rendered, this block renders the target menu just as
+if the target menu was directly used in that place. If pointing to a
+menu entry, the menu gets rendered from this point.
+
+This block simply has the method ``setMenuNode`` that accepts any
+menu mapped by the persistence layer as argument.
 
 ActionBlock
 -----------
@@ -201,6 +217,8 @@ The controller used to fetch the feed items can also be changed:
 .. note::
 
         The `Symfony CMF Sandbox`_ contains an example of the ``RssBlock``.
+
+.. _bundles-block-types-imagine:
 
 ImagineBlock
 ------------
@@ -293,7 +311,7 @@ Create your first Slideshow
 Building a slideshow consists of creating the container ``SlideshowBlock`` and
 adding blocks to it. Those blocks can be any kind of blocks, but the
 ``ImagineBlock`` makes a lot of sense. Make sure to have configured the imagine
-filter as explained `above <ImagineBlock>`_::
+filter as explained :ref:`above <bundles-block-types-imagine>`::
 
     use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\SlideshowBlock;
     use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\ImagineBlock;
@@ -338,11 +356,11 @@ a ``SlideshowBlock`` object, you can render it with:
             'name' => 'slideshow',
         )) ?>
 
-Make the slideshow work in the frontend
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Make the Slideshow Work in the Front-End
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Since the BlockBundle doesn't contain anything to make the slideshow work
-in the frontend, you need to do this yourself. Use your favourite JavaScript
+in the front-end, you need to do this yourself. Use your favourite JavaScript
 library to make the slideshow interactive. If special markup is needed for
 your slideshow code to work, you can override
 ``BlockBundle:Block:block_slideshow.html.twig`` and/or the templates of the

@@ -25,36 +25,15 @@ fields are self explanatory and are what you would expect from a basic CMS:
 title, body, publishing information and a parent reference, to accommodate a
 tree-like hierarchy. It also includes a Block reference (more on that later).
 
-The two implemented interfaces reveal two of the features included in this
-implementation:
+This document class implements three interfaces that enable additional functionality:
 
 * ``RouteReferrersInterface`` means that the content has associated Routes.
-* ``PublishWorkflowInterface`` means that the content has publishing and
+* ``PublishTimePeriodInterface`` means that the content has publishing and
    unpublishing dates, which will be handled by Symfony CMF's core to
+   determine whether or not to display the content from ``StaticContent``
+* ``PublishableInterface`` means that the content has a boolean flag,
+   which will be handled by Symfony CMF's core to
    determine whether or not to display the content from ``StaticContent``.
-
-Multilang Static Content
-------------------------
-
-The ``MultilangStaticContent`` class extends ``StaticContent``, offering the same
-functionality with multi language support. It specifies which fields are to be
-translated (``title``, ``body`` and ``tags``) as well as a variable to declare
-the locale.
-
-It also specifies the translation strategy:
-
-.. configuration-block::
-
-    .. code-block:: php-annotations
-
-        use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
-
-        /**
-         * @PHPCR\Document(translator="child", referenceable=true)
-         */
-
-For information on the available translation strategies, refer to the Doctrine
-page regarding `multilanguage support in PHPCR-ODM`_.
 
 Content Controller
 ------------------
@@ -81,7 +60,7 @@ SonataDoctrinePHPCRAdminBundle_, a back office generation tool.
 In ContentBundle, the required administration panels are already declared in
 the ``Admin`` folder and configured in ``Resources/config/admin.xml``, and
 will automatically be loaded if you install the SonataDoctrinePHPCRAdminBundle
-(refer to :doc:`../cookbook/creating_cms_using_cmf_and_sonata` for
+(refer to :doc:`../cookbook/creating_a_cms/sonata-admin` for
 instructions on that).
 
 Configuration

@@ -34,11 +34,11 @@ is the following configuration:
         cmf_content:
             persistence:
                 phpcr:
-                    enabled:              false
-                    admin_class:          ~
-                    document_class:       ~
-                    content_basepath:     /cms/content
-                    use_sonata_admin:     auto
+                    enabled:          false
+                    admin_class:      ~
+                    document_class:   ~
+                    content_basepath: /cms/content
+                    use_sonata_admin: auto
 
     .. code-block:: xml
 
@@ -64,9 +64,9 @@ is the following configuration:
         $container->loadFromExtension('cmf_content', array(
             'persistence' => array(
                 'phpcr' => array(
-                    'enabled' => false,
-                    'admin_class' => null,
-                    'document_class' => null,
+                    'enabled'          => false,
+                    'admin_class'      => null,
+                    'document_class'   => null,
                     'content_basepath' => '/cms/content',
                     'use_sonata_admin' => 'auto',
         ));
@@ -81,7 +81,7 @@ admin_class
 
 **type**: ``string`` **default**: ``Symfony\Cmf\Bundle\ContentBundle\Admin\StaticContentAdmin``
 
-The admin class to use when `sonata admin is activated <use_sonata_admin>`_.
+The admin class to use when :ref:`Sonata Admin is activated <quick-tour-third-party-sonata>`.
 
 document_class
 **************

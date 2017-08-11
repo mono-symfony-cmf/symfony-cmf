@@ -1,4 +1,4 @@
-﻿.. index::
+.. index::
     single: Menu; Bundles
     single: MenuBundle
 
@@ -27,6 +27,28 @@ Installation
 You can install this bundle `with composer`_ using the
 `symfony-cmf/menu-bundle`_ package.
 
+As the bundle is using the `KnpMenuBundle`_, you need to instantiate that
+bundles in addition to the CmfMenuBundle::
+
+    // app/AppKernel.php
+
+    // ...
+    class AppKernel extends Kernel
+    {
+        public function registerBundles()
+        {
+            $bundles = array(
+                // ...
+                new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+                new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
+            );
+
+            // ...
+        }
+
+        // ...
+    }
+
 Creating a Simple Persistent Menu
 ---------------------------------
 
@@ -54,14 +76,14 @@ each of which specifies a URI::
     $menu = new Menu();
     $menu->setName('main-menu');
     $menu->setLabel('Main Menu');
-    $menu->setParent($menuParent);
+    $menu->setParentDocument($menuParent);
 
     $manager->persist($menu);
 
     $home = new MenuNode();
     $home->setName('home');
     $home->setLabel('Home');
-    $home->setParent($menu);
+    $home->setParentDocument($menu);
     $home->setUri('http://www.example.com/home');
 
     $manager->persist($home);
@@ -69,7 +91,7 @@ each of which specifies a URI::
     $contact = new MenuNode();
     $contact->setName('contact');
     $contact->setLabel('Contact');
-    $contact->setParent($menu);
+    $contact->setParentDocument($menu);
     $contact->setUri('http://www.example.com/contact');
 
     $manager->persist($contact);
@@ -118,21 +140,27 @@ example is specified. This will render an unordered list as follows:
     Sometimes, the menu is not located within the ``persistence.phpcr.menu_basepath``.
     In this case, you can use an absolute path (starting with a forward slash) to render
     the menu:
-    
+
     .. configuration-block::
 
         .. code-block:: jinja
-        
+
             {{ knp_menu_render('/cms/some/path/my-menu') }}
 
         .. code-block:: php
 
             echo $view['knp_menu']->render('/cms/some/path/my-menu');
 
+.. tip::
+
+    When using the :doc:`BlockBundle <../block/introduction>`, you can also
+    use the ``MenuBlock``. Read more about that in the
+    :ref:`BlockBundle documentation <bundles-block-menu>`
+
 .. note::
 
      It is the ``PhpcrMenuProvider`` class which allows us to specify a
-     PHPCR-ODM document as a menu. For more information see the 
+     PHPCR-ODM document as a menu. For more information see the
      :doc:`menu provider documentation <menu_provider>`.
 
 .. caution::
@@ -144,7 +172,6 @@ For more information see the `rendering menus`_ section of the KnpMenuBundle doc
 
 .. _`KnpMenu`: https://github.com/knplabs/KnpMenu
 .. _`KnpMenuBundle`: https://github.com/knplabs/KnpMenuBundle
-
 .. _`with composer`: http://getcomposer.org
 .. _`rendering menus`: https://github.com/KnpLabs/KnpMenuBundle/blob/master/Resources/doc/index.md#rendering-menus
 .. _`symfony-cmf/menu-bundle`: https://packagist.org/packages/symfony-cmf/menu-bundle

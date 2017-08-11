@@ -146,8 +146,8 @@ new routes in ``/cms/routes``:
 
 Now you can add a new ``Route`` to the tree using Doctrine::
 
-    // src/Acme/MainBundle/DataFixtures/PHPCR/LoadRoutingData.php
-    namespace Acme\MainBundle\DataFixtures\PHPCR;
+    // src/Acme/DemoBundle/DataFixtures/PHPCR/LoadRoutingData.php
+    namespace Acme\DemoBundle\DataFixtures\PHPCR;
 
     use Doctrine\Common\Persistence\ObjectManager;
     use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -164,7 +164,7 @@ Now you can add a new ``Route`` to the tree using Doctrine::
             // set $routesRoot as the parent and 'new-route' as the node name,
             // this is equal to:
             // $route->setName('new-route');
-            // $route->setParent($routesRoot);
+            // $route->setParentDocument($routesRoot);
             $route->setPosition($routesRoot, 'new-route');
 
             $page = $documentManager->find(null, '/cms/routes/quick_tour');
@@ -175,7 +175,7 @@ Now you can add a new ``Route`` to the tree using Doctrine::
         }
     }
 
-This creates a new node called ``/cms/routes/new-route`` which will display
+This creates a new node called ``/cms/routes/new-route``, which will display
 our ``quick_tour`` page when you go to ``/new-route``.
 
 .. tip::

@@ -4,8 +4,8 @@ Getting Started
 Initializing the Project
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-First, follow the generic steps in :doc:`../create_new_project_phpcr_odm` to
-create a new project using the PHPCR-ODM.
+First, follow the generic steps in :doc:`../../bundles/phpcr_odm/introduction`
+to create a new project using the PHPCR-ODM.
 
 Install Additional Bundles
 ..........................
@@ -30,16 +30,16 @@ all of the required packages now.
         require: {
             ...
             "symfony-cmf/routing-auto-bundle": "1.0.*@alpha",
-            "symfony-cmf/menu-bundle": "1.0",
-            "sonata-project/doctrine-phpcr-admin-bundle": "1.0.*",
-            "symfony-cmf/tree-browser-bundle": "1.0.*",
-            "doctrine/data-fixtures": "1.0.0",
+            "symfony-cmf/menu-bundle": "1.1.*",
+            "sonata-project/doctrine-phpcr-admin-bundle": "1.1.*",
+            "symfony-cmf/tree-browser-bundle": "1.1.*",
+            "doctrine/data-fixtures": "1.0.*",
 
-            "doctrine/phpcr-odm": "1.0.*",
-            "phpcr/phpcr-utils": "1.0.*",
-            "doctrine/phpcr-bundle": "1.0.*"
-            "symfony-cmf/routing-bundle": "1.1.*",
-            "symfony-cmf/routing": "1.1.*"
+            "doctrine/phpcr-odm": "1.1.*",
+            "phpcr/phpcr-utils": "1.1.*",
+            "doctrine/phpcr-bundle": "1.1.*",
+            "symfony-cmf/routing-bundle": "1.2.*",
+            "symfony-cmf/routing": "1.2.*"
         },
         ...
     }
@@ -51,15 +51,15 @@ Initialize the Database
 .......................
 
 If you have followed the main instructions in
-:doc:`../create_new_project_phpcr_odm` then you are using the `Doctrine DBAL
-Jackalope`_ PHPCR backend with MySQL and you will need to create the MySQL
-database:
+:doc:`../../bundles/phpcr_odm/introduction` then you are using the
+`Doctrine DBAL Jackalope`_ PHPCR backend with MySQL and you will need to
+create the database:
 
 .. code-block:: bash
 
     $ php app/console doctrine:database:create
 
-This will create a new database according to the configuration file 
+This will create a new database according to the configuration file
 ``parameters.yml``.
 
 The Doctrine DBAL backend needs to be initialized, the following command
@@ -83,7 +83,7 @@ Now you can generate the bundle in which you will write most of your code:
 
 .. code-block:: bash
 
-    $ php app/console generate:bundle --namespace=Acme/BasicCmsBundle --dir=src --no-interaction
+    $ php app/console generate:bundle --namespace=Acme/BasicCmsBundle --dir=src --format=yml --no-interaction
 
 The Documents
 .............
@@ -94,6 +94,8 @@ to reduce code duplication::
 
     // src/Acme/BasicCmsBundle/Document/ContentTrait.php
     namespace Acme\BasicCmsBundle\Document;
+
+    use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
     trait ContentTrait
     {
@@ -130,31 +132,31 @@ to reduce code duplication::
             return $this->id;
         }
 
-        public function getParent() 
+        public function getParentDocument()
         {
             return $this->parent;
         }
-        
-        public function setParent($parent)
+
+        public function setParentDocument($parent)
         {
             $this->parent = $parent;
         }
-        
-        public function getTitle() 
+
+        public function getTitle()
         {
             return $this->title;
         }
-        
+
         public function setTitle($title)
         {
             $this->title = $title;
         }
 
-        public function getContent() 
+        public function getContent()
         {
             return $this->content;
         }
-        
+
         public function setContent($content)
         {
             $this->content = $content;
@@ -178,8 +180,9 @@ The ``Page`` class is therefore nice and simple::
     // src/Acme/BasicCmsBundle/Document/Page.php
     namespace Acme\BasicCmsBundle\Document;
 
-    use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
     use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
+
+    use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;
 
     /**
      * @PHPCR\Document(referenceable=true)
@@ -234,7 +237,7 @@ be referenceable and in addition will automatically set the date using the
     }
 
 Both the ``Post`` and ``Page`` classes implement the
-``RouteReferrersReadInterface``. This interface enables the 
+``RouteReferrersReadInterface``. This interface enables the
 `DynamicRouter to generate URLs`_ from instances of these classes. (for
 example with ``{{ path(content) }}`` in Twig).
 
@@ -254,9 +257,9 @@ configuration:
 
         # src/Acme/BasicCmsBundle/Resources/config/services.yml
         services:
-            acme.basic_cms.phpcr.initializer:
+            acme_basiccms.basic_cms.phpcr.initializer:
                 class: Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer
-                arguments: 
+                arguments:
                     - My custom initializer
                     - ["/cms/pages", "/cms/posts", "/cms/routes"]
                 tags:
@@ -269,14 +272,14 @@ configuration:
         <container xmlns="http://symfony.com/schema/dic/services"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:acme_demo="http://www.example.com/symfony/schema/"
-            xsi:schemaLocation="http://symfony.com/schema/dic/services 
+            xsi:schemaLocation="http://symfony.com/schema/dic/services
                 http://symfony.com/schema/dic/services/services-1.0.xsd">
 
             <!-- ... -->
             <services>
                 <!-- ... -->
 
-                <service id="acme.basic_cms.phpcr.initializer"
+                <service id="acme_basiccms.basic_cms.phpcr.initializer"
                     class="Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer">
 
                     <argument>My custom initializer</argument>
@@ -297,7 +300,7 @@ configuration:
         // src/Acme/BasicCmsBundle/Resources/config/services.php
         $container
             ->register(
-                'acme.basic_cms.phpcr.initializer',
+                'acme_basiccms.basic_cms.phpcr.initializer',
                 'Doctrine\Bundle\PHPCRBundle\Initializer\GenericInitializer'
             )
             ->addArgument('My custom initializer')
@@ -312,8 +315,9 @@ configuration:
     to understand these details right now. To learn more about PHPCR read
     :doc:`../database/choosing_storage_layer`.
 
-Execute the ``doctrine:phpcr:repository:init`` command to initialize (or
-reinitialize) the repository:
+The initalizers will be executed automatically when you load your data
+fixtures (as detailed in the next section) or alternatively you can execute
+them manually using the following command:
 
 .. code-block:: bash
 
@@ -337,7 +341,7 @@ Create Data Fixtures
 ~~~~~~~~~~~~~~~~~~~~
 
 You can use the doctrine data fixtures library to define some initial data for
-your CMS. 
+your CMS.
 
 Ensure that you have the following package installed:
 
@@ -347,7 +351,7 @@ Ensure that you have the following package installed:
         ...
         require: {
             ...
-            "doctrine/data-fixtures": "1.0.0"
+            "doctrine/data-fixtures": "1.0.*"
         },
         ...
     }
@@ -360,18 +364,16 @@ Create a page for your CMS::
     use Acme\BasicCmsBundle\Document\Page;
     use Doctrine\Common\DataFixtures\FixtureInterface;
     use Doctrine\Common\Persistence\ObjectManager;
-    use PHPCR\Util\NodeHelper;
 
     class LoadPageData implements FixtureInterface
     {
         public function load(ObjectManager $dm)
         {
-            NodeHelper::createPath($dm->getPhpcrSession(), '/cms/pages');
             $parent = $dm->find(null, '/cms/pages');
 
             $page = new Page();
             $page->setTitle('Home');
-            $page->setParent($parent);
+            $page->setParentDocument($parent);
             $page->setContent(<<<HERE
     Welcome to the homepage of this really basic CMS.
     HERE
@@ -390,19 +392,17 @@ and add some posts::
     use Doctrine\Common\DataFixtures\FixtureInterface;
     use Doctrine\Common\Persistence\ObjectManager;
     use Acme\BasicCmsBundle\Document\Post;
-    use PHPCR\Util\NodeHelper;
 
     class LoadPostData implements FixtureInterface
     {
         public function load(ObjectManager $dm)
         {
             $parent = $dm->find(null, '/cms/posts');
-            NodeHelper::createPath($dm->getPhpcrSession(), '/cms/posts');
 
             foreach (array('First', 'Second', 'Third', 'Forth') as $title) {
                 $post = new Post();
                 $post->setTitle(sprintf('My %s Post', $title));
-                $post->setParent($parent);
+                $post->setParentDocument($parent);
                 $post->setContent(<<<HERE
     This is the content of my post.
     HERE
@@ -423,15 +423,6 @@ and load the fixtures:
 
 You should now have some data in your content repository.
 
-.. note::
-
-    The classes above use ``NodeHelper::createPath`` to create the paths
-    ``/cms/posts`` and ``/cms/pages`` - this is exactly what the
-    initializer did -- why do the classes do it again? This is a known issue - the
-    data fixtures loader will purge the workspace and it will **not** call the
-    initializer, so when using data fixtures it is currently necessary to manually
-    create the paths.
-
 .. _`routingautobundle documentation`: http://symfony.com/doc/current/cmf/bundles/routing_auto.html
 .. _`dynamicrouter to generate urls`: http://symfony.com/doc/current/cmf/bundles/routing/dynamic.html#url-generation-with-the-dynamicrouterA
 .. _`idempotent`: http://en.wiktionary.org/wiki/idempotent
@@ -440,5 +431,5 @@ You should now have some data in your content repository.
 .. _`sonata-project/doctrine-phpcr-admin-bundle`: https://packagist.org/packages/sonata-project/doctrine-phpcr-admin-bundle
 .. _`doctrine/data-fixtures`: https://packagist.org/packages/doctrine/data-fixtures
 .. _`doctrine dbal jackalope`: https://github.com/jackalope/jackalope-doctrine-dbal
-.. _`Apache Jackrabbit`: `https://jackrabbit.apache.org`
+.. _`Apache Jackrabbit`: https://jackrabbit.apache.org
 .. _`pre persist lifecycle event`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/events.html#lifecycle-callbacks

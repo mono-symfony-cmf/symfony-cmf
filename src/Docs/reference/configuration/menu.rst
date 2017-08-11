@@ -24,16 +24,17 @@ persistence configuration has the following configuration:
         cmf_menu:
             persistence:
                 phpcr:
-                    enabled:              false
-                    menu_basepath:        /cms/menu
-                    content_basepath:     ~
-                    manager_name:         ~
-                    menu_document_class:  Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu
-                    node_document_class:  Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode
-                    use_sonata_admin:     ~ # One of true; false; "auto"
-                    menu_admin_class:     Symfony\Cmf\Bundle\MenuBundle\Admin\MenuAdmin
-                    node_admin_class:     Symfony\Cmf\Bundle\MenuBundle\Admin\MenuNodeAdmin
-                    admin_recursive_breadcrumbs:  true
+                    enabled:                     false
+                    menu_basepath:               /cms/menu
+                    content_basepath:            ~
+                    prefetch:                    10
+                    manager_name:                ~
+                    menu_document_class:         Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu
+                    node_document_class:         Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode
+                    use_sonata_admin:            ~
+                    menu_admin_class:            Symfony\Cmf\Bundle\MenuBundle\Admin\MenuAdmin
+                    node_admin_class:            Symfony\Cmf\Bundle\MenuBundle\Admin\MenuNodeAdmin
+                    admin_recursive_breadcrumbs: true
 
 
     .. code-block:: xml
@@ -46,6 +47,7 @@ persistence configuration has the following configuration:
                         enabled="false"
                         menu-basepath="/cms/menu"
                         content-basepath="null"
+                        prefetch="10"
                         manager-name="null"
                         menu-document-class="null"
                         node-document-class="null"
@@ -63,15 +65,16 @@ persistence configuration has the following configuration:
         $container->loadFromExtension('cmf_menu', array(
             'persistence' => array(
                 'phpcr' => array(
-                    'enabled' => false,
-                    'menu_basepath' => '/cms/menu',
-                    'content_basepath' => null,
-                    'manager_name' => null,
-                    'menu_document_class' => null,
-                    'node_document_class' => null,
-                    'use_sonata_admin' => 'auto',
-                    'menu_admin_class' => null,
-                    'node_admin_class' => null,
+                    'enabled'                     => false,
+                    'menu_basepath'               => '/cms/menu',
+                    'content_basepath'            => null,
+                    'prefetch'                    => 10,
+                    'manager_name'                => null,
+                    'menu_document_class'         => null,
+                    'node_document_class'         => null,
+                    'use_sonata_admin'            => 'auto',
+                    'menu_admin_class'            => null,
+                    'node_admin_class'            => null,
                     'admin_recursive_breadcrumbs' => true,
                 ),
             ),
@@ -81,11 +84,6 @@ enabled
 """""""
 
 .. include:: partials/persistence_phpcr_enabled.rst.inc
-
-manager_name
-""""""""""""
-
-.. include:: partials/persistence_phpcr_manager_name.rst.inc
 
 menu_basepath
 """""""""""""
@@ -115,8 +113,31 @@ the content branch of the document hierarchy in forms.
 If the :doc:`CoreBundle <../../bundles/core/index>` is registered, this will default to
 the value of ``%cmf_core.persistence.phpcr.basepath%/content``
 
-menu_document
-"""""""""""""
+.. versionadded:: 1.1
+
+    The prefetch functionality was added in MenuBundle 1.1.
+
+prefetch
+""""""""
+
+**type**: ``integer`` **default**: ``10``
+
+When rendering a menu, the whole menu tree needs to be loaded. To reduce the
+number of database requests that PHPCR needs to make, this setting makes the
+tree loader prefetch all menu nodes in one call.
+
+``10`` should be enough for most cases, if you have deeper menu structures you
+might want to increase this.
+
+To disable menu prefetch completely, set this option to ``0``.
+
+manager_name
+""""""""""""
+
+.. include:: partials/persistence_phpcr_manager_name.rst.inc
+
+menu_document_class
+"""""""""""""""""""
 
 **type**: ``string`` **default**: ``Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu``
 
@@ -124,8 +145,8 @@ Specifies the document class which should represent an entire menu.
 
 This setting is used by the admin class.
 
-node_document
-"""""""""""""
+node_document_class
+"""""""""""""""""""
 
 **type**: ``string`` **default**: ``Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode``
 
@@ -174,8 +195,8 @@ The ``voters`` section enables you to enable and configure *pre-defined* :doc:`v
             # ...
             voters:
                 content_identity:
-                    content_key:          ~
-                uri_prefix:           false
+                    content_key: ~
+                uri_prefix: false
 
     .. code-block:: xml
 

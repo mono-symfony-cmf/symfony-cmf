@@ -11,8 +11,8 @@ One of the provided features is an interface and implementation of a publish
 workflow checker with an accompanying interface that models can implement if
 they want to support this checker.
 
-Furthermore, it provides a twig helper exposing several useful functions for
-twig templates to interact with PHPCR-ODM documents.
+Furthermore, it provides a Twig helper exposing several useful functions for
+Twig templates to interact with PHPCR-ODM documents.
 
 Finally, most of its configuration settings are automatically applied as
 defaults for most of the other CMF Bundles.
@@ -20,10 +20,8 @@ defaults for most of the other CMF Bundles.
 Installation
 ------------
 
-You can install the bundle in 2 different ways:
-
-* Use the official Git repository (https://github.com/symfony-cmf/CoreBundle);
-* Install it via Composer (``symfony-cmf/core-bundle`` on `Packagist`_).
+You can install this bundle `with composer`_ using the
+`symfony-cmf/core-bundle`_ package.
 
 Sections
 --------
@@ -33,4 +31,5 @@ Sections
 * :doc:`templating`
 * :doc:`persistence`
 
-.. _`Packagist`: https://packagist.org/packages/symfony-cmf/core-bundle
+.. _`symfony-cmf/core-bundle`: https://packagist.org/packages/symfony-cmf/core-bundle
+.. _`with composer`: http://getcomposer.org

@@ -53,14 +53,14 @@ creating `RDFa`_ attributes on your data in the templates. It also maps
 the JSON-LD sent by backbone.js back to your domain objects.
 
 The `CreatePHP`_ library contains a metadata tool to define the mapping between
-your domain objects and the RDF information. It provides a twig extension to
+your domain objects and the RDF information. It provides a Twig extension to
 enrich your HTML pages with the RDFa attributes, similar to how you output forms.
 CreatePHP also provides the means to store the JSON-LD data sent by backbone.js
 back into your domain objects and save them. If you know Doctrine, this is a
 similar job to how Doctrine reads data from database columns and loads them
 into your domain objects.
 
-The CreateBundle finally registers the twig extension in Symfony and provides
+The CreateBundle finally registers the Twig extension in Symfony and provides
 a REST controller for the backbone.js ajax calls. It also provides helpers to
 bootstrap create.js in your templates.
 
@@ -281,12 +281,30 @@ Access Control
 
 In order to limit who can edit content, the provided controllers as well as the
 JavaScript loader check if the current user is granted the configured
-``cmf_create.role``. By default the role is ``ROLE_ADMIN``.
+``cmf_create.security.role``. By default the role is ``ROLE_ADMIN``.
 
 .. tip::
 
     In order to have security in place, you need to configure a
     "Symfony2 firewall". Read more in the `Symfony2 security chapter`_.
+    If you do not do that, create.js will not be loaded and editing
+    will be disabled.
+
+    If you do not want to edit on the production domain directly, e.g.
+    because of caching, you can provide a second domain where you have
+    security configured and do the editing there.
+
+You can completely disable security checks by setting the role parameter to
+boolean ``false``. Then you need to configure access permissions on the routes
+defined in ``Resources/routing/rest.xml`` and, if activated, in ``image.xml``.
+If you set the role to false but do not configure any security,
+**every visitor of your site will be able to edit the content**.
+You also will need custom logic to decide whether to include the create.js
+JavaScript files.
+
+You can also use a custom security check service by implementing
+``Symfony\Cmf\Bundle\CreateBundle\Security\AccessCheckerInterface``
+and setting this service in ``cmf_create.security.checker_service``.
 
 If you need more fine grained access control, look into the CreatePHP
 ``RdfMapperInterface`` ``isEditable`` method.  You can extend a mapper and
@@ -296,9 +314,12 @@ editable.
 Load create.js JavaScript and CSS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This bundle provides templates that load the required Javascript and CSS files
-based on Assetic. The Javascript loader also parametrizes the configuration
-for create.js and the chosen editor.
+This bundle provides a template that loads the required CSS files, as well as
+a controller action that loads the necessary JavaScript *if* the current user
+is allowed to edit according to
+:ref:`the security configuration <bundle_create_introduction_access_control>`.
+The JavaScript loader also parametrizes the configuration for create.js and
+WYSIWYG editor.
 
 Alternatively, you can of course use your own templates to include the assets
 needed by create.js.
@@ -328,33 +349,19 @@ higher, the method reads:
 
     .. code-block:: jinja
 
-        {% render(controller(
-            "cmf_create.jsloader.controller:includeJSFilesAction",
-            {'_locale': app.request.locale}
-        )) %}
+        {% render(controller("cmf_create.jsloader.controller:includeJSFilesAction")) %}
 
     .. code-block:: php
 
         <?php $view['actions']->render(
-            new ControllerReference('cmf_create.jsloader.controller:includeJSFilesAction', array(
-                '_locale' => $app->getRequest()->getLocale(),
-            ))
+            new ControllerReference('cmf_create.jsloader.controller:includeJSFilesAction')
         ) ?>
 
-For Symfony 2.1, the syntax is:
+.. tip::
 
-.. configuration-block::
-
-    .. code-block:: jinja
-
-        {% render "cmf_create.jsloader.controller:includeJSFilesAction" with {'_locale': app.request.locale} %}
-
-    .. code-block:: php
-
-        <?php
-        $view['actions']->render('cmf_create.jsloader.controller:includeJSFilesAction', array(
-            '_locale' => $app->getRequest()->getLocale(),
-        ) ?>
+    You can include this call unconditionally. The controller checks if the
+    current user is allowed to edit and only in that case includes the
+    JavaScript.
 
 .. note::
 
@@ -379,7 +386,7 @@ you need to adjust your templates to output that information.
     the remainder of this page to learn how to define the mappings.
 
 To render your data named ``cmfMainContent`` with a handle you call ``rdf``, use the
-``createphp`` twig tag as follows:
+``createphp`` Twig tag as follows:
 
 .. code-block:: html+jinja
 

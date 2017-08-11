@@ -37,7 +37,7 @@ Dependencies
 
 * :doc:`CmfRoutingBundle <routing/introduction>` is used to manage the routing;
 * :doc:`CmfRoutingAutoBundle <routing_auto/introduction>` is used to manage automatically generate routes;
-* :doc:`PHPCR-ODM <phpcr_odm>` is used to persist the bundles documents.
+* :doc:`PHPCR-ODM <phpcr_odm/introduction>` is used to persist the bundles documents.
 
 Configuration
 -------------
@@ -50,8 +50,8 @@ Example:
 
         # app/config.yml
         cmf_blog:
-            use_sonata_admin:     auto
-            blog_basepath:        /cms/blog
+            use_sonata_admin: auto
+            blog_basepath: /cms/blog
             class:
                 blog_admin: Symfony\Cmf\Bundle\BlogBundle\Admin\BlogAdmin # Optional
                 post_admin: Symfony\Cmf\Bundle\BlogBundle\Admin\PostAdmin # Optional

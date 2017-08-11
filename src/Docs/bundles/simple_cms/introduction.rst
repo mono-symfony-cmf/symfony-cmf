@@ -27,10 +27,32 @@ The `CMF website`_ is an application using the SimpleCmsBundle.
 Installation
 ------------
 
-You can install the bundle in 2 different ways:
+You can install this bundle `with composer`_ using the
+``symfony-cmf/simple-cms-bundle`` package on `Packagist`_.
 
-* Use the official Git repository (https://github.com/symfony-cmf/SimpleCmsBundle);
-* Install it via Composer (``symfony-cmf/simple-cms-bundle`` on `Packagist`_).
+This bundle integrates the routing, content and menu bundles of the CMF. All of
+them and their dependencies need to be instantiated in the kernel::
+
+    // app/AppKernel.php
+
+    // ...
+    class AppKernel extends Kernel
+    {
+        public function registerBundles()
+        {
+            $bundles = array(
+                // ...
+                new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+                new Symfony\Cmf\Bundle\MenuBundle\CmfMenuBundle(),
+                new Symfony\Cmf\Bundle\ContentBundle\CmfContentBundle(),
+                new Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle(),
+            );
+
+            // ...
+        }
+
+        // ...
+    }
 
 Sections
 --------
@@ -39,6 +61,7 @@ Sections
 * :doc:`rendering`
 * :doc:`extending_page_class`
 
-.. _`Symfony CMF Standard Edition`: https://github.com/symfony-cmf/symfony-cmf-standard
-.. _`CMF website`: https://github.com/symfony-cmf/symfony-cmf-website/
+.. _`Symfony CMF Standard Edition`: https://github.com/symfony-cmf/standard-edition
+.. _`CMF website`: https://github.com/symfony-cmf/cmf-website/
+.. _`with composer`: http://getcomposer.org
 .. _`Packagist`: https://packagist.org/packages/symfony-cmf/simple-cms-bundle

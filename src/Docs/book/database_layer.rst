@@ -14,6 +14,14 @@ In this chapter, you will learn how to work with the Doctrine PHPCR-ODM.
     Read more about choosing the correct storage layer in
     :doc:`../cookbook/database/choosing_storage_layer`
 
+.. note::
+
+    This chapter assumes you are using a Symfony setup with PHPCR-ODM already
+    set up, like the :doc:`CMF Standard Edition <installation>`  or the
+    :doc:`CMF sandbox <../cookbook/editions/cmf_sandbox>`. See
+    :doc:`../bundles/phpcr_odm/introduction` for how to set up PHPCR-ODM in
+    your applications.
+
 PHPCR: A Tree Structure
 -----------------------
 
@@ -34,10 +42,9 @@ Multilanguage support.
 .. sidebar:: PHPCR Implementations
 
     In order to let the Doctrine PHPCR-ODM communicate with the PHPCR, a PHPCR
-    implementation is needed. `Jackalope`_ is the reference PHPCR implementation,
-    which can work with `Apache Jackrabbit`_ (with the `jackalope-jackrabbit`_
-    package) and with Doctrine DBAL (providing support for postgres, sqlite
-    and mysql) with the `jackalope-doctrine-dbal`_ package.
+    implementation is needed. See
+    ":doc:`../cookbook/database/choosing_phpcr_implementation`" for an overview
+    of the available implementations.
 
 A Simple Example: A Task
 ------------------------
@@ -119,7 +126,7 @@ class via annotations:
             /**
              * @PHPCR\ParentDocument()
              */
-            protected $parent;
+            protected $parentDocument;
         }
 
     .. code-block:: yaml
@@ -132,7 +139,7 @@ class via annotations:
                 description: string
                 done: boolean
 
-            parent_document: parent
+            parent_document: parentDocument
 
     .. code-block:: xml
 
@@ -152,7 +159,7 @@ class via annotations:
                 <field name="description" type="string" />
                 <field name="done" type="boolean" />
 
-                <parent-document name="parent" />
+                <parent-document name="parentDocument" />
             </document>
 
         </doctrine-mapping>
@@ -168,21 +175,27 @@ After this, you have to create getters and setters for the properties.
     ``Nodename``.
 
     A Document must have an id property. This represents the full path (parent
-    + name) of the Document. This will be set by Doctrine by default and it is
-    not recommend to use the id to determine the location of a Document.
+    path + name) of the Document. This will be set by Doctrine by default and
+    it is not recommend to use the id to determine the location of a Document.
 
     For more information about identifier generation strategies, refer to the
     `doctrine documentation`_
+
+.. tip::
+
+    You may want to implement ``Doctrine\ODM\PHPCR\HierarchyInterface``
+    which makes it for example possible to leverage the
+    :ref:`Sonata Admin Child Extension <bundle-core-child-admin-extension>`.
 
 .. seealso::
 
     You can also check out Doctrine's `Basic Mapping Documentation`_ for all
     details about mapping information. If you use annotations, you'll need to
-    prepend all annotations with ``PHPCR\``, which is the name of the imported
-    namespace (e.g. ``PHPCR\Document(..)``), this is not shown in Doctrine's
-    documentation. You'll also need to include the use
-    ``use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;`` statement, which
-    imports the PHPCR annotations prefix.
+    prepend all annotations with ``@PHPCR\``, which is the name of the imported
+    namespace (e.g. ``@PHPCR\Document(..)``), this is not shown in Doctrine's
+    documentation. You'll also need to include the
+    ``use Doctrine\ODM\PHPCR\Mapping\Annotations as PHPCR;`` statement to
+    import the PHPCR annotations prefix.
 
 Persisting Documents to PHPCR
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -207,7 +220,7 @@ AcmeTaskBundle::
 
         $task = new Task();
         $task->setDescription('Finish CMF project');
-        $task->setParent($rootTask);
+        $task->setParentDocument($rootTask);
 
         $documentManager->persist($task);
 
@@ -281,8 +294,8 @@ The repository contains all sorts of helpful methods::
 .. tip::
 
     If you use the repository class, you can also create a custom repository
-    for a specific document. This helps Seperation of Concern when using more
-    complex queries. This is similair to how it's done in Doctrine ORM, for
+    for a specific document. This helps with "Seperation of Concern" when using more
+    complex queries. This is similar to how it's done in Doctrine ORM, for
     more information read "`Custom Repository Classes`_" in the core
     documentation.
 
@@ -331,14 +344,14 @@ Doctrine, it's already managed.
 Deleting an Object
 ~~~~~~~~~~~~~~~~~~
 
-Deleting an object is very similar, but requires a call to the ``remove()`` method
-of the document manager after you fetched the document from PHPCR::
+Deleting an object is very similar, but requires a call to the ``remove()``
+method of the document manager after you fetched the document from PHPCR::
 
     $documentManager->remove($task);
     $documentManager->flush();
 
-As you might expect, the ``remove()`` method notifies Doctrine that you'd like to
-remove the given document from PHPCR. The actual delete operation
+As you might expect, the ``remove()`` method notifies Doctrine that you'd like
+to remove the given document from PHPCR. The actual delete operation
 however, is not actually executed until the ``flush()`` method is called.
 
 Summary
@@ -351,19 +364,16 @@ mapping metadata information to map an object's data to a particular database
 table.
 
 And even though Doctrine revolves around a simple concept, it's incredibly
-powerful, allowing you to create complex queries and subscribe to events that
-allow you to take different actions as objects go through their persistence
-lifecycle.
+powerful, allowing you to `create complex queries`_ and
+:doc:`subscribe to events <../bundles/phpcr_odm/events>` that allow you to
+take different actions as objects go through their persistence lifecycle.
 
 .. _`Doctrine PHPCR-ODM`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/index.html
 .. _`PHP Content Repository`: http://phpcr.github.io/
 .. _`JSR-283 specification`: http://jcp.org/en/jsr/detail?id=283
 .. _`Doctrine ORM`: http://symfony.com/doc/current/book/doctrine.html
-.. _`Jackalope`: http://jackalope.github.io/
-.. _`Apache Jackrabbit`: http://jackrabbit.apache.org/
-.. _`jackalope-jackrabbit`: https://github.com/jackalope/jackalope-jackrabbit
-.. _`jackalope-doctrine-dbal`: https://github.com/jackalope/jackalope-doctrine-dbal
 .. _`doctrine documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/basic-mapping.html#basicmapping-identifier-generation-strategies
 .. _`Basic Mapping Documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/annotations-reference.html
 .. _`the QueryBuilder documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/query-builder.html
+.. _`create complex queries`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/query-builder.html
 .. _`Custom Repository Classes`: http://symfony.com/doc/current/book/doctrine.html#custom-repository-classes

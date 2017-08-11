@@ -39,7 +39,7 @@ storage medium.
     can use one of several available data storage mechanisms without having to
     rewrite your code. For more information on the different available
     mechanisms and how to install and configure them, refer to
-    :doc:`../cookbook/installing_configuring_doctrine_phpcr_odm`
+    :doc:`../bundles/phpcr_odm/introduction`.
 
 Installation
 ------------
@@ -60,13 +60,13 @@ and then get the Symfony CMF code with it (this may take a while):
 
 .. code-block:: bash
 
-    $ php composer.phar create-project symfony-cmf/standard-edition <path-to-install>
+    $ php composer.phar create-project symfony-cmf/standard-edition <path-to-install> ~1.1
     $ cd <path-to-install>
 
 .. note::
 
-    The path ``<path-to-install>`` should either inside your web server doc
-    root or configure a virtual host for ``<path-to-install>``.
+    The path ``<path-to-install>`` should either be inside your web server doc
+    root or you need to configure a virtual host for ``<path-to-install>``.
 
 This will clone the Standard Edition and install all the dependencies and run
 some initial commands. These commands require write permissions to the
@@ -86,10 +86,10 @@ from github:
 
 .. code-block:: bash
 
-    $ git clone git://github.com/symfony-cmf/symfony-cmf-standard.git <path-to-install>
+    $ git clone git://github.com/symfony-cmf/standard-edition.git <path-to-install>
     $ cd <path-to-install>
 
-You still need Composer to get the dependencies. To install or update the
+You still need Composer to get the dependencies. To get the correct
 dependencies, use the ``install`` command:
 
 .. code-block:: bash
@@ -159,15 +159,17 @@ It assumes you have already installed Symfony CMF SE and have carefully read
 AcmeMainBundle and SimpleCmsBundle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Symfony CMF SE comes with a default AcmeMainBundle to help you get started,
-similar to the AcmeDemoBundle provided by Symfony2. This gives you some demo
+Symfony CMF SE comes with a default AcmeDemoBundle to help you get started,
+similar to the AcmeDemoBundle provided by Symfony2 SE. This gives you some demo
 pages viewable in your browser.
 
 .. sidebar:: Where are the Controllers?
 
-    AcmeMainBundle doesn't include controllers or configuration files as you
+    AcmeDemoBundle doesn't include controllers or configuration files as you
     might expect. It contains little more than a Twig file and `Fixtures`_
-    data that was loaded into your database during installation.
+    data that was loaded into your database during installation. The biggest
+    chunk of code is the ``UnitBlock`` that provides a document for an example
+    block.
 
     The controller logic is actually provided by the relevant CMF bundles,
     as described below.
@@ -211,8 +213,8 @@ Adding new pages
 ~~~~~~~~~~~~~~~~
 
 Symfony CMF SE does not provide any admin tools to create new pages. If you
-are interested in adding an admin UI have a look at
-:doc:`../cookbook/creating_cms_using_cmf_and_sonata`. However if all you want
+are interested in adding an admin UI one solution can be found in
+:doc:`../cookbook/creating_a_cms/sonata-admin`. However, if all you want
 is a simple way to add new pages that you can then edit via the inline
 editing, then you can use the SimpleCmsBundle ``page`` migrator. The Symfony
 CMF SE ships with an example YAML file stored in
@@ -221,7 +223,7 @@ into the PHPCR database by calling:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:migrator page --identifier=/cms/simple/test
+    $ php app/console doctrine:phpcr:migrator:migrate page --identifier=/cms/simple/test
 
 Note that the above identifier is mapped to
 ``app/Resources/data/pages/test.yml`` by stripping off the ``basepath``
@@ -233,7 +235,7 @@ and then run the following command:
 
 .. code-block:: bash
 
-    $ php app/console doctrine:phpcr:migrator page --identifier=/cms/simple/test/foo
+    $ php app/console doctrine:phpcr:migrator:migrate page --identifier=/cms/simple/test/foo
 
 .. _`cmf.liip.ch`: http://cmf.liip.ch
 .. _`Requirements for running Symfony2`: http://symfony.com/doc/current/reference/requirements.html
