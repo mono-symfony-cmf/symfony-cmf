@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
@@ -20,7 +19,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RouteProvider;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
-class RouteRepositoryTest extends BaseTestCase
+class RouteProviderTest extends BaseTestCase
 {
     const ROUTE_ROOT = '/test/routing';
 
@@ -65,7 +64,7 @@ class RouteRepositoryTest extends BaseTestCase
 
         $routes = $this->repository->getRouteCollectionForRequest(Request::create('/testroute/noroute/child'));
         $this->assertCount(3, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
+        $this->assertContainsOnlyInstancesOf('Symfony\Cmf\Component\Routing\RouteObjectInterface', $routes);
 
         $routes = $routes->all();
         list($key, $child) = each($routes);
@@ -99,11 +98,17 @@ class RouteRepositoryTest extends BaseTestCase
         $this->assertEquals(null, $root->getDefault('_format'));
     }
 
+    /**
+     * The root route will always be found.
+     */
     public function testGetRouteCollectionForRequestNophpcrUrl()
     {
         $collection = $this->repository->getRouteCollectionForRequest(Request::create(':///'));
-        $this->assertInstanceOf('Symfony\\Component\\Routing\\RouteCollection', $collection);
-        $this->assertCount(0, $collection);
+        $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', $collection);
+        $this->assertCount(1, $collection);
+        $routes = $collection->all();
+        list ($key, $route) = each($routes);
+        $this->assertEquals(self::ROUTE_ROOT, $key);
     }
 
     public function testGetRoutesByNames()
@@ -113,17 +118,12 @@ class RouteRepositoryTest extends BaseTestCase
         $routeNames = array(
             self::ROUTE_ROOT . '/testroute/noroute/child',
             self::ROUTE_ROOT . '/testroute/noroute',
+            self::ROUTE_ROOT . '/testroute/', // trailing slash is invalid for phpcr
             self::ROUTE_ROOT . '/testroute'
         );
 
         $routes = $this->repository->getRoutesByNames($routeNames);
         $this->assertCount(2, $routes);
-        $this->assertContainsOnlyInstancesOf('Symfony\\Cmf\\Component\\Routing\\RouteObjectInterface', $routes);
-    }
-
-
-    public function testSetPrefix()
-    {
-        $this->repository->setPrefix(self::ROUTE_ROOT);
+        $this->assertContainsOnlyInstancesOf('Symfony\Cmf\Component\Routing\RouteObjectInterface', $routes);
     }
 }

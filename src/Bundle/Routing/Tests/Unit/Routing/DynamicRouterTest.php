@@ -3,18 +3,16 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\Routing;
 
 use Symfony\Cmf\Component\Routing\Event\Events;
 use Symfony\Cmf\Component\Routing\Event\RouterMatchEvent;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -49,11 +47,10 @@ class DynamicRouterTest extends CmfUnitTestCase
         $this->generator = $this->buildMock('Symfony\\Component\\Routing\\Generator\\UrlGeneratorInterface');
 
         $this->request = Request::create('/foo');
-        $this->container = $this->buildMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
         $this->context = $this->buildMock('Symfony\\Component\\Routing\\RequestContext');
         $this->eventDispatcher = $this->buildMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $this->router = new DynamicRouter($this->context, $this->matcher, $this->generator, '', $this->eventDispatcher);
-        $this->router->setContainer($this->container);
+        $this->router->setRequest($this->request);
     }
 
     private function assertRequestAttributes($request)
@@ -66,12 +63,6 @@ class DynamicRouterTest extends CmfUnitTestCase
 
     public function testMatch()
     {
-        $this->container->expects($this->once())
-            ->method('get')
-            ->with('request')
-            ->will($this->returnValue($this->request))
-        ;
-
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')
             ->with(Events::PRE_DYNAMIC_MATCH, $this->equalTo(new RouterMatchEvent()))
@@ -101,11 +92,7 @@ class DynamicRouterTest extends CmfUnitTestCase
      */
     public function testMatchNoRequest()
     {
-        $this->container->expects($this->once())
-            ->method('get')
-            ->with('request')
-            ->will($this->returnValue(null))
-        ;
+        $this->router->setRequest(null);
 
         $this->eventDispatcher->expects($this->once())
             ->method('dispatch')

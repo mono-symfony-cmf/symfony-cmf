@@ -3,33 +3,27 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\DataFixtures\PHPCR;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Resources\DataFixtures\Phpcr;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use PHPCR\Util\NodeHelper;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\RedirectRoute;
 use Doctrine\ODM\PHPCR\Document\Generic;
 
-class LoadRouteData implements FixtureInterface, DependentFixtureInterface
+class LoadRouteData implements FixtureInterface
 {
-    public function getDependencies()
-    {
-        return array(
-            'Symfony\Cmf\Component\Testing\DataFixtures\PHPCR\LoadBaseData',
-        );
-    }
-
     public function load(ObjectManager $manager)
     {
+        NodeHelper::createPath($manager->getPhpcrSession(), '/test');
+
         $root = $manager->find(null, '/test');
         $parent = new Generic;
         $parent->setParent($root);
@@ -37,12 +31,12 @@ class LoadRouteData implements FixtureInterface, DependentFixtureInterface
         $manager->persist($parent);
 
         $route = new Route;
-        $route->setParent($parent);
+        $route->setParentDocument($parent);
         $route->setName('route-1');
         $manager->persist($route);
 
         $redirectRoute = new RedirectRoute;
-        $redirectRoute->setParent($parent);
+        $redirectRoute->setParentDocument($parent);
         $redirectRoute->setName('redirect-route-1');
         $manager->persist($redirectRoute);
 

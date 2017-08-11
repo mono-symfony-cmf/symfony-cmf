@@ -3,14 +3,13 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\CmfRoutingExtension;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\Configuration;
@@ -39,6 +38,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'replace_symfony_router' => true,
             ),
             'dynamic' => array(
+                'route_collection_limit' => 0,
                 'generic_controller' => 'acme_main.controller:mainAction',
                 'controllers_by_type' => array(
                     'editable' => 'acme_main.some_controller:editableAction',
@@ -52,7 +52,10 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'persistence' => array(
                     'phpcr' => array(
                         'enabled' => true,
-                        'route_basepath' => '/cms/routes',
+                        'route_basepaths' => array(
+                            '/cms/routes',
+                            '/simple',
+                        ),
                         'content_basepath' => '/cms/content',
                         'manager_name' => null,
                         'use_sonata_admin' => false,
@@ -67,6 +70,9 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'uri_filter_regexp' => '',
                 'route_filters_by_id' => array(),
                 'locales' => array('en', 'fr'),
+                'limit_candidates' => 20,
+                'auto_locale_pattern' => true,
+                'match_implicit_locale' => true,
             ),
         );
 

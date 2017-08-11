@@ -3,14 +3,13 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\DependencyInjection;
+namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Cmf\Bundle\RoutingBundle\DependencyInjection\CmfRoutingExtension;
@@ -44,7 +43,7 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('cmf_routing.replace_symfony_router', true);
 
-        $this->assertContainerBuilderHasService('cmf_routing.router', '%cmf_routing.chain_router.class%');
+        $this->assertContainerBuilderHasService('cmf_routing.router', 'Symfony\Cmf\Component\Routing\ChainRouter');
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall('cmf_routing.router', 'add', array(
             new Reference('router.default'),
             100,
@@ -114,5 +113,56 @@ class CmfRoutingExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('cmf_routing.controllers_by_type', array(
             'Acme\Foo' => 'acme_main.controller:indexAction',
         ));
+    }
+
+    public function testLoadBasePath()
+    {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array(
+                'CmfRoutingBundle' => true,
+                'SonataDoctrinePHPCRAdminBundle' => true,
+            )
+        );
+
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'route_basepath' => '/cms/routes',
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/routes');
+    }
+
+    public function testLoadBasePaths()
+    {
+        $this->container->setParameter(
+            'kernel.bundles',
+            array(
+                'CmfRoutingBundle' => true,
+                'SonataDoctrinePHPCRAdminBundle' => true,
+            )
+        );
+
+        $this->load(array(
+            'dynamic' => array(
+                'enabled' => true,
+                'persistence' => array(
+                    'phpcr' => array(
+                        'enabled' => true,
+                        'route_basepaths' => array('/cms/routes', '/cms/test'),
+                    ),
+                ),
+            ),
+        ));
+
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.admin_basepath', '/cms/routes');
+        $this->assertContainerBuilderHasParameter('cmf_routing.dynamic.persistence.phpcr.route_basepaths', array('/cms/routes', '/cms/test'));
     }
 }

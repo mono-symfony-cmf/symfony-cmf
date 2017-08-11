@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Model;
 
@@ -129,7 +128,7 @@ class RedirectRoute extends Route implements RedirectRouteInterface
      * and target route document.
      *
      * @param array $parameters a hashmap of key to value mapping for route
-     *      parameters
+     *                          parameters
      */
     public function setParameters(array $parameters)
     {

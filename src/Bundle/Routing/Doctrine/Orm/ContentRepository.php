@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 
@@ -16,7 +15,12 @@ use Symfony\Cmf\Component\Routing\ContentRepositoryInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
 /**
- * Abstract content repository for ORM
+ * Abstract content repository for ORM.
+ *
+ * This repository follows the pattern of FQN:id. That is, the full model class
+ * name, then a colon, then the id. For example "Acme\Content:12".
+ *
+ * This will only work with single column ids.
  *
  * @author teito
  */
@@ -37,9 +41,7 @@ class ContentRepository extends DoctrineProvider implements ContentRepositoryInt
     /**
      * {@inheritDoc}
      *
-     * @param string $id The ID contains both model name and id, seperated by a colon.
-     *     The model name must not contain a colon. For instance, "Acme\Content:12"
-     *     tries to find the Acme\Content object where id = 12
+     * @param string $id The ID contains both model name and id, separated by a colon.
      */
     public function findById($id)
     {

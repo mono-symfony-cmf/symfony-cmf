@@ -3,19 +3,15 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -30,7 +26,7 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
  * @author Lukas Smith
  * @author Nacho Martìn
  */
-class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
+class DynamicRouter extends BaseDynamicRouter
 {
     /**
      * key for the request attribute that contains the route document
@@ -50,22 +46,9 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
     const CONTENT_TEMPLATE = 'contentTemplate';
 
     /**
-     * To get the request from, as its not available immediately
-     *
-     * @var ContainerInterface
+     * @var Request
      */
-    protected $container;
-
-    /**
-     * TODO: use synchronized service once we up the minimum requirement to symfony 2.3
-     * https://github.com/symfony-cmf/RoutingBundle/issues/177
-     *
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
+    protected $request;
 
     /**
      * Put content and template name into the request attributes instead of the
@@ -124,12 +107,24 @@ class DynamicRouter extends BaseDynamicRouter implements ContainerAwareInterface
         return $defaults;
     }
 
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * @return Request
+     * @throws \Symfony\Component\Routing\Exception\ResourceNotFoundException
+     */
     public function getRequest()
     {
-        if (!$request = $this->container->get('request')) {
+        if (null === $this->request) {
             throw new ResourceNotFoundException('Request object not available from container');
         }
 
-        return $request;
+        return $this->request;
     }
 }

@@ -3,15 +3,16 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\PHPCR\HierarchyInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\RedirectRoute as RedirectRouteModel;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 
@@ -21,7 +22,7 @@ use Symfony\Cmf\Component\Routing\RouteObjectInterface;
  * This extends the RedirectRoute Model. We need to re-implement everything
  * that the PHPCR Route document adds.
  */
-class RedirectRoute extends RedirectRouteModel implements PrefixInterface
+class RedirectRoute extends RedirectRouteModel implements PrefixInterface, HierarchyInterface
 {
     /**
      * parent document
@@ -45,13 +46,6 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
     protected $children;
 
     /**
-     * if to add "/" to the pattern
-     *
-     * @var Boolean
-     */
-    protected $addTrailingSlash;
-
-    /**
      * The part of the PHPCR path that does not belong to the url
      *
      * This field is not persisted in storage.
@@ -61,26 +55,21 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
     protected $idPrefix;
 
     /**
-     * Overwrite to be able to create route without pattern
+     * Overwrite to be able to create route without pattern.
      *
-     * @param bool $addFormatPattern if to add ".{_format}" to the route pattern
-     *                                  also implicitly sets a default/require on "_format" to "html"
-     * @param bool $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
+     * Additional options:
+     *
+     * * add_trailing_slash: When set, a trailing slash is appended to the route
      */
-    public function __construct($addFormatPattern = false, $addTrailingSlash = false)
+    public function __construct(array $options = array())
     {
-        parent::__construct($addFormatPattern);
+        parent::__construct($options);
 
         $this->children = array();
-        $this->addTrailingSlash = $addTrailingSlash;
     }
 
     /**
-     * Move the route by setting a parent.
-     *
-     * Note that this will change the URL this route matches.
-     *
-     * @param object $parent the new parent document
+     * @deprecated Use setParentDocument instead.
      */
     public function setParent($parent)
     {
@@ -89,7 +78,34 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
         return $this;
     }
 
+    /**
+     * @deprecated Use getParentDocument instead.
+     */
     public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Move the route by setting a parent.
+     *
+     * Note that this will change the URL this route matches.
+     *
+     * @param object $parent the new parent document
+     *
+     * @return $this
+     */
+    public function setParentDocument($parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParentDocument()
     {
         return $this->parent;
     }
@@ -206,7 +222,7 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->addTrailingSlash && '/' !== $pattern[strlen($pattern)-1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern)-1]) {
             $pattern .= '/';
         };
 
@@ -250,12 +266,10 @@ class RedirectRoute extends RedirectRouteModel implements PrefixInterface
     }
 
     /**
-     * Get all children of this route including non-routes.
-     *
-     * @return array
+     * {@inheritDoc}
      */
-    public function getChildren()
+    protected function isBooleanOption($name)
     {
-        return $this->children;
+        return $name === 'add_trailing_slash' || parent::isBooleanOption($name);
     }
 }

@@ -1,8 +1,54 @@
 Changelog
 =========
 
-* **2013-11-28**: [BC BREAK] the alias attribute of the <template-by-class> is
-  renamed to class in the bundle configuration.
+1.2.0
+-----
+
+Release 1.2.0
+
+1.2.0-RC2
+---------
+
+* **2014-04-23**: changed ``cmf_routing.dynamic.route_collection_limit`` default to ``0``
+
+* **2014-04-15**: Removed the unused ContentAwareGenerator class from the
+  bundle. Since 1.1 the one from the routing component was used.
+
+* **2014-04-14**: DynamicRouter no longer implements the ContainerAwareInterface
+* **2014-04-11**: drop Symfony 2.2 compatibility
+
+1.2.0-RC1
+---------
+
+* **2014-03-29**: [Multilang] Added some options to support locale matching
+  without separate routes per locale. See the new configuration options
+  `match_implicit_locale` and `auto_locale_pattern`.
+
+* **2014-03-29**: [PHPCR] The route provider can now load Routes from more than
+  path in PHPCR. The configuration option `route_basepath` is renamed to
+  `route_basepaths` and accepts a list of base paths. See the changelog of
+  the SimpleCmsBundle as the main impact is on that side.
+
+* **2014-03-29**: Route document and entity constructor changed. The options
+  are no longer mapped separately but as route options. See UPGRADE-1.2.md for
+  instructions.
+
+* **2014-03-26**: [ORM] Applied the cleanup for the PHPCR provider to the ORM
+  provider now: If the route matched a pattern with a format extension, the
+  format extension is no longer set as route a default.
+
+* **2014-03-25**: [PHPCR] setParent() and getParent() are now deprecated.
+  Use setParentDocument() and getParentDocument() instead.
+  Moreover, you should now enable the ChildExtension from the CoreBundle.
+
+* **2014-03-23**: [PHPCR] urls can now be generated from the route
+  uuid as route name as well, in addition to the repository path.
+
+* **2013-12-23**: add support for ChainRouter::getRouteCollection(), added new
+  config setting ``cmf_routing.dynamic.route_collection_limit``
+
+* **2013-11-28**: [BC BREAK for xml configuration] the alias attribute of the
+  <template-by-class> is renamed to class in the bundle configuration.
 
 1.1.0
 -----

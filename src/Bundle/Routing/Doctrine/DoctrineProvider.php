@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine;
 
@@ -45,7 +44,15 @@ abstract class DoctrineProvider
     protected $className;
 
     /**
+     * Limit to apply when calling getRoutesByNames() with null
+     *
+     * @var integer|null
+     */
+    protected $routeCollectionLimit;
+
+    /**
      * @param ManagerRegistry $managerRegistry
+     * @param string          $className
      */
     public function __construct(ManagerRegistry $managerRegistry, $className = null)
     {
@@ -62,6 +69,18 @@ abstract class DoctrineProvider
     public function setManagerName($managerName)
     {
         $this->managerName = $managerName;
+    }
+
+    /**
+     * Set the limit to apply when calling getAllRoutes().
+     *
+     * Setting the limit to null means no limit is applied.
+     *
+     * @param integer|null $routeCollectionLimit
+     */
+    public function setRouteCollectionLimit($routeCollectionLimit = null)
+    {
+        $this->routeCollectionLimit = $routeCollectionLimit;
     }
 
     /**

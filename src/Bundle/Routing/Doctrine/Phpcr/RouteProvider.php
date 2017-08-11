@@ -3,31 +3,34 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
 use PHPCR\RepositoryException;
+use PHPCR\Util\UUIDHelper;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\PHPCR\DocumentManager;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Route as SymfonyRoute;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
+use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
 /**
- * Provide routes loaded from PHPCR-ODM
+ * Loads routes from Doctrine PHPCR-ODM.
  *
- * This is <strong>NOT</strong> not a doctrine repository but just the route
+ * This is <strong>NOT</strong> a doctrine repository but just the route
  * provider for the NestedMatcher. (you could of course implement this
  * interface in a repository class, if you need that)
  *
@@ -36,18 +39,24 @@ use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 class RouteProvider extends DoctrineProvider implements RouteProviderInterface
 {
     /**
-     * The prefix to add to the url to create the repository path
-     *
-     * @var string
+     * @var CandidatesInterface
      */
-    protected $idPrefix = '';
+    private $candidatesStrategy;
 
     /**
-     * @param $prefix
+     * @var LoggerInterface
      */
-    public function setPrefix($prefix)
-    {
-        $this->idPrefix = $prefix;
+    private $logger;
+
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        CandidatesInterface $candidatesStrategy,
+        $className = null,
+        LoggerInterface $logger = null
+    ) {
+        parent::__construct($managerRegistry, $className);
+        $this->candidatesStrategy = $candidatesStrategy;
+        $this->logger = $logger;
     }
 
     /**
@@ -60,8 +69,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
      */
     public function getRouteCollectionForRequest(Request $request)
     {
-        $url = $request->getPathInfo();
-        $candidates = $this->getCandidates($url);
+        $candidates = $this->candidatesStrategy->getCandidates($request);
 
         $collection = new RouteCollection();
 
@@ -70,7 +78,9 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
         }
 
         try {
-            $routes = $this->getObjectManager()->findMany($this->className, $candidates);
+            /** @var $dm DocumentManager */
+            $dm = $this->getObjectManager();
+            $routes = $dm->findMany($this->className, $candidates);
             // filter for valid route objects
             foreach ($routes as $key => $route) {
                 if ($route instanceof SymfonyRoute) {
@@ -78,85 +88,115 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 }
             }
         } catch (RepositoryException $e) {
-            // TODO: how to determine whether this is a relevant exception or not?
-            // https://github.com/symfony-cmf/RoutingBundle/issues/143
-            // for example, getting /my//test (note the double /) is just an invalid path
-            // and means another router might handle this.
-            // but if the PHPCR backend is down for example, we want to alert the user
+            if ($this->logger) {
+                $this->logger->critical($e);
+            }
         }
 
         return $collection;
     }
 
     /**
-     * @param $url
-     *
-     * @return array
-     */
-    protected function getCandidates($url)
-    {
-        $candidates = array();
-        if ('/' !== $url) {
-            if (preg_match('/(.+)\.[a-z]+$/i', $url, $matches)) {
-                $candidates[] = $this->idPrefix . $url;
-                $url = $matches[1];
-            }
-
-            $part = $url;
-            while (false !== ($pos = strrpos($part, '/'))) {
-                $candidates[] = $this->idPrefix . $part;
-                $part = substr($url, 0, $pos);
-            }
-        }
-
-        $candidates[] = $this->idPrefix;
-
-        return $candidates;
-    }
-
-    /**
      * {@inheritDoc}
+     *
+     * @param string $name The absolute path or uuid of the Route document.
      */
-    public function getRouteByName($name, $parameters = array())
+    public function getRouteByName($name)
     {
-        // $name is the route document path
-        if ('' === $this->idPrefix || 0 === strpos($name, $this->idPrefix)) {
+        if (UUIDHelper::isUUID($name)) {
+            $route = $this->getObjectManager()->find($this->className, $name);
+            if ($route
+                && !$this->candidatesStrategy->isCandidate($this->getObjectManager()->getUnitOfWork()->getDocumentId($route))
+            ) {
+                throw new RouteNotFoundException(
+                    sprintf(
+                        'Route with uuid "%s" and id "%s" is not handled by this route provider',
+                        $name,
+                        $this->getObjectManager()->getUnitOfWork()->getDocumentId($route)
+                    )
+                );
+            }
+        } elseif (!$this->candidatesStrategy->isCandidate($name)) {
+            throw new RouteNotFoundException(sprintf('Route name "%s" is not handled by this route provider', $name));
+        } else {
             $route = $this->getObjectManager()->find($this->className, $name);
         }
 
         if (empty($route)) {
-            throw new RouteNotFoundException(sprintf('No route found for path "%s"', $name));
+            throw new RouteNotFoundException(sprintf('No route found at "%s"', $name));
         }
 
         if (!$route instanceof SymfonyRoute) {
-            throw new RouteNotFoundException(sprintf('Document at path "%s" is no route', $name));
+            throw new RouteNotFoundException(sprintf('Document at "%s" is no route', $name));
         }
 
         return $route;
     }
 
     /**
-     * {@inheritDoc}
+     * Get all the routes in the repository that are under one of the
+     * configured prefixes. This respects the limit.
+     *
+     * @return array
      */
-    public function getRoutesByNames($names, $parameters = array())
+    private function getAllRoutes()
     {
-        if ('' !== $this->idPrefix) {
-            foreach ($names as $key => $name) {
-                if (0 !== strpos($name, $this->idPrefix)) {
-                    unset($names[$key]);
-                }
-            }
+        if (0 === $this->routeCollectionLimit) {
+            return array();
         }
 
-        $collection = $this->getObjectManager()->findMany($this->className, $names);
-        foreach ($collection as $key => $document) {
-            if (!$document instanceof SymfonyRoute) {
-                // we follow the logic of DocumentManager::findMany and do not throw an exception
-                unset($collection[$key]);
-            }
+        /** @var $dm DocumentManager */
+        $dm = $this->getObjectManager();
+        $qb = $dm->createQueryBuilder();
+
+        $qb->from('d')->document('Symfony\Component\Routing\Route', 'd');
+
+        $this->candidatesStrategy->restrictQuery($qb);
+
+        $query = $qb->getQuery();
+        if ($this->routeCollectionLimit) {
+            $query->setMaxResults($this->routeCollectionLimit);
         }
 
-        return $collection;
+        return $query->getResult();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoutesByNames($names = null)
+    {
+        if (null === $names) {
+            return $this->getAllRoutes();
+        }
+
+        $candidates = array();
+        foreach ($names as $key => $name) {
+            if (UUIDHelper::isUUID($name) || $this->candidatesStrategy->isCandidate($name)) {
+                $candidates[$key] = $name;
+            }
+        }
+
+        if (!$candidates) {
+            return array();
+        }
+
+        /** @var $dm DocumentManager */
+        $dm = $this->getObjectManager();
+        $documents = $dm->findMany($this->className, $candidates);
+        foreach ($documents as $key => $document) {
+            if (UUIDHelper::isUUID($key)
+                && !$this->candidatesStrategy->isCandidate($this->getObjectManager()->getUnitOfWork()->getDocumentId($document))
+            ) {
+                // this uuid pointed out of our path. can only determine after fetching the document
+                unset($documents[$key]);
+            }
+            if (!$document instanceof SymfonyRoute) {
+                // we follow the logic of DocumentManager::findMany and do not throw an exception
+                unset($documents[$key]);
+            }
+        }
+
+        return $documents;
+    }
 }

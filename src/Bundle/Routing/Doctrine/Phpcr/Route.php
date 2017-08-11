@@ -3,17 +3,19 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\PHPCR\HierarchyInterface;
 use Doctrine\ODM\PHPCR\Document\Generic;
+use Doctrine\ODM\PHPCR\Exception\InvalidArgumentException;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
 
@@ -23,7 +25,7 @@ use Symfony\Cmf\Bundle\RoutingBundle\Model\Route as RouteModel;
  *
  * @author david.buchmann@liip.ch
  */
-class Route extends RouteModel implements PrefixInterface
+class Route extends RouteModel implements PrefixInterface, HierarchyInterface
 {
     /**
      * parent document
@@ -47,13 +49,6 @@ class Route extends RouteModel implements PrefixInterface
     protected $children;
 
     /**
-     * if to add "/" to the pattern
-     *
-     * @var Boolean
-     */
-    protected $addTrailingSlash;
-
-    /**
      * The part of the PHPCR path that does not belong to the url
      *
      * This field is not persisted in storage.
@@ -63,36 +58,38 @@ class Route extends RouteModel implements PrefixInterface
     protected $idPrefix;
 
     /**
-     * Overwrite to be able to create route without pattern
+     * PHPCR id can not end on '/', so we need an additional option for a
+     * trailing slash.
      *
-     * @param Boolean $addFormatPattern if to add ".{_format}" to the route pattern
-     *                                  also implicitly sets a default/require on "_format" to "html"
-     * @param Boolean $addTrailingSlash whether to add a trailing slash to the route, defaults to not add one
+     * Additional supported option is:
+     *
+     * * add_trailing_slash: When set, a trailing slash is appended to the route
      */
-    public function __construct($addFormatPattern = false, $addTrailingSlash = false)
+    public function __construct(array $options= array())
     {
-        parent::__construct($addFormatPattern);
+        parent::__construct($options);
 
-        $this->children = array();
-        $this->addTrailingSlash = $addTrailingSlash;
-    }
-
-    public function getAddTrailingSlash()
-    {
-        return $this->addTrailingSlash;
-    }
-
-    public function setAddTrailingSlash($addTrailingSlash)
-    {
-        $this->addTrailingSlash = $addTrailingSlash;
+        $this->children = new ArrayCollection();
     }
 
     /**
-     * Move the route by setting a parent.
-     *
-     * Note that this will change the URL this route matches.
-     *
-     * @param object $parent the new parent document
+     * @deprecated use getOption('add_trailing_slash') instead
+     */
+    public function getAddTrailingSlash()
+    {
+        return $this->getOption('add_trailing_slash');
+    }
+
+    /**
+     * @deprecated use setOption('add_trailing_slash', $add) instead
+     */
+    public function setAddTrailingSlash($addTrailingSlash)
+    {
+        $this->setOption('add_trailing_slash', $addTrailingSlash);
+    }
+
+    /**
+     * @deprecated Use setParentDocument instead.
      */
     public function setParent($parent)
     {
@@ -102,12 +99,38 @@ class Route extends RouteModel implements PrefixInterface
     }
 
     /**
+     * @deprecated Use getParentDocument instead.
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Move the route by setting a parent.
+     *
+     * Note that this will change the URL this route matches.
+     *
+     * @param object $parent the new parent document
+     */
+    public function setParentDocument($parent)
+    {
+        if (!is_object($parent)) {
+            throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+        }
+
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
      * The parent document, which might be another route or some other
      * document.
      *
-     * @return Generic object
+     * @return object The parent document
      */
-    public function getParent()
+    public function getParentDocument()
     {
         return $this->parent;
     }
@@ -118,6 +141,8 @@ class Route extends RouteModel implements PrefixInterface
      * Note that this will change the URL this route matches.
      *
      * @param string $name the new name
+     *
+     * @return self
      */
     public function setName($name)
     {
@@ -138,6 +163,10 @@ class Route extends RouteModel implements PrefixInterface
      */
     public function setPosition($parent, $name)
     {
+        if (!is_object($parent)) {
+            throw new InvalidArgumentException("Parent must be an object ".gettype ($parent)." given.");
+        }
+
         $this->parent = $parent;
         $this->name = $name;
 
@@ -189,7 +218,10 @@ class Route extends RouteModel implements PrefixInterface
      */
     public function getStaticPrefix()
     {
-        return $this->generateStaticPrefix($this->getId(), $this->idPrefix);
+        $path = $this->getId();
+        $prefix = $this->getPrefix();
+
+        return $this->generateStaticPrefix($path, $prefix);
     }
 
     /**
@@ -220,11 +252,13 @@ class Route extends RouteModel implements PrefixInterface
 
     /**
      * {@inheritDoc}
+     *
+     * Handle the trailing slash option.
      */
     public function getPath()
     {
         $pattern = parent::getPath();
-        if ($this->addTrailingSlash && '/' !== $pattern[strlen($pattern)-1]) {
+        if ($this->getOption('add_trailing_slash') && '/' !== $pattern[strlen($pattern)-1]) {
             $pattern .= '/';
         };
 
@@ -269,10 +303,18 @@ class Route extends RouteModel implements PrefixInterface
     /**
      * Get all children of this route including non-routes.
      *
-     * @return array
+     * @return Collection
      */
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function isBooleanOption($name)
+    {
+        return $name === 'add_trailing_slash' || parent::isBooleanOption($name);
     }
 }
