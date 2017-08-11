@@ -1,0 +1,37 @@
+{
+    "name": "symfony-cmf/routing-auto",
+    "description": "Component for automatically creating and managing routes for persisted objects",
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "symfony-cmf/core-bundle": "~1.1",
+        "symfony-cmf/routing": "~1.2",
+        "symfony/options-resolver": "~2.2",
+        "symfony/config": "~2.2",
+        "jms/metadata": "1.5.*"
+    },
+    "require-dev": {
+        "symfony/yaml": "~2.1",
+        "phpspec/prophecy": "~1.1.2"
+    },
+    "suggest": {
+        "symfony/yaml": "To be able to load Yaml configuration files",
+        "symfony-cmf/routing-auto-bundle": "To integrate this lirbary with Symfony and the CMF"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Cmf\\Component\\RoutingAuto\\": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
+
