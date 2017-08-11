@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\SeoBundle\Tests\WebTest\Admin;
 
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
-use Symfony\Component\HttpKernel\Client;
 
 /**
  * This test will cover all behavior with the provides admin extension.
@@ -67,5 +66,19 @@ class SeoContentAdminExtensionTest extends BaseTestCase
         $this->assertEquals(200, $res->getStatusCode());
         $this->assertCount(1, $crawler->filter('html:contains("Key")'));
         $this->assertCount(1, $crawler->filter('html:contains("Value")'));
+    }
+
+    public function testItemCreate()
+    {
+        $crawler = $this->client->request('GET', '/admin/cmf/seo/seoawarecontent/create');
+        $res = $this->client->getResponse();
+
+        $this->assertEquals(200, $res->getStatusCode());
+
+        $this->assertCount(1, $crawler->filter('html:contains("SEO")'));
+        $this->assertCount(1, $crawler->filter('html:contains("Page title")'));
+        $this->assertCount(1, $crawler->filter('html:contains("Original URL")'));
+        $this->assertCount(1, $crawler->filter('html:contains("description")'));
+        $this->assertCount(1, $crawler->filter('html:contains("keywords")'));
     }
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" ?>
 
-<container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<container
+        xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
         <parameter key="cmf_seo.config_values.class">Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\ConfigValues</parameter>
-
         <parameter key="cmf_seo.form.type.seo_metadata.class">Symfony\Cmf\Bundle\SeoBundle\Form\Type\SeoMetadataType</parameter>
         <parameter key="cmf_seo.cache.file.class">Symfony\Cmf\Bundle\SeoBundle\Cache\FileCache</parameter>
         <parameter key="cmf_seo.presentation.class">Symfony\Cmf\Bundle\SeoBundle\SeoPresentation</parameter>
-        <parameter key="cmf_seo.event_listener.seo_content.class">Symfony\Cmf\Bundle\SeoBundle\EventListener\ContentListener</parameter>
-
+        <parameter key="cmf_seo.error.suggestion_provider.controller.class">Symfony\Cmf\Bundle\SeoBundle\Controller\SuggestionProviderController</parameter>
+        <parameter key="cmf_seo.twig.extension.class">Symfony\Cmf\Bundle\SeoBundle\Twig\Extension\CmfSeoExtension</parameter>
     </parameters>
 
     <services>
@@ -23,6 +23,8 @@
         </service>
 
         <service id="cmf_seo.form.type.seo_metadata" class="%cmf_seo.form.type.seo_metadata.class%">
+            <argument>%cmf_seo.form.data_class.seo_metadata%</argument>
+            <argument>%cmf_seo.form_mode_orm%</argument>
             <tag name="form.type" alias="seo_metadata" />
         </service>
 
@@ -43,10 +45,28 @@
             <argument type="service" id="cmf_seo.cache" />
         </service>
 
-        <service id="cmf_seo.event_listener.seo_content" class="%cmf_seo.event_listener.seo_content.class%">
-            <argument type="service" id="cmf_seo.presentation"/>
-            <argument>%cmf_seo.content_key%</argument>
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
+        <service id="cmf_seo.error.suggestion_provider.controller" class="%cmf_seo.error.suggestion_provider.controller.class%">
+            <argument type="service" id="twig" />
+            <argument>%kernel.debug%</argument>
+            <argument type="service" id="cmf_seo.error.exclusion_matcher" />
+            <argument>%cmf_seo.error.templates%</argument>
+        </service>
+
+        <service id="cmf_seo.error.request_matcher"
+                 class="Symfony\Component\HttpFoundation\RequestMatcher"
+                 public="false"
+                 abstract="true"
+        />
+
+        <service id="cmf_seo.error.exclusion_matcher" class="Symfony\Cmf\Bundle\SeoBundle\Matcher\ExclusionMatcher" />
+
+        <service id="cmf_seo.twig.extension" class="%cmf_seo.twig.extension.class%" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="cmf_seo.presentation" />
+        </service>
+
+        <service id="cmf_seo.language_listener" class="Symfony\Cmf\Bundle\SeoBundle\EventListener\LanguageListener">
+            <tag name="kernel.event_subscriber" />
         </service>
     </services>
 

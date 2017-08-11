@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterExtractorsPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws LogicException If a tagged service is not public.
      */
@@ -54,7 +54,7 @@ class RegisterExtractorsPass implements CompilerPassInterface
 
             $strategyDefinition->addMethodCall('addExtractor', array(
                 new Reference($id),
-                $priority
+                $priority,
             ));
         }
     }

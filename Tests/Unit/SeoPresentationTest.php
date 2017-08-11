@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Unit;
 
-use Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SeoMetadata;
 use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\ConfigValues;
 use Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadataInterface;
 use Symfony\Cmf\Bundle\SeoBundle\SeoPresentation;
@@ -235,21 +234,16 @@ class SeoPresentationTest extends \PHPUnit_Framework_Testcase
         $extractorDefault
             ->expects($this->once())
             ->method('updateMetadata')
-            ->will($this->returnCallback(function($content, SeoMetadataInterface $seoMetadata) {
+            ->will($this->returnCallback(function ($content, SeoMetadataInterface $seoMetadata) {
                 $seoMetadata->setTitle('First Title');
             }))
         ;
         $extractorOne
             ->expects($this->once())
             ->method('updateMetadata')
-            ->will($this->returnCallback(function($content, SeoMetadataInterface $seoMetadata) {
+            ->will($this->returnCallback(function ($content, SeoMetadataInterface $seoMetadata) {
                 $seoMetadata->setTitle('Final Title');
             }))
-        ;
-        $this->pageService
-            ->expects($this->once())
-            ->method('addMeta')
-            ->with('name', 'title', 'translation strategy test')
         ;
 
         // test
@@ -287,14 +281,14 @@ class SeoPresentationTest extends \PHPUnit_Framework_Testcase
         $extractorDefault
             ->expects($this->once())
             ->method('updateMetadata')
-            ->will($this->returnCallback(function($content, SeoMetadataInterface $seoMetadata) {
+            ->will($this->returnCallback(function ($content, SeoMetadataInterface $seoMetadata) {
                 $seoMetadata->setMetaDescription('First Description');
             }))
         ;
         $extractorOne
             ->expects($this->once())
             ->method('updateMetadata')
-            ->will($this->returnCallback(function($content, SeoMetadataInterface $seoMetadata) {
+            ->will($this->returnCallback(function ($content, SeoMetadataInterface $seoMetadata) {
                 $seoMetadata->setMetaDescription('Final Description');
             }))
         ;

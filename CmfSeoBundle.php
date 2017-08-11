@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,19 +11,21 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle;
 
-use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-
+use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
+use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\Compiler\RegisterExtractorsPass;
+use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\Compiler\RegisterSuggestionProviderPass;
+use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\Compiler\RegisterUrlInformationProviderPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\Compiler\RegisterExtractorsPass;
 
 class CmfSeoBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new RegisterExtractorsPass());
+        $container->addCompilerPass(new RegisterSuggestionProviderPass());
+        $container->addCompilerPass(new RegisterUrlInformationProviderPass());
 
         $this->buildPhpcrCompilerPass($container);
         $this->buildOrmCompilerPass($container);
@@ -46,8 +48,8 @@ class CmfSeoBundle extends Bundle
         $container->addCompilerPass(
             DoctrinePhpcrMappingsPass::createXmlMappingDriver(
                 array(
-                    realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\SeoBundle\Model',
-                    realpath(__DIR__ . '/Resources/config/doctrine-phpcr') => 'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr'
+                    realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\SeoBundle\Model',
+                    realpath(__DIR__.'/Resources/config/doctrine-phpcr') => 'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr',
                 ),
                 array('cmf_seo.dynamic.persistence.phpcr.manager_name'),
                 'cmf_seo.backend_type_phpcr',
@@ -74,7 +76,7 @@ class CmfSeoBundle extends Bundle
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createXmlMappingDriver(
                 array(
-                    realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\SeoBundle\Model',
+                    realpath(__DIR__.'/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\SeoBundle\Model',
                 ),
                 array('cmf_seo.dynamic.persistence.orm.manager_name'),
                 'cmf_seo.backend_type_orm',

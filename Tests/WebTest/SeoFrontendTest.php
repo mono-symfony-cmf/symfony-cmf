@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,6 @@ namespace Symfony\Cmf\Bundle\SeoBundle\Tests\WebTest;
 use Symfony\Cmf\Bundle\SeoBundle\SeoPresentation;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpKernel\Client;
 
 /**
  * This test will cover all current frontend stuff.
@@ -53,15 +52,14 @@ class SeoFrontendTest extends BaseTestCase
 
         //test the meta tag entries
         $metaCrawler = $crawler->filter('head > meta')->reduce(function (Crawler $node) {
-                $nameValue = $node->attr('name');
+            $nameValue = $node->attr('name');
 
-                return 'title' === $nameValue || 'description' === $nameValue ||'keywords' === $nameValue;
+            return 'description' === $nameValue || 'keywords' === $nameValue;
         });
 
         $actualMeta = $metaCrawler->extract('content', 'content');
         $expectedMeta = array(
             'testkey, content1, content',
-            'Default | Title content 1',
             'Default description. Description of content 1.',
         );
         $this->assertEquals($expectedMeta, $actualMeta);
@@ -89,13 +87,12 @@ class SeoFrontendTest extends BaseTestCase
         $metaCrawler = $crawler->filter('head > meta')->reduce(function (Crawler $node) {
             $nameValue = $node->attr('name');
 
-            return 'title' === $nameValue || 'description' === $nameValue ||'keywords' === $nameValue;
+            return 'description' === $nameValue || 'keywords' === $nameValue;
         });
 
         $actualMeta = $metaCrawler->extract('content', 'content');
         $expectedMeta = array(
             'testkey, test, key',
-            'Default | Strategy title',
             'Default description. content of strategy test. ...',
         );
         $this->assertEquals($expectedMeta, $actualMeta);
@@ -158,5 +155,43 @@ class SeoFrontendTest extends BaseTestCase
         $linkCrawler = $crawler->filter('head > link');
         $expectedArray = array(array('alternate', 'http://localhost/en/alternate-locale-content', 'en'));
         $this->assertEquals($expectedArray, $linkCrawler->extract(array('rel', 'href', 'hreflang')));
+    }
+
+    public function testErrorHandling()
+    {
+        $crawler = $this->client->request('GET', '/content/content-1/content-depp');
+        $res = $this->client->getResponse();
+
+        $this->assertEquals(404, $res->getStatusCode());
+
+        $this->assertCount(1, $crawler->filter('html:contains("Exception-Test")')); // the configured template was chosen
+        $this->assertCount(1, $crawler->filter('html:contains("parent - content-1")'));
+        $this->assertCount(1, $crawler->filter('html:contains("sibling - content-deeper")'));
+    }
+
+    public function testErrorHandlingInvalidPhpcrPath()
+    {
+        $this->client->request('GET', '/content/content-1/content[a]b/sub?bla=blup');
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testErrorHandlingForExcludedPath()
+    {
+        $crawler = $this->client->request('GET', '/content/content-1/content-excluded');
+        $res = $this->client->getResponse();
+
+        $this->assertEquals(404, $res->getStatusCode());
+
+        $this->assertCount(0, $crawler->filter('html:contains("Exception-Test")')); // the default template was chosen
+        $this->assertCount(1, $crawler->filter('html:contains("No route found for")'));
+    }
+
+    public function testContentLanguageHeader()
+    {
+        $crawler = $this->getClient()->request('GET', '/en/alternate-locale-content');
+        $res = $this->getClient()->getResponse();
+
+        $this->assertEquals(200, $res->getStatusCode());
+        $this->assertEquals('en', $res->headers->get('Content-Language'));
     }
 }
