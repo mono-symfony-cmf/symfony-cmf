@@ -140,6 +140,16 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
                         break;
+                    case 'cmf_routing_auto':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                    'route_basepath' => $persistenceConfig['basepath'].'/routes',
+                                ),
+                            ),
+                        );
+                        break;
                     case 'cmf_search':
                         $prependConfig = array(
                             'persistence' => array(
@@ -334,6 +344,12 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      */
     private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
+        // this check can be removed again for version 1.3+ as we increased the php version to 5.3.9
+        if (version_compare(PHP_VERSION, '5.3.7', 'lt')) {
+            // do not accept to work with bug in is_subclass_of
+            throw new InvalidConfigurationException('You can not use the publish workflow with PHP < 5.3.7');
+        }
+
         $container->setParameter($this->getAlias().'.publish_workflow.view_non_published_role', $config['view_non_published_role']);
         $loader->load('publish-workflow.xml');
 
