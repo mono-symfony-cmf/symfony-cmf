@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -31,12 +31,12 @@ class RedirectRouteTest extends BaseTestCase
         $content = $this->createContent();
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
 
-        $route = new Route;
+        $route = new Route();
         $route->setContent($content);
         $route->setPosition($root, 'testroute');
         $this->getDm()->persist($route);
 
-        $redirect = new RedirectRoute;
+        $redirect = new RedirectRoute();
         $redirect->setPosition($root, 'redirect');
         $redirect->setRouteTarget($route);
         $redirect->setDefault('test', 'toast');
@@ -63,7 +63,7 @@ class RedirectRouteTest extends BaseTestCase
     public function testSetContent()
     {
         $content = $this->getMock('Symfony\\Cmf\\Component\\Routing\\RouteReferrersReadInterface');
-        $redirect = new RedirectRoute;
+        $redirect = new RedirectRoute();
         $redirect->setContent($content);
     }
 }

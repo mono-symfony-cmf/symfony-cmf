@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,8 +23,8 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->document = new \stdClass;
-        $this->document2 = new \stdClass;
+        $this->document = new \stdClass();
+        $this->document2 = new \stdClass();
         $this->objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->objectManager2 = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
@@ -120,7 +120,7 @@ class ContentRepositoryTest extends \PHPUnit_Framework_Testcase
 
         $objectManagers = array(
             'default' => $this->objectManager,
-            'new_manager' => $this->objectManager2
+            'new_manager' => $this->objectManager2,
         );
         $this->managerRegistry
             ->expects($this->any())

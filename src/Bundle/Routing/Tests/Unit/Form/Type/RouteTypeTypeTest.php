@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,17 +18,15 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
 {
     public function setUp()
     {
-        $this->type = new RouteTypeType;
-        $this->ori = $this->getMock(
-            'Symfony\Component\OptionsResolver\OptionsResolverInterface');
+        $this->type = new RouteTypeType();
     }
 
     public function testSetDefaultOptions()
     {
-        $type = new RouteTypeType;
+        $type = new RouteTypeType();
         $optionsResolver = new OptionsResolver();
 
-        $type->setDefaultOptions($optionsResolver);
+        $type->configureOptions($optionsResolver);
 
         $options = $optionsResolver->resolve();
 
@@ -40,7 +38,8 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
         $this->type->addRouteType('foobar');
         $this->type->addRouteType('barfoo');
 
-        $this->ori->expects($this->once())
+        $optionsResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolver');
+        $optionsResolver->expects($this->once())
             ->method('setDefaults')
             ->with(array(
                 'choices' => array(
@@ -50,6 +49,6 @@ class RouteTypeTypeTest extends \PHPUnit_Framework_Testcase
                 'translation_domain' => 'CmfRoutingBundle',
             ));
 
-        $this->type->setDefaultOptions($this->ori);
+        $this->type->configureOptions($optionsResolver);
     }
 }

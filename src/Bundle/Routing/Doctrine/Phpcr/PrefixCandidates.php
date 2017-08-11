@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -61,7 +61,7 @@ class PrefixCandidates extends Candidates
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * A name is a candidate if it starts with one of the prefixes
      */
@@ -69,7 +69,7 @@ class PrefixCandidates extends Candidates
     {
         foreach ($this->getPrefixes() as $prefix) {
             // $name is the route document path
-            if (($name === $prefix || 0 === strpos($name, $prefix . '/'))
+            if (($name === $prefix || 0 === strpos($name, $prefix.'/'))
                 && PathHelper::assertValidAbsolutePath($name, false, false)
             ) {
                 return true;
@@ -80,7 +80,7 @@ class PrefixCandidates extends Candidates
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param QueryBuilder $queryBuilder
      */
@@ -98,12 +98,12 @@ class PrefixCandidates extends Candidates
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getCandidates(Request $request)
     {
         $candidates = array();
-        $url = $request->getPathInfo();
+        $url = rawurldecode($request->getPathInfo());
         foreach ($this->getPrefixes() as $prefix) {
             $candidates = array_unique(array_merge($candidates, $this->getCandidatesFor($url, $prefix)));
         }
@@ -118,7 +118,7 @@ class PrefixCandidates extends Candidates
 
         // filter out things like double // or trailing / - this would trigger an exception on the document manager.
         foreach ($candidates as $key => $candidate) {
-            if (! PathHelper::assertValidAbsolutePath($candidate, false, false)) {
+            if (!PathHelper::assertValidAbsolutePath($candidate, false, false)) {
                 unset($candidates[$key]);
             }
         }
@@ -167,7 +167,7 @@ class PrefixCandidates extends Candidates
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * The normal phpcr-odm locale listener "waits" until the routing completes
      * as the locale is usually defined inside the route. We need to set it
@@ -192,5 +192,4 @@ class PrefixCandidates extends Candidates
     {
         return $this->doctrine->getManager($this->managerName);
     }
-
 }

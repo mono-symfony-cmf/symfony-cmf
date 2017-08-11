@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
  * Changes the Router implementation.
- *
  */
 class SetRouterPass implements CompilerPassInterface
 {
@@ -26,6 +25,5 @@ class SetRouterPass implements CompilerPassInterface
         if ($container->hasParameter('cmf_routing.replace_symfony_router') && true === $container->getParameter('cmf_routing.replace_symfony_router')) {
             $container->setAlias('router', 'cmf_routing.router');
         }
-
     }
 }

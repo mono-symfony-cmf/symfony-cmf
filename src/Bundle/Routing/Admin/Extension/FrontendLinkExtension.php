@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +14,7 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin\Extension;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\PrefixInterface;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -41,7 +42,7 @@ class FrontendLinkExtension extends AdminExtension
     private $translator;
 
     /**
-     * @param RouterInterface $router
+     * @param RouterInterface     $router
      * @param TranslatorInterface $translator
      */
     public function __construct(RouterInterface $router, TranslatorInterface $translator)
@@ -50,8 +51,16 @@ class FrontendLinkExtension extends AdminExtension
         $this->translator = $translator;
     }
 
+    public function configureSideMenu(
+        AdminInterface $admin,
+        MenuItemInterface $menu,
+        $action,
+        AdminInterface $childAdmin = null
+    ) {
+        $this->configureTabMenu($admin, $menu, $action, $childAdmin);
+    }
+
     /**
-     * @return void
      * @throws InvalidConfigurationException
      */
     public function configureTabMenu(
@@ -67,19 +76,26 @@ class FrontendLinkExtension extends AdminExtension
         if (!$subject instanceof RouteReferrersReadInterface && !$subject instanceof Route) {
             throw new InvalidConfigurationException(
                 sprintf(
-                    '%s can only be used on subjects which implement Symfony\Cmf\Component\Routing\RouteReferrersReadInterface or Symfony\Component\Routing\Route!',
+                    '%s can only be used on subjects which implement Symfony\Cmf\Component\Routing\RouteReferrersReadInterface or Symfony\Component\Routing\Route.',
                     __CLASS__
                 )
             );
         }
 
         if ($subject instanceof PrefixInterface && !is_string($subject->getId())) {
-            // we have an unpersisted dynamic route 
+            // we have an unpersisted dynamic route
             return;
         }
 
+        $defaults = array();
+        if ($subject instanceof TranslatableInterface) {
+            if ($locale = $subject->getLocale()) {
+                $defaults['_locale'] = $locale;
+            }
+        }
+
         try {
-            $uri = $this->router->generate($subject);
+            $uri = $this->router->generate($subject, $defaults);
         } catch (RoutingExceptionInterface $e) {
             // we have no valid route
             return;
@@ -91,16 +107,15 @@ class FrontendLinkExtension extends AdminExtension
                 'uri' => $uri,
                 'attributes' => array(
                     'class' => 'sonata-admin-menu-item',
-                    'role' => 'menuitem'
+                    'role' => 'menuitem',
                 ),
                 'linkAttributes' => array(
                     'class' => 'sonata-admin-frontend-link',
                     'role' => 'button',
                     'target' => '_blank',
-                    'title' => $this->translator->trans('admin.menu_frontend_link_title', array(), 'CmfRoutingBundle')
-                )
+                    'title' => $this->translator->trans('admin.menu_frontend_link_title', array(), 'CmfRoutingBundle'),
+                ),
             )
         );
     }
-
 }

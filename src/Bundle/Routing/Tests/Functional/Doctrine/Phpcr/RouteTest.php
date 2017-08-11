@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\Doctrine\Phpcr;
 
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
-
 use Symfony\Cmf\Bundle\RoutingBundle\Tests\Functional\BaseTestCase;
 
 class RouteTest extends BaseTestCase
@@ -40,14 +39,14 @@ class RouteTest extends BaseTestCase
 
         $this->getDm()->persist($route);
         $this->getDm()->flush();
-        $this->assertEquals('/testroute', $route->getPattern());
+        $this->assertEquals('/testroute', $route->getPath());
 
         $this->getDm()->clear();
 
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/testroute');
 
         $this->assertNotNull($route->getContent());
-        $this->assertEquals('/testroute', $route->getPattern());
+        $this->assertEquals('/testroute', $route->getPath());
 
         $this->assertEquals('y', $route->getDefault('x'));
         $defaults = $route->getDefaults();
@@ -90,16 +89,37 @@ class RouteTest extends BaseTestCase
         return $route;
     }
 
+    public function testConditionOption()
+    {
+        if (!property_exists('Symfony\Component\Routing\Route', 'condition')) {
+            $this->markTestSkipped('This version of symfony does not have the condition property on the Route.');
+        }
+
+        $route = new Route();
+        $root = $this->getDm()->find(null, self::ROUTE_ROOT);
+
+        $route->setPosition($root, 'conditionroute');
+        $route->setCondition('foobar');
+
+        $this->getDm()->persist($route);
+        $this->getDm()->flush();
+        $this->getDm()->clear();
+
+        $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/conditionroute');
+
+        $this->assertEquals('foobar', $route->getCondition());
+    }
+
     public function testRootRoute()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $this->assertEquals('/', $root->getPattern());
+        $this->assertEquals('/', $root->getPath());
     }
 
     public function testSetPattern()
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
-        $root->setPattern('/{test}');
+        $root->setPath('/{test}');
         $this->assertEquals('{test}', $root->getVariablePattern());
     }
 
@@ -110,7 +130,7 @@ class RouteTest extends BaseTestCase
      */
     public function testSetPatternInvalid(Route $route)
     {
-        $route->setPattern('/impossible');
+        $route->setPath('/impossible');
     }
 
     /**
@@ -120,7 +140,7 @@ class RouteTest extends BaseTestCase
     {
         $root = $this->getDm()->find(null, self::ROUTE_ROOT);
         $root->setPrefix('/changed'); // simulate a problem with the prefix setter listener
-        $this->assertEquals('/', $root->getPattern());
+        $this->assertEquals('/', $root->getPath());
     }
 
     /**
@@ -129,7 +149,7 @@ class RouteTest extends BaseTestCase
     public function testPrefixNonpersisted()
     {
         $route = new Route();
-        $route->getPattern();
+        $route->getPath();
     }
 
     public function testDefaultFormat()
@@ -146,6 +166,6 @@ class RouteTest extends BaseTestCase
 
         $route = $this->getDm()->find(null, self::ROUTE_ROOT.'/format');
 
-        $this->assertEquals('/format.{_format}', $route->getPattern());
+        $this->assertEquals('/format.{_format}', $route->getPath());
     }
 }

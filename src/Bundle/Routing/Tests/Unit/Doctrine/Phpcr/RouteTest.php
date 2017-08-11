@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,9 +21,9 @@ class RouteTest extends \PHPUnit_Framework_Testcase
 
     public function setUp()
     {
-        $this->route = new Route;
+        $this->route = new Route();
 
-        $this->childRoute1 = new Route;
+        $this->childRoute1 = new Route();
         $this->childRoute1->setName('child route1');
     }
 
@@ -33,7 +33,7 @@ class RouteTest extends \PHPUnit_Framework_Testcase
         $prop = $refl->getProperty('children');
         $prop->setAccessible(true);
         $prop->setValue($this->route, array(
-            new \stdClass,
+            new \stdClass(),
             $this->childRoute1,
         ));
 

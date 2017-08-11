@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -43,6 +43,28 @@ class PrefixCandidatesTest extends CmfUnitTestCase
                 '/routes',
                 '/simple/my/path.html',
                 '/simple/my/path',
+                '/simple/my',
+                '/simple',
+            ),
+            $paths
+        );
+    }
+
+    public function testGetCandidatesPercentEncoded()
+    {
+        $request = Request::create('/my/path%20percent%20encoded.html');
+
+        $candidates = new PrefixCandidates(array('/routes', '/simple'));
+        $paths = $candidates->getCandidates($request);
+
+        $this->assertEquals(
+            array(
+                '/routes/my/path percent encoded.html',
+                '/routes/my/path percent encoded',
+                '/routes/my',
+                '/routes',
+                '/simple/my/path percent encoded.html',
+                '/simple/my/path percent encoded',
                 '/simple/my',
                 '/simple',
             ),

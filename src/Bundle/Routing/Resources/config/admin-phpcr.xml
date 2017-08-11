@@ -32,6 +32,7 @@
             <call method="setRouteRoot">
                 <argument>%cmf_routing.dynamic.persistence.phpcr.admin_basepath%</argument>
             </call>
+
             <call method="setControllerResolver">
                 <argument type="service" id="controller_resolver" />
             </call>

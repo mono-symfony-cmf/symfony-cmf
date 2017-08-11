@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -57,6 +57,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                             '/simple',
                         ),
                         'content_basepath' => '/cms/content',
+                        'admin_basepath' => null,
                         'manager_name' => null,
                         'use_sonata_admin' => false,
                         'enable_initializer' => true,
@@ -74,6 +75,7 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                 'limit_candidates' => 20,
                 'auto_locale_pattern' => true,
                 'match_implicit_locale' => true,
+                'url_generator' => 'cmf_routing.generator',
             ),
         );
 

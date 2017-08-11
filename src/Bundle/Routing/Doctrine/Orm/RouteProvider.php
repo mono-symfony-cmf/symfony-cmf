@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,17 +13,16 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Cmf\Component\Routing\Candidates\CandidatesInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
-
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Cmf\Component\Routing\RouteProviderInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\DoctrineProvider;
 
 /**
- * Provider loading routes from Doctrine
+ * Provider loading routes from Doctrine.
  *
  * This is <strong>NOT</strong> not a doctrine repository but just the route
  * provider for the NestedMatcher. (you could of course implement this
@@ -45,7 +44,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRouteCollectionForRequest(Request $request)
     {
@@ -65,7 +64,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRouteByName($name)
     {
@@ -82,7 +81,7 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRoutesByNames($names = null)
     {
@@ -91,7 +90,11 @@ class RouteProvider extends DoctrineProvider implements RouteProviderInterface
                 return array();
             }
 
-            return $this->getRouteRepository()->findBy(array(), null, $this->routeCollectionLimit ?: null);
+            try {
+                return $this->getRouteRepository()->findBy(array(), null, $this->routeCollectionLimit ?: null);
+            } catch (TableNotFoundException $e) {
+                return array();
+            }
         }
 
         $routes = array();

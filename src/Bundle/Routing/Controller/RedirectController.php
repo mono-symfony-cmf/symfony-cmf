@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,8 +12,8 @@
 namespace Symfony\Cmf\Bundle\RoutingBundle\Controller;
 
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Symfony\Cmf\Component\Routing\RedirectRouteInterface;
 
 /**
@@ -31,6 +31,7 @@ class RedirectController
      * @var RouterInterface
      */
     protected $router;
+
     /**
      * @param RouterInterface $router the router to use to build urls
      */
@@ -40,7 +41,7 @@ class RedirectController
     }
 
     /**
-     * Action to redirect based on a RedirectRouteInterface route
+     * Action to redirect based on a RedirectRouteInterface route.
      *
      * @param RedirectRouteInterface $contentDocument
      *
@@ -53,10 +54,10 @@ class RedirectController
         if (empty($url)) {
             $routeTarget = $contentDocument->getRouteTarget();
             if ($routeTarget) {
-                $url = $this->router->generate($routeTarget, $contentDocument->getParameters(), true);
+                $url = $this->router->generate($routeTarget, $contentDocument->getParameters(), UrlGeneratorInterface::ABSOLUTE_URL);
             } else {
                 $routeName = $contentDocument->getRouteName();
-                $url = $this->router->generate($routeName, $contentDocument->getParameters(), true);
+                $url = $this->router->generate($routeName, $contentDocument->getParameters(), UrlGeneratorInterface::ABSOLUTE_URL);
             }
         }
 

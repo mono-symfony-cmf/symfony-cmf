@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -74,7 +74,7 @@ class IdPrefixListener
         // for more than one listener and more than one route root
         if ($doc instanceof PrefixInterface) {
             foreach ($this->getPrefixes() as $prefix) {
-                if (! strncmp($prefix, $doc->getId(), strlen($prefix))) {
+                if (!strncmp($prefix, $doc->getId(), strlen($prefix))) {
                     $doc->setPrefix($prefix);
                     break;
                 }

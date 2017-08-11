@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,11 +15,8 @@ use Symfony\Cmf\Component\Routing\Event\Events;
 use Symfony\Cmf\Component\Routing\Event\RouterMatchEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
-
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
-
 use Symfony\Cmf\Component\Routing\Test\CmfUnitTestCase;
 
 class DynamicRouterTest extends CmfUnitTestCase
@@ -111,5 +108,4 @@ class DynamicRouterTest extends CmfUnitTestCase
 
         $this->assertRequestAttributes($this->request);
     }
-
 }

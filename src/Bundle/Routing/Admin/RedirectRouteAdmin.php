@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,13 +16,15 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Util\Sf2CompatUtil;
 
 class RedirectRouteAdmin extends Admin
 {
     protected $translationDomain = 'CmfRoutingBundle';
 
-     /**
-     * Root path for the route parent selection
+    /**
+     * Root path for the route parent selection.
+     *
      * @var string
      */
     protected $routeRoot;
@@ -38,11 +40,11 @@ class RedirectRouteAdmin extends Admin
     {
         $formMapper
             ->with('form.group_general')
-                ->add('parent', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
-                ->add('name', 'text')
-                ->add('routeName', 'text', array('required' => false))
-                ->add('uri', 'text', array('required' => false))
-                ->add('routeTarget', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
+                ->add('parent', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot))
+                ->add('name', Sf2CompatUtil::getFormTypeName('text'))
+                ->add('routeName', Sf2CompatUtil::getFormTypeName('text'), array('required' => false))
+                ->add('uri', Sf2CompatUtil::getFormTypeName('text'), array('required' => false))
+                ->add('routeTarget', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'required' => false, 'root_node' => $this->routeRoot))
             ->end()
         ;
     }
@@ -50,7 +52,7 @@ class RedirectRouteAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name',  'doctrine_phpcr_nodename')
+            ->add('name', 'doctrine_phpcr_nodename')
         ;
     }
 

@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,11 +14,10 @@ namespace Symfony\Cmf\Bundle\RoutingBundle\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Model\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Util\Sf2CompatUtil;
 use PHPCR\Util\PathHelper;
 
 class RouteAdmin extends Admin
@@ -26,25 +25,30 @@ class RouteAdmin extends Admin
     protected $translationDomain = 'CmfRoutingBundle';
 
     /**
-     * Root path for the route parent selection
+     * Root path for the route parent selection.
+     *
      * @var string
      */
     protected $routeRoot;
 
     /**
-     * Root path for the route content selection
+     * Root path for the route content selection.
+     *
      * @var string
      */
     protected $contentRoot;
 
     /**
-     * Full class name for content that can be referenced by a route
+     * Full class name for content that can be referenced by a route.
+     *
      * @var string
      */
     protected $contentClass;
 
     /**
      * @var ControllerResolverInterface
+     *
+     * @deprecated Since 1.4, use the RouteDefaults validator on your document.
      */
     protected $controllerResolver;
 
@@ -63,10 +67,10 @@ class RouteAdmin extends Admin
             ))
                 ->add(
                     'parent',
-                    'doctrine_phpcr_odm_tree',
+                    Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'),
                     array('choice_list' => array(), 'select_root_node' => true, 'root_node' => $this->routeRoot)
                 )
-                ->add('name', 'text')
+                ->add('name', Sf2CompatUtil::getFormTypeName('text'))
         ->end();
 
         if (null === $this->getParentFieldDescription()) {
@@ -74,22 +78,21 @@ class RouteAdmin extends Admin
                 ->with('form.group_general', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('content', 'doctrine_phpcr_odm_tree', array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
+                    ->add('content', Sf2CompatUtil::getFormTypeName('doctrine_phpcr_odm_tree'), array('choice_list' => array(), 'required' => false, 'root_node' => $this->contentRoot))
                 ->end()
                 ->with('form.group_advanced', array(
                     'translation_domain' => 'CmfRoutingBundle',
                 ))
-                    ->add('variablePattern', 'text', array('required' => false), array('help' => 'form.help_variable_pattern'))
+                    ->add('variablePattern', Sf2CompatUtil::getFormTypeName('text'), array('required' => false), array('help' => 'form.help_variable_pattern'))
                     ->add(
                         'defaults',
-                        'sonata_type_immutable_array',
+                        Sf2CompatUtil::getFormTypeName('sonata_type_immutable_array'),
                         array('keys' => $this->configureFieldsForDefaults($this->getSubject()->getDefaults()))
                     )
                     ->add(
                         'options',
-                        'sonata_type_immutable_array',
-                        array(
-                            'keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
+                        Sf2CompatUtil::getFormTypeName('sonata_type_immutable_array'),
+                        array('keys' => $this->configureFieldsForOptions($this->getSubject()->getOptions())),
                         array('help' => 'form.help_options')
                     )
                 ->end()
@@ -117,6 +120,9 @@ class RouteAdmin extends Admin
         $this->contentRoot = $contentRoot;
     }
 
+    /**
+     * @deprecated Since 1.4, use the RouteDefaults validator on your document.
+     */
     public function setControllerResolver($controllerResolver)
     {
         $this->controllerResolver = $controllerResolver;
@@ -137,9 +143,9 @@ class RouteAdmin extends Admin
     protected function configureFieldsForDefaults($dynamicDefaults)
     {
         $defaults = array(
-            '_controller' => array('_controller', 'text', array('required' => false)),
-            '_template' => array('_template', 'text', array('required' => false)),
-            'type' => array('type', 'cmf_routing_route_type', array(
+            '_controller' => array('_controller', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
+            '_template' => array('_template', Sf2CompatUtil::getFormTypeName('text'), array('required' => false)),
+            'type' => array('type', Sf2CompatUtil::getFormTypeName('cmf_routing_route_type'), array(
                 'empty_value' => '',
                 'required' => false,
             )),
@@ -147,7 +153,7 @@ class RouteAdmin extends Admin
 
         foreach ($dynamicDefaults as $name => $value) {
             if (!isset($defaults[$name])) {
-                $defaults[$name] = array($name, 'text', array('required' => false));
+                $defaults[$name] = array($name, Sf2CompatUtil::getFormTypeName('text'), array('required' => false));
             }
         }
         
@@ -166,22 +172,22 @@ class RouteAdmin extends Admin
 
         //parse variable pattern and add defaults for tokens - taken from routecompiler
         /** @var $route Route */
-        $route =  $this->subject;
+        $route = $this->subject;
         if ($route && $route->getVariablePattern()) {
             preg_match_all('#\{\w+\}#', $route->getVariablePattern(), $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
             foreach ($matches as $match) {
                 $name = substr($match[0][0], 1, -1);
                 if (!isset($defaults[$name])) {
-                    $defaults[$name] = array($name, 'text', array('required' => true));
+                    $defaults[$name] = array($name, Sf2CompatUtil::getFormTypeName('text'), array('required' => true));
                 }
             }
         }
 
         if ($route && $route->getOption('add_format_pattern')) {
-            $defaults['_format'] = array('_format', 'text', array('required' => true));
+            $defaults['_format'] = array('_format', Sf2CompatUtil::getFormTypeName('text'), array('required' => true));
         }
         if ($route && $route->getOption('add_locale_pattern')) {
-            $defaults['_locale'] = array('_locale', 'text', array('required' => false));
+            $defaults['_locale'] = array('_locale', Sf2CompatUtil::getFormTypeName('text'), array('required' => false));
         }
 
         return $defaults;
@@ -196,10 +202,13 @@ class RouteAdmin extends Admin
      */
     protected function configureFieldsForOptions(array $dynamicOptions)
     {
+        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+        $checkboxType = $isSf28 ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' : 'checkbox';
+
         $options = array(
-            'add_locale_pattern' => array('add_locale_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => 'CmfRoutingBundle')),
-            'add_format_pattern' => array('add_format_pattern', 'checkbox', array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => 'CmfRoutingBundle')),
-            'add_trailing_slash' => array('add_trailing_slash', 'checkbox', array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_locale_pattern' => array('add_locale_pattern', $checkboxType, array('required' => false, 'label' => 'form.label_add_locale_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_format_pattern' => array('add_format_pattern', $checkboxType, array('required' => false, 'label' => 'form.label_add_format_pattern', 'translation_domain' => 'CmfRoutingBundle')),
+            'add_trailing_slash' => array('add_trailing_slash', $checkboxType, array('required' => false, 'label' => 'form.label_add_trailing_slash', 'translation_domain' => 'CmfRoutingBundle')),
         );
 
         foreach ($dynamicOptions as $name => $value) {
@@ -221,52 +230,6 @@ class RouteAdmin extends Admin
     {
         $defaults = array_filter($object->getDefaults());
         $object->setDefaults($defaults);
-    }
-
-    public function validate(ErrorElement $errorElement, $object)
-    {
-        $defaults = $object->getDefaults();
-
-        if (isset($defaults['_controller'])) {
-            $this->validateDefaultsController($errorElement, $object);
-        }
-
-        if (isset($defaults['_template'])) {
-            $this->validateDefaultsTemplate($errorElement, $object);
-        }
-    }
-
-    protected function validateDefaultsController(ErrorElement $errorElement, $object)
-    {
-        $defaults = $object->getDefaults();
-
-        $controller = $defaults['_controller'];
-
-        $request = new Request(array(), array(), array('_controller' => $controller));
-
-        try {
-            $this->controllerResolver->getController($request);
-        } catch (\LogicException $e) {
-            $errorElement
-                ->with('defaults')
-                ->addViolation($e->getMessage())
-                ->end();
-        }
-    }
-
-    protected function validateDefaultsTemplate(ErrorElement $errorElement, $object)
-    {
-        $defaults = $object->getDefaults();
-
-        $templating = $this->getConfigurationPool()->getContainer()->get('templating');
-        $template = $defaults['_template'];
-
-        if (false === $templating->exists($template)) {
-            $errorElement
-                ->with('defaults')
-                ->addViolation(sprintf('Template "%s" does not exist.', $template))
-                ->end();
-        }
     }
 
     public function toString($object)
