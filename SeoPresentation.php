@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\SeoBundle;
 
 use Sonata\SeoBundle\Seo\SeoPage;
+use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocaleCollection;
 use Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadata;
 use Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadataInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -64,7 +65,7 @@ class SeoPresentation implements SeoPresentationInterface
     private $redirectResponse = false;
 
     /**
-     * @var ExtractorInterface[]
+     * @var array
      */
     private $extractors = array();
 
@@ -124,10 +125,14 @@ class SeoPresentation implements SeoPresentationInterface
      * Adds extractors.
      *
      * @param ExtractorInterface $extractor
+     * @param int                $priority
      */
-    public function addExtractor(ExtractorInterface $extractor)
+    public function addExtractor(ExtractorInterface $extractor, $priority = 0)
     {
-        $this->extractors[] = $extractor;
+        if (!isset($this->extractors[$priority])) {
+            $this->extractors[$priority] = array();
+        }
+        $this->extractors[$priority][] = $extractor;
     }
 
     /**
@@ -188,9 +193,17 @@ class SeoPresentation implements SeoPresentationInterface
      */
     private function getExtractorsForContent($content)
     {
-        return array_filter($this->extractors, function ($extractor) use ($content) {
-            return $extractor->supports($content);
-        });
+        $extractors = array();
+        ksort($this->extractors);
+        foreach ($this->extractors as $priority) {
+            $supportedExtractors = array_filter($priority, function ($extractor) use ($content) {
+                return $extractor->supports($content);
+            });
+
+            $extractors = array_merge($extractors, $supportedExtractors);
+        }
+
+        return $extractors;
     }
 
     /**
@@ -299,14 +312,28 @@ class SeoPresentation implements SeoPresentationInterface
     private function copyMetadata(SeoMetadataInterface $contentSeoMetadata)
     {
         $metadata = new SeoMetadata();
-        $metadata->setTitle($contentSeoMetadata->getTitle());
-        $metadata->setMetaKeywords($contentSeoMetadata->getMetaKeywords());
-        $metadata->setMetaDescription($contentSeoMetadata->getMetaDescription());
-        $metadata->setOriginalUrl($contentSeoMetadata->getOriginalUrl());
-        $metadata->setExtraProperties($contentSeoMetadata->getExtraProperties()?:array());
-        $metadata->setExtraNames($contentSeoMetadata->getExtraNames()?:array());
-        $metadata->setExtraHttp($contentSeoMetadata->getExtraHttp()?:array());
 
-        return $metadata;
+        return $metadata
+            ->setTitle($contentSeoMetadata->getTitle())
+            ->setMetaKeywords($contentSeoMetadata->getMetaKeywords())
+            ->setMetaDescription($contentSeoMetadata->getMetaDescription())
+            ->setOriginalUrl($contentSeoMetadata->getOriginalUrl())
+            ->setExtraProperties($contentSeoMetadata->getExtraProperties() ?: array())
+            ->setExtraNames($contentSeoMetadata->getExtraNames()?:array())
+            ->setExtraHttp($contentSeoMetadata->getExtraHttp()?:array())
+        ;
+    }
+
+    /**
+     * {inheritDoc}
+     */
+    public function updateAlternateLocales(AlternateLocaleCollection $collection)
+    {
+        foreach ($collection as $alternateLocale) {
+            $this->sonataPage->addLangAlternate(
+                $alternateLocale->href,
+                $alternateLocale->hrefLocale
+            );
+        }
     }
 }

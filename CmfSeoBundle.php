@@ -15,7 +15,6 @@ use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappin
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\Compiler\RegisterExtractorsPass;
@@ -51,7 +50,8 @@ class CmfSeoBundle extends Bundle
                     realpath(__DIR__ . '/Resources/config/doctrine-phpcr') => 'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr'
                 ),
                 array('cmf_seo.dynamic.persistence.phpcr.manager_name'),
-                'cmf_seo.backend_type_phpcr'
+                'cmf_seo.backend_type_phpcr',
+                array('CmfSeoBundle' => 'Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr')
             )
         );
     }
@@ -77,7 +77,8 @@ class CmfSeoBundle extends Bundle
                     realpath(__DIR__ . '/Resources/config/doctrine-model') => 'Symfony\Cmf\Bundle\SeoBundle\Model',
                 ),
                 array('cmf_seo.dynamic.persistence.orm.manager_name'),
-                'cmf_seo.backend_type_orm'
+                'cmf_seo.backend_type_orm',
+                array('CmfSeoBundle' => 'Symfony\Cmf\Bundle\SeoBundle\Model')
             )
         );
     }
