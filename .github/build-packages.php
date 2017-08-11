@@ -10,9 +10,7 @@ array_shift($arguments);
 $branch = array_shift($arguments);
 
 if (0 === count($arguments)) {
-    echo "Evaluate directories: \n";
     $dirsString = exec("find src -mindepth 2 -type f -name phpunit.xml.dist -printf '%h,'");
-    echo "Found: $dirsString\n";
     $dirs = explode(',', trim($dirsString, ','));
 } else {
     $dirs = $arguments;
@@ -24,15 +22,15 @@ if (0 === count($dirs)) {
 }
 chdir(dirname(__DIR__));
 
-
 $mergeBase = trim(shell_exec(sprintf('git merge-base %s HEAD', $branch)));
 
 $packages = array();
 $flags = \PHP_VERSION_ID >= 50400 ? JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE : 0;
 foreach ($dirs as $k => $dir) {
-    if (!system("git diff --name-only $mergeBase -- $dir", $exitStatus)) {
-        if ($exitStatus) {
-            exit($exitStatus);
+    exec("git diff --name-only $mergeBase -- $dir", $output, $returnValue);
+    if (!$output) {
+        if (!$returnValue) {
+            exit($returnValue);
         }
         unset($dirs[$k]);
         continue;
