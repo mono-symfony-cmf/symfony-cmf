@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\RoutingAuto\Mapping\Loader;
 
@@ -17,7 +16,7 @@ use Symfony\Component\Config\Util\XmlUtils;
 use Symfony\Component\Config\Loader\FileLoader;
 
 /**
- * Loader for XML files
+ * Loader for XML files.
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
@@ -158,7 +157,6 @@ class XmlFileLoader extends FileLoader
         $classMetadata->setDefunctRouteHandler(array('name' => $name, 'options' => $options));
     }
 
-
     protected function parseOptionNode(\DOMNodeList $nodes, $path)
     {
         $options = array();
@@ -170,7 +168,7 @@ class XmlFileLoader extends FileLoader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {

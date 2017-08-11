@@ -3,26 +3,23 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit;
 
 use Symfony\Cmf\Component\RoutingAuto\UriContext;
-use Symfony\Cmf\Component\RoutingAuto\Tests\Unit\BaseTestCase;
 
-class UriContextTest extends BaseTestCase
+class UriContextTest extends \PHPUnit_Framework_TestCase
 {
     protected $uriContext;
 
     public function setUp()
     {
-        parent::setUp();
-        $this->subjectObject = new \stdClass;
+        $this->subjectObject = new \stdClass();
         $this->autoRoute = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface');
     }
 
@@ -46,4 +43,3 @@ class UriContextTest extends BaseTestCase
         $this->assertEquals($this->autoRoute, $uriContext->getAutoRoute());
     }
 }
-

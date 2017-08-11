@@ -3,33 +3,29 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit\Mapping;
 
 use Symfony\Cmf\Component\RoutingAuto\Mapping\ClassMetadata;
 use Symfony\Cmf\Component\RoutingAuto\Mapping\MetadataFactory;
-use Symfony\Cmf\Component\RoutingAuto\Tests\Unit\BaseTestCase;
 
-class MetadataFactoryTest extends BaseTestCase
+class MetadataFactoryTest extends \PHPUnit_Framework_TestCase
 {
     protected $factory;
 
     public function setUp()
     {
-        parent::setUp();
-
         $this->factory = new MetadataFactory();
     }
 
     public function testStoreAndGetClassMetadata()
     {
-        $stdClassMetadata = $this->prophet->prophesize('Symfony\Cmf\Component\RoutingAuto\Mapping\ClassMetadata');
+        $stdClassMetadata = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\Mapping\ClassMetadata');
         $stdClassMetadata->getClassName()->willReturn('stdClass');
         $stdClassMetadata->getExtendedClass()->willReturn(null);
         $classMetadata = $stdClassMetadata->reveal();

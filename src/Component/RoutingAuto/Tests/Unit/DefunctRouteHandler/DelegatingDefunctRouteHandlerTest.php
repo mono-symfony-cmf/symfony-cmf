@@ -3,19 +3,17 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit\DefunctRouteHandler;
 
-use Symfony\Cmf\Component\RoutingAuto\Tests\Unit\BaseTestCase;
 use Symfony\Cmf\Component\RoutingAuto\DefunctRouteHandler\DelegatingDefunctRouteHandler;
 
-class DelegatingDefunctRouteHandlerTest extends BaseTestCase
+class DelegatingDefunctRouteHandlerTest extends \PHPUnit_Framework_TestCase
 {
     protected $metadataFactory;
     protected $adapter;
@@ -25,7 +23,6 @@ class DelegatingDefunctRouteHandlerTest extends BaseTestCase
 
     public function setUp()
     {
-        parent::setUp();
         $this->metadataFactory = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\Mapping\MetadataFactory');
         $this->adapter = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\AdapterInterface');
         $this->serviceRegistry = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\ServiceRegistry');
@@ -33,7 +30,7 @@ class DelegatingDefunctRouteHandlerTest extends BaseTestCase
         $this->metadata = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\Mapping\ClassMetadata');
         $this->delegatedHandler = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\DefunctRouteHandlerInterface');
 
-        $this->subjectObject = new \stdClass;
+        $this->subjectObject = new \stdClass();
 
         $this->delegatingDefunctRouteHandler = new DelegatingDefunctRouteHandler(
             $this->metadataFactory->reveal(),
@@ -49,7 +46,7 @@ class DelegatingDefunctRouteHandlerTest extends BaseTestCase
         $this->adapter->getRealClassName('stdClass')->willReturn('stdClass');
         $this->metadataFactory->getMetadataForClass('stdClass')->willReturn($this->metadata);
         $this->metadata->getDefunctRouteHandler()->willReturn(array(
-            'name' => 'foobar'
+            'name' => 'foobar',
         ));
         $this->serviceRegistry->getDefunctRouteHandler('foobar')->willReturn($this->delegatedHandler);
         $this->delegatedHandler->handleDefunctRoutes($this->uriContextCollection->reveal())->shouldBeCalled();

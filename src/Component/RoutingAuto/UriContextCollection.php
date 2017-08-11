@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\RoutingAuto;
 
@@ -16,13 +15,26 @@ use Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface;
 
 class UriContextCollection
 {
+    /**
+     * @var object
+     */
     protected $subjectObject;
     protected $uriContexts = array();
 
     /**
-     * @param mixed $subjectObject Subject for URL generation
+     * @param object $subjectObject Subject for URL generation
      */
     public function __construct($subjectObject)
+    {
+        $this->subjectObject = $subjectObject;
+    }
+
+    /**
+     * Set the subject for URL generation.
+     *
+     * @param object $subjectObject
+     */
+    public function setSubjectObject($subjectObject)
     {
         $this->subjectObject = $subjectObject;
     }
@@ -39,9 +51,8 @@ class UriContextCollection
     }
 
     /**
-     * Create and a URL context
+     * Create a URL context.
      *
-     * @param string $uri    URL
      * @param string $locale Locale for given URL
      *
      * @return UriContext
@@ -57,7 +68,7 @@ class UriContextCollection
     }
 
     /**
-     * Push a URL context onto the stack
+     * Push a URL context onto the stack.
      *
      * @param UriContext $uriContext
      */
@@ -72,10 +83,12 @@ class UriContextCollection
     }
 
     /**
-     * Return true if any one of the UriContexts in the stacj
-     * contain the given auto route
+     * Check if any of the UriContexts in the stack contain
+     * the given auto route.
      *
      * @param AutoRouteInterface $autoRoute
+     *
+     * @return bool
      */
     public function containsAutoRoute(AutoRouteInterface $autoRoute)
     {
@@ -88,6 +101,13 @@ class UriContextCollection
         return false;
     }
 
+    /**
+     * Get an auto route by its tag (e.g. the locale).
+     *
+     * @param mixed $tag
+     *
+     * @return AutoRouteInterface|null
+     */
     public function getAutoRouteByTag($tag)
     {
         foreach ($this->uriContexts as $uriContext) {
@@ -97,6 +117,6 @@ class UriContextCollection
             }
         }
 
-        return null;
+        return;
     }
 }

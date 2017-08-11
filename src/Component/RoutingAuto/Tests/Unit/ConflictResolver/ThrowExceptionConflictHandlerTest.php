@@ -3,25 +3,22 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit\ConflictResolver;
 
-use Symfony\Cmf\Component\RoutingAuto\Tests\Unit\BaseTestCase;
 use Symfony\Cmf\Component\RoutingAuto\ConflictResolver\ThrowExceptionConflictResolver;
 
-class ThrowExceptionConflictResolverTest extends BaseTestCase
+class ThrowExceptionConflictHandlerTest extends \PHPUnit_Framework_TestCase
 {
     protected $adapter;
 
     public function setUp()
     {
-        parent::setUp();
         $this->conflictResolver = new ThrowExceptionConflictResolver();
         $this->uriContext = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\UriContext');
     }
@@ -36,4 +33,3 @@ class ThrowExceptionConflictResolverTest extends BaseTestCase
         $this->conflictResolver->resolveConflict($this->uriContext->reveal());
     }
 }
-

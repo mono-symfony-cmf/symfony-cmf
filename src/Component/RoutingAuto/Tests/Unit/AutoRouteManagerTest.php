@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit;
 
@@ -65,9 +64,9 @@ class AutoRouteManagerTest extends \PHPUnit_Framework_TestCase
         $uris = $params['uris'];
         $indexedUris = array_keys($uris);
         $expectedRoutes = array();
-        $document = new \stdClass;
+        $document = new \stdClass();
 
-        for ($i = 0; $i < $localesCount; $i++) {
+        for ($i = 0; $i < $localesCount; ++$i) {
             $expectedRoutes[] = $this->getMock('Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface');
 
             $this->uriGenerator->expects($this->exactly($localesCount))
@@ -81,6 +80,7 @@ class AutoRouteManagerTest extends \PHPUnit_Framework_TestCase
             ->method('createAutoRoute')
             ->will($this->returnCallback(function ($uri, $document) use ($expectedRoutes) {
                 static $i = 0;
+
                 return $expectedRoutes[$i++];
             }));
 
@@ -88,7 +88,7 @@ class AutoRouteManagerTest extends \PHPUnit_Framework_TestCase
         $this->autoRouteManager->buildUriContextCollection($uriContextCollection);
 
         foreach ($expectedRoutes as $expectedRoute) {
-            $this->assertTrue($uriContextCollection->containsAutoRoute($expectedRoute), 'URL context collection contains route: ' . spl_object_hash($expectedRoute));
+            $this->assertTrue($uriContextCollection->containsAutoRoute($expectedRoute), 'URL context collection contains route: '.spl_object_hash($expectedRoute));
         }
     }
 }

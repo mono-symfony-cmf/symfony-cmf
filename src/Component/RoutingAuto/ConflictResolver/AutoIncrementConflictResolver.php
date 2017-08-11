@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\RoutingAuto\ConflictResolver;
 
@@ -17,7 +16,7 @@ use Symfony\Cmf\Component\RoutingAuto\UriContext;
 use Symfony\Cmf\Component\RoutingAuto\AdapterInterface;
 
 /**
- * This conflict resolver will generate candidate URLs by appending 
+ * This conflict resolver will generate candidate URLs by appending
  * a number to the URL. It will keep incrementing this number until
  * the URL does not exist.
  *
@@ -37,7 +36,7 @@ class AutoIncrementConflictResolver implements ConflictResolverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function resolveConflict(UriContext $uriContext)
     {
@@ -46,7 +45,7 @@ class AutoIncrementConflictResolver implements ConflictResolverInterface
         $uri = $uriContext->getUri();
         $candidateUri = $this->incrementUri($uri);
 
-        while ($route = $this->adapter->findRouteForUri($candidateUri)) {
+        while ($route = $this->adapter->findRouteForUri($candidateUri, $uriContext)) {
             $candidateUri = $this->incrementUri($uri);
         }
 

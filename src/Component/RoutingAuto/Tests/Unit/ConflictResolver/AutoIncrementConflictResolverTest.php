@@ -3,26 +3,22 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit\ConflictResolver;
 
-use Symfony\Cmf\Component\RoutingAuto\Tests\Unit\BaseTestCase;
 use Symfony\Cmf\Component\RoutingAuto\ConflictResolver\AutoIncrementConflictResolver;
 
-class AutoIncrementConflictResolverTest extends BaseTestCase
+class AutoIncrementConflictResolverTest extends \PHPUnit_Framework_TestCase
 {
     protected $adapter;
 
     public function setUp()
     {
-        parent::setUp();
-
         $this->adapter = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\AdapterInterface');
 
         $this->conflictResolver = new AutoIncrementConflictResolver($this->adapter->reveal());
@@ -37,7 +33,7 @@ class AutoIncrementConflictResolverTest extends BaseTestCase
                 array(
                     '/foobar/bar-1',
                 ),
-                '/foobar/bar-2'
+                '/foobar/bar-2',
             ),
             array(
                 '/foobar/bar',
@@ -46,8 +42,8 @@ class AutoIncrementConflictResolverTest extends BaseTestCase
                     '/foobar/bar-2',
                     '/foobar/bar-4',
                 ),
-                '/foobar/bar-3'
-            )
+                '/foobar/bar-3',
+            ),
         );
     }
 
@@ -59,9 +55,9 @@ class AutoIncrementConflictResolverTest extends BaseTestCase
         $this->uriContext->getUri()->willReturn($uri);
 
         foreach ($existingRoutes as $existingRoute) {
-            $this->adapter->findRouteForUri($existingRoute)->willReturn(new \stdClass);
+            $this->adapter->findRouteForUri($existingRoute, $this->uriContext->reveal())->willReturn(new \stdClass());
         }
-        $this->adapter->findRouteForUri($expectedResult)->willReturn(null);
+        $this->adapter->findRouteForUri($expectedResult, $this->uriContext->reveal())->willReturn(null);
 
         $uri = $this->conflictResolver->resolveConflict($this->uriContext->reveal());
         $this->assertEquals($expectedResult, $uri);

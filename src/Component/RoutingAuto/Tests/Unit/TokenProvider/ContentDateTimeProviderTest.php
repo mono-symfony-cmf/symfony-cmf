@@ -3,32 +3,26 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit\TokenProvider;
 
-use Symfony\Cmf\Component\RoutingAuto\Tests\Unit\BaseTestCase;
 use Symfony\Cmf\Component\RoutingAuto\TokenProvider\ContentDateTimeProvider;
 
-class ContentDateTimeProviderTest extends BaseTestCase
+class ContentDateTimeProviderTest extends \PHPUnit_Framework_TestCase
 {
-    protected $slugifier;
     protected $article;
     protected $uriContext;
 
     public function setUp()
     {
-        parent::setUp();
-
-        $this->slugifier = $this->prophesize('Symfony\Cmf\Bundle\CoreBundle\Slugifier\SlugifierInterface');
         $this->article = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\Tests\Resources\Fixtures\Article');
         $this->uriContext = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\UriContext');
-        $this->provider = new ContentDateTimeProvider($this->slugifier->reveal());
+        $this->provider = new ContentDateTimeProvider();
     }
 
     public function provideGetValue()
@@ -38,13 +32,13 @@ class ContentDateTimeProviderTest extends BaseTestCase
                 array(
                     'date_format' => 'Y-m-d',
                 ),
-                '2014-10-09'
+                '2014-10-09',
             ),
             array(
                 array(
                     'date_format' => 'Y/m/d',
                 ),
-                '2014/10/09'
+                '2014/10/09',
             ),
         );
     }

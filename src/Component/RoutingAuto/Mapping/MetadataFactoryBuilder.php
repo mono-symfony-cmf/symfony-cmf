@@ -3,37 +3,36 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Component\RoutingAuto\Mapping;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
- * MetaFactoryBuilder
+ * MetaFactoryBuilder.
  *
  * @author Wouter J <wouter@wouterj.nl>
  */
 class MetadataFactoryBuilder
 {
-    /** 
-     * @var array 
+    /**
+     * @var array
      */
     protected $resources;
 
-    /** 
+    /**
      * @var LoaderInterface
      */
     protected $loader;
 
     /**
      * @param LoaderInterface $loader
-     * @param array $resources
+     * @param array           $resources
      */
     public function __construct(LoaderInterface $loader, array $resources)
     {
@@ -42,12 +41,11 @@ class MetadataFactoryBuilder
     }
 
     /**
-     * Return the metadata factory
+     * Return the metadata factory.
      *
      * @return MetadataFactory
      */
     public function getMetadataFactory()
-
     {
         $mappingFactory = new MetadataFactory();
 

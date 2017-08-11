@@ -3,39 +3,39 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto;
 
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface;
-use Symfony\Cmf\Component\RoutingAuto\UriContext;
 
 /**
- * Adapters will (eventually) abstract all database operations
- * with the aim of enabling other providers such as ORM.
+ * Adapters will abstract all persistence operations.
  *
  * @author Daniel Leech <daniel@dantleech.com>
  */
 interface AdapterInterface
 {
     /**
-     * Return locales for object
+     * Get the locales for object.
      *
-     * @return array
+     * @param object $object
+     *
+     * @return array A list of locales
      */
     public function getLocales($object);
 
     /**
-     * Translate the given object into the given locale
+     * Translate the given object into the given locale.
      *
      * @param object $object
-     * @param string $locale e.g. fr, en, de, be, etc.
+     * @param string $locale E.g. fr, en, etc.
+     *
+     * @return object The translated subject object
      */
     public function translateObject($object, $locale);
 
@@ -55,23 +55,31 @@ interface AdapterInterface
      * Return the canonical name for the given class, this is
      * required as somethimes an ORM may return a proxy class.
      *
+     * @param string $className
+     *
      * @return string
      */
     public function getRealClassName($className);
 
     /**
-     * Return true if the content associated with the auto route
-     * and the given content object are the same.
+     * Compares the content associated with the auto route and the
+     * given content object.
      *
-     * @param RouteObjectInterface
-     * @param object
+     * @param AutoRouteInterface $autoRoute
+     * @param object             $contentObject
+     *
+     * @return bool True when the contents are equal, false otherwise
      */
     public function compareAutoRouteContent(AutoRouteInterface $autoRoute, $contentObject);
 
     /**
-     * Attempt to find a route with the given URL
+     * Attempt to find a route with the given URL.
      *
-     * @param string $uri
+     * Note that the URI may not be the same as the URI in the URI context,
+     * this will happen when the ConflictResolver is trying to find candidate
+     * URLs for example.
+     *
+     * @param string $uri The URI to find
      *
      * @return null|Symfony\Cmf\Component\Routing\RouteObjectInterface
      */
@@ -82,6 +90,8 @@ interface AdapterInterface
      * other routes as required.
      *
      * @param UriContext $uriContext
+     *
+     * @return string
      */
     public function generateAutoRouteTag(UriContext $uriContext);
 
@@ -109,7 +119,7 @@ interface AdapterInterface
     public function migrateAutoRouteChildren(AutoRouteInterface $srcAutoRoute, AutoRouteInterface $destAutoRoute);
 
     /**
-     * Remove the given auto route
+     * Remove the given auto route.
      *
      * @param AutoRouteInterface $autoRoute
      */
@@ -132,7 +142,7 @@ interface AdapterInterface
      * The referring auto route should either be deleted or scheduled to be removed,
      * so the route created here will replace it.
      *
-     * The new redirecvt route should redirect the request to the URL determined by
+     * The new redirect route should redirect the request to the URL determined by
      * the $newRoute.
      *
      * @param AutoRouteInterface $referringAutoRoute

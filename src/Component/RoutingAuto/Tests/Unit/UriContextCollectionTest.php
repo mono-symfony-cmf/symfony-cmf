@@ -3,31 +3,28 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Component\RoutingAuto\Tests\Unit;
 
-use Symfony\Cmf\Component\RoutingAuto\Tests\Unit\BaseTestCase;
 use Symfony\Cmf\Component\RoutingAuto\UriContextCollection;
 
-class UriContextCollectionTest extends BaseTestCase
+class UriContextCollectionTest extends \PHPUnit_Framework_TestCase
 {
     protected $uriContextCollection;
 
     public function setUp()
     {
-        parent::setUp();
-        $this->subjectObject = new \stdClass;
+        $this->subjectObject = new \stdClass();
 
-        for ($i = 1; $i <= 3; $i++) {
-            $this->{'autoRoute' . $i} = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface');
-            $this->{'uriContext' . $i} = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\UriContext');
-            $this->{'uriContext' . $i}->getAutoRoute()->willReturn($this->{'autoRoute' . $i});
+        for ($i = 1; $i <= 3; ++$i) {
+            $this->{'autoRoute'.$i} = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\Model\AutoRouteInterface');
+            $this->{'uriContext'.$i} = $this->prophesize('Symfony\Cmf\Component\RoutingAuto\UriContext');
+            $this->{'uriContext'.$i}->getAutoRoute()->willReturn($this->{'autoRoute'.$i});
         }
 
         $this->uriContextCollection = new UriContextCollection($this->subjectObject);
@@ -51,16 +48,15 @@ class UriContextCollectionTest extends BaseTestCase
             array(
                 array('uriContext1', 'uriContext2', 'uriContext3'),
                 'autoRoute1',
-                true
+                true,
             ),
             array(
                 array('uriContext2', 'uriContext3'),
                 'autoRoute1',
-                false
+                false,
             ),
         );
     }
-
 
     /**
      * @dataProvider provideContainsAutoRoute
