@@ -1,16 +1,29 @@
 Changelog
 =========
 
-2.0.1
+2.1.0
 -----
 
-* **2016-06-10**: Fixed the admin interface of menu items refering to content
-  without the link type set.
+* **2017-02-17**: [BC BREAK] Removed unused setRequest from PhpcrMenuProvider and changed properties to private.
+
+2.1.0-RC2
+---------
+
+* **2017-02-09**: [BC BREAK] Added child restrictions to the `Menu` and `MenuNode` documents.
+  See the UPGRADE guide for detailed information.
+
+2.1.0-RC1
+---------
+
+* **2016-11-27**: [BC BREAK] Removed all admin integration in favor of the CmfSonataAdminIntegrationBundle.
+* **2016-06-18**: [BC BREAK] Removed all `*.class` parameters.
 * **2016-05-25**: Use "auto" for publish workflow enabled flag. If auto and
   CmfCoreBundle is not instantiated, publish workflow integration is not enabled.
 
 2.0.0
 -----
+
+Released.
 
 2.0.0-RC1
 ---------
