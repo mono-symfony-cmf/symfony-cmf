@@ -1,10 +1,4 @@
 {
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "file:///home/maximilian/OpenSource/MonoCMF/symfony-cmf/"
-        }
-    ],
     "name": "mono-symfony-cmf/symfony-cmf",
     "description": "Monorepo of Symfony CMF",
     "type": "library",
