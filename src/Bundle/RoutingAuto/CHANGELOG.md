@@ -1,16 +1,18 @@
 Changelog
 =========
 
+2.0.0-RC1
+---------
+
+* Added Symfony 3 support
+* [BC BREAK] Removed all `*.class` parameters.
+* Convert non-managed intermediate nodes into AutoRoute documents #165
+* Added support for multiple routes on the same document
+
 1.1.0
 -----
 
-* **2016-03-31**: Added SymfonyContainerParameterTokenProvider for retrieving
-                  path elements from the DI container
-
-1.1.0-RC1
----------
-
-* Convert non-managed intermediate nodes into AutoRoute documents #165
+Released.
 
 1.0.0
 -----
