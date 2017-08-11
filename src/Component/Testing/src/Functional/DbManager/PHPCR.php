@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2017 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -65,7 +65,7 @@ class PHPCR
     /**
      * Purge the database.
      *
-     * @param bool $initialize If the ODM repository initializers should be executed.
+     * @param bool $initialize if the ODM repository initializers should be executed
      */
     public function purgeRepository($initialize = false)
     {
@@ -76,7 +76,7 @@ class PHPCR
      * Load fixtures.
      *
      * @param array $classNames Fixture classes to load
-     * @param bool  $initialize If the ODM repository initializers should be executed.
+     * @param bool  $initialize if the ODM repository initializers should be executed
      */
     public function loadFixtures(array $classNames, $initialize = false)
     {

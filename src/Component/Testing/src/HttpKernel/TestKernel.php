@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2015 Symfony CMF
+ * (c) 2011-2017 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,8 +11,24 @@
 
 namespace Symfony\Cmf\Component\Testing\HttpKernel;
 
-use Symfony\Component\HttpKernel\Kernel;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle;
+use FOS\JsRoutingBundle\FOSJsRoutingBundle;
+use Knp\Bundle\MenuBundle\KnpMenuBundle;
+use Sonata\AdminBundle\SonataAdminBundle;
+use Sonata\BlockBundle\SonataBlockBundle;
+use Sonata\CoreBundle\SonataCoreBundle;
+use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
+use Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle;
+use Sonata\jQueryBundle\SonatajQueryBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use Symfony\Bundle\WebServerBundle\WebServerBundle;
+use Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * TestKernel base class for Symfony CMF Bundle
@@ -33,47 +49,43 @@ abstract class TestKernel extends Kernel
      */
     public function __construct($env, $debug)
     {
-        $this->registerBundleSet('default', array(
-            'Symfony\Bundle\FrameworkBundle\FrameworkBundle',
-            'Symfony\Bundle\SecurityBundle\SecurityBundle',
-            'Symfony\Bundle\TwigBundle\TwigBundle',
-            'Symfony\Bundle\MonologBundle\MonologBundle',
-        ));
+        $defaultBundles = [
+            FrameworkBundle::class,
+            SecurityBundle::class,
+            TwigBundle::class,
+            MonologBundle::class,
+        ];
 
-        $this->registerBundleSet('phpcr_odm', array(
-            'Doctrine\Bundle\DoctrineBundle\DoctrineBundle',
-            'Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle',
-        ));
-
-        $this->registerBundleSet('doctrine_orm', array(
-            'Doctrine\Bundle\DoctrineBundle\DoctrineBundle',
-        ));
-
-        $baseSonataBundles = array(
-            'Sonata\BlockBundle\SonataBlockBundle',
-            'Sonata\CoreBundle\SonataCoreBundle',
-            'Sonata\AdminBundle\SonataAdminBundle',
-            'Knp\Bundle\MenuBundle\KnpMenuBundle',
-            'FOS\JsRoutingBundle\FOSJsRoutingBundle',
-        );
-
-        if (class_exists('Sonata\jQueryBundle\SonatajQueryBundle')) {
-            $baseSonataBundles[] = 'Sonata\jQueryBundle\SonatajQueryBundle';
+        if (class_exists(WebServerBundle::class)) {
+            $defaultBundles[] = WebServerBundle::class;
         }
 
-        $this->registerBundleSet('sonata_admin', array_merge(array(
-            'Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle',
-            'Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle',
-        ), $baseSonataBundles));
+        $this->registerBundleSet('default', $defaultBundles);
 
-        $this->registerBundleSet('sonata_admin_orm', array_merge(array(
-            'Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle',
-        ), $baseSonataBundles));
+        $this->registerBundleSet('phpcr_odm', [DoctrineBundle::class, DoctrinePHPCRBundle::class]);
+        $this->registerBundleSet('doctrine_orm', [DoctrineBundle::class]);
 
-        $this->registerBundleSet('sonata_admin_phpcr', array_merge(array(
-            'Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle',
-            'Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle',
-        ), $baseSonataBundles));
+        $baseSonataBundles = [
+            SonataBlockBundle::class,
+            SonataCoreBundle::class,
+            SonataAdminBundle::class,
+            KnpMenuBundle::class,
+            FOSJsRoutingBundle::class,
+        ];
+
+        if (class_exists(SonatajQueryBundle::class)) {
+            $baseSonataBundles[] = SonatajQueryBundle::class;
+        }
+
+        $this->registerBundleSet('sonata_admin_orm', array_merge(
+            [SonataDoctrineORMAdminBundle::class],
+            $baseSonataBundles
+        ));
+
+        $this->registerBundleSet('sonata_admin_phpcr', array_merge([
+            SonataDoctrinePHPCRAdminBundle::class,
+            CmfTreeBrowserBundle::class,
+        ], $baseSonataBundles));
 
         parent::__construct($env, $debug);
         $this->configure();
@@ -119,10 +131,6 @@ abstract class TestKernel extends Kernel
      */
     public function requireBundleSet($name)
     {
-        if ('sonata_admin' === $name) {
-            @trigger_error('The "sonata_admin" bundleset is deprecated since version 1.1 and will be removed in 2.0. Use the "sonata_admin_phpcr" bundleset instead.', E_USER_DEPRECATED);
-        }
-
         if (!isset($this->bundleSets[$name])) {
             throw new \InvalidArgumentException(sprintf(
                 'Bundle set %s has not been registered, available bundle sets: %s',
