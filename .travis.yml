@@ -69,7 +69,6 @@ before_install:
       echo opcache.enable_cli = 1 >> $INI
       echo hhvm.jit = 0 >> $INI
       echo apc.enable_cli = 1 >> $INI
-      echo extension = ldap.so >> $INI
       echo extension = redis.so >> $INI
       echo extension = memcached.so >> $INI
       [[ $PHP = 5.* ]] && echo extension = memcache.so >> $INI
@@ -101,13 +100,6 @@ before_install:
           tfold ext.apcu4 'echo yes | pecl install -f apcu-4.0.11'
       elif [[ ! $skip && $PHP = 7.* ]]; then
           tfold ext.apcu5 'echo yes | pecl install -f apcu-5.1.6'
-      fi
-
-    - |
-      # Load fixtures
-      if [[ ! $skip ]]; then
-          ldapadd -h localhost:3389 -D cn=admin,dc=symfony,dc=com -w symfony -f src/Symfony/Component/Ldap/Tests/Fixtures/data/base.ldif &&
-          ldapadd -h localhost:3389 -D cn=admin,dc=symfony,dc=com -w symfony -f src/Symfony/Component/Ldap/Tests/Fixtures/data/fixtures.ldif
       fi
 
     - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
@@ -181,7 +173,15 @@ install:
           fi
       }
 
-before_script: (cd src/Component/Testing && composer update && bin/travis/phpcr_odm_doctrine_dbal.sh)
+before_script:
+    - |
+      echo "Do stupid steps for init testing db"
+      cd src/Component/Testing
+      composer update
+      cd ..
+      cd ..
+      ./Testing/bin/travis/phpcr_odm_doctrine_dbal.sh
+      cd ..
 
 script:
     - (run_tests)
