@@ -1,3 +1,2370 @@
 {
-    "packages": []
+    "packages": {
+        "symfony-cmf/routing": {
+            "2.0.x-dev": {
+                "repositories": [
+                    {
+                        "type": "composer",
+                        "url": "file:///home/maximilian/OpenSource/MonoCMF/symfony-cmf/"
+                    }
+                ],
+                "name": "symfony-cmf/routing",
+                "type": "library",
+                "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "routing",
+                    "database"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "license": "MIT",
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "require": {
+                    "php": "^5.6.0|^7.0",
+                    "symfony/routing": "^2.8|^3.0",
+                    "symfony/http-kernel": "^2.8|^3.0",
+                    "psr/log": "^1.0"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^2.0",
+                    "symfony/phpunit-bridge": "^3.2",
+                    "symfony/dependency-injection": "^2.8|^3.0",
+                    "symfony/config": "^2.8|^3.0",
+                    "symfony/event-dispatcher": "^2.8|^3.0",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                    }
+                },
+                "autoload-dev": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\Tests\\": "tests/"
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "2.0-dev"
+                    }
+                },
+                "version": "2.0.x-dev",
+                "dist": {
+                    "type": "tar",
+                    "url": "file:///home/maximilian/OpenSource/MonoCMF/symfony-cmf/src/Component/Routing/package.tar"
+                }
+            },
+            "1.4.x-dev": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.4.x-dev",
+                "version_normalized": "1.4.9999999.9999999-dev",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "fb1e7f85ff8c6866238b7e73a490a0a0243ae8ac"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/fb1e7f85ff8c6866238b7e73a490a0a0243ae8ac",
+                    "reference": "fb1e7f85ff8c6866238b7e73a490a0a0243ae8ac",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-05-09T08:10:41+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.4-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.3.9|^7.0",
+                    "symfony/routing": "^2.2|3.*",
+                    "symfony/http-kernel": "^2.2|3.*",
+                    "psr/log": "1.*"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3",
+                    "symfony/dependency-injection": "^2.0.5|3.*",
+                    "symfony/config": "^2.2|3.*",
+                    "symfony/event-dispatcher": "^2.1|3.*",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "dev-adder_conditional_enhancer": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "dev-adder_conditional_enhancer",
+                "version_normalized": "dev-adder_conditional_enhancer",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "2a0267ed380332de7f66d70a3b8e885dc40b3e98"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/2a0267ed380332de7f66d70a3b8e885dc40b3e98",
+                    "reference": "2a0267ed380332de7f66d70a3b8e885dc40b3e98",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-01-19T21:46:53+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "2.0-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.6.0|^7.0",
+                    "symfony/routing": "^2.2|^3.0",
+                    "symfony/http-kernel": "^2.2|^3.0",
+                    "psr/log": "^1.0"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3|^2.0",
+                    "symfony/phpunit-bridge": "^3.2",
+                    "symfony/dependency-injection": "^2.0.5|^3.0",
+                    "symfony/config": "^2.2|^3.0",
+                    "symfony/event-dispatcher": "^2.1|^3.0",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "1.3.x-dev": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.3.x-dev",
+                "version_normalized": "1.3.9999999.9999999-dev",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "a4e754021ce660e5d33f7d53cfb19a4469600ba8"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/a4e754021ce660e5d33f7d53cfb19a4469600ba8",
+                    "reference": "a4e754021ce660e5d33f7d53cfb19a4469600ba8",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2015-10-20T06:40:16+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.3-dev"
+                    }
+                },
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0@stable",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "dev-drop-dynamicrouter-match": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "dev-drop-dynamicrouter-match",
+                "version_normalized": "dev-drop-dynamicrouter-match",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "ae6c5d4e7d9e3ce4959763997ffc2f8d37eb3694"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/ae6c5d4e7d9e3ce4959763997ffc2f8d37eb3694",
+                    "reference": "ae6c5d4e7d9e3ce4959763997ffc2f8d37eb3694",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-09-09T15:11:15+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.3-dev"
+                    }
+                },
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.2.x-dev": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.2.x-dev",
+                "version_normalized": "1.2.9999999.9999999-dev",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "48be48d3bedefe6ccd97dd04649e91eed6764368"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/48be48d3bedefe6ccd97dd04649e91eed6764368",
+                    "reference": "48be48d3bedefe6ccd97dd04649e91eed6764368",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-07-24T15:08:13+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.2-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.1.x-dev": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.x-dev",
+                "version_normalized": "1.1.9999999.9999999-dev",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "29d123911e79c0865a2d0bedd498cbac7d90957c"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/29d123911e79c0865a2d0bedd498cbac7d90957c",
+                    "reference": "29d123911e79c0865a2d0bedd498cbac7d90957c",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-07-24T15:06:41+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.0.x-dev": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.x-dev",
+                "version_normalized": "1.0.9999999.9999999-dev",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "b898a06fbd59e36d82f00f8308d6c577cd0f4e63"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/b898a06fbd59e36d82f00f8308d6c577cd0f4e63",
+                    "reference": "b898a06fbd59e36d82f00f8308d6c577cd0f4e63",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-07-04T07:32:29+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, >=2.1,<2.3-dev"
+                }
+            },
+            "2.0.1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "2.0.1",
+                "version_normalized": "2.0.1.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "97def24f83063ab3c96872c5e4b83ccc19e8f240"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/97def24f83063ab3c96872c5e4b83ccc19e8f240",
+                    "reference": "97def24f83063ab3c96872c5e4b83ccc19e8f240",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-05-09T08:14:24+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "2.0-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.6.0|^7.0",
+                    "symfony/routing": "^2.8|^3.0",
+                    "symfony/http-kernel": "^2.8|^3.0",
+                    "psr/log": "^1.0"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^2.0",
+                    "symfony/phpunit-bridge": "^3.2",
+                    "symfony/dependency-injection": "^2.8|^3.0",
+                    "symfony/config": "^2.8|^3.0",
+                    "symfony/event-dispatcher": "^2.8|^3.0",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "1.4.1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.4.1",
+                "version_normalized": "1.4.1.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "fb1e7f85ff8c6866238b7e73a490a0a0243ae8ac"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/fb1e7f85ff8c6866238b7e73a490a0a0243ae8ac",
+                    "reference": "fb1e7f85ff8c6866238b7e73a490a0a0243ae8ac",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-05-09T08:10:41+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.4-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.3.9|^7.0",
+                    "symfony/routing": "^2.2|3.*",
+                    "symfony/http-kernel": "^2.2|3.*",
+                    "psr/log": "1.*"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3",
+                    "symfony/dependency-injection": "^2.0.5|3.*",
+                    "symfony/config": "^2.2|3.*",
+                    "symfony/event-dispatcher": "^2.1|3.*",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "2.0.0": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "2.0.0",
+                "version_normalized": "2.0.0.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "4f8a5fcdc5ac6b9e580b7923b09f8a1ad3035765"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/4f8a5fcdc5ac6b9e580b7923b09f8a1ad3035765",
+                    "reference": "4f8a5fcdc5ac6b9e580b7923b09f8a1ad3035765",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-02-24T17:02:07+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "2.0-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.6.0|^7.0",
+                    "symfony/routing": "^2.8|^3.0",
+                    "symfony/http-kernel": "^2.8|^3.0",
+                    "psr/log": "^1.0"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^2.0",
+                    "symfony/phpunit-bridge": "^3.2",
+                    "symfony/dependency-injection": "^2.8|^3.0",
+                    "symfony/config": "^2.8|^3.0",
+                    "symfony/event-dispatcher": "^2.8|^3.0",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "2.0.0-RC3": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "2.0.0-RC3",
+                "version_normalized": "2.0.0.0-RC3",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "c01c23b6665db740ae51e9ca2246c598ca989f3c"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/c01c23b6665db740ae51e9ca2246c598ca989f3c",
+                    "reference": "c01c23b6665db740ae51e9ca2246c598ca989f3c",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-02-10T14:56:26+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "2.0-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.6.0|^7.0",
+                    "symfony/routing": "^2.2|^3.0",
+                    "symfony/http-kernel": "^2.2|^3.0",
+                    "psr/log": "^1.0"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3|^2.0",
+                    "symfony/phpunit-bridge": "^3.2",
+                    "symfony/dependency-injection": "^2.0.5|^3.0",
+                    "symfony/config": "^2.2|^3.0",
+                    "symfony/event-dispatcher": "^2.1|^3.0",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "2.0.0-RC2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "2.0.0-RC2",
+                "version_normalized": "2.0.0.0-RC2",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "b3fcd118c0889be89be824849eefcf9269817fa5"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/b3fcd118c0889be89be824849eefcf9269817fa5",
+                    "reference": "b3fcd118c0889be89be824849eefcf9269817fa5",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-02-01T15:08:35+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "2.0-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.6.0|^7.0",
+                    "symfony/routing": "^2.2|^3.0",
+                    "symfony/http-kernel": "^2.2|^3.0",
+                    "psr/log": "^1.0"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3|^2.0",
+                    "symfony/phpunit-bridge": "^3.2",
+                    "symfony/dependency-injection": "^2.0.5|^3.0",
+                    "symfony/config": "^2.2|^3.0",
+                    "symfony/event-dispatcher": "^2.1|^3.0",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "2.0.0-RC1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "2.0.0-RC1",
+                "version_normalized": "2.0.0.0-RC1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/routing.git",
+                    "reference": "0aa8838b01778dc6ca46e26e886e22422078fe0e"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/routing/zipball/0aa8838b01778dc6ca46e26e886e22422078fe0e",
+                    "reference": "0aa8838b01778dc6ca46e26e886e22422078fe0e",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2017-01-05T20:47:35+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "2.0-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.5.9|^7.0",
+                    "symfony/routing": "^2.2|^3.0",
+                    "symfony/http-kernel": "^2.2|^3.0",
+                    "psr/log": "^1.0"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3|^2.0",
+                    "symfony/dependency-injection": "^2.0.5|^3.0",
+                    "symfony/config": "^2.2|^3.0",
+                    "symfony/event-dispatcher": "^2.1|^3.0",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "1.4.0": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.4.0",
+                "version_normalized": "1.4.0.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "b93704ca098334f56e9b317932f21a4362e620db"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/b93704ca098334f56e9b317932f21a4362e620db",
+                    "reference": "b93704ca098334f56e9b317932f21a4362e620db",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2016-03-31T09:11:39+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.4-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.3.9|^7.0",
+                    "symfony/routing": "^2.2|3.*",
+                    "symfony/http-kernel": "^2.2|3.*",
+                    "psr/log": "1.*"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3",
+                    "symfony/dependency-injection": "^2.0.5|3.*",
+                    "symfony/config": "^2.2|3.*",
+                    "symfony/event-dispatcher": "^2.1|3.*",
+                    "friendsofsymfony/jsrouting-bundle": "^1.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "1.4.0-RC3": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.4.0-RC3",
+                "version_normalized": "1.4.0.0-RC3",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "8f172869f59e2fe70ec5b2525c2807b665b18d6c"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/8f172869f59e2fe70ec5b2525c2807b665b18d6c",
+                    "reference": "8f172869f59e2fe70ec5b2525c2807b665b18d6c",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2016-02-27T22:33:03+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.4-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.3.9|^7.0",
+                    "symfony/routing": "^2.2|3.*",
+                    "symfony/http-kernel": "^2.2|3.*",
+                    "psr/log": "1.*"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3@dev",
+                    "symfony/dependency-injection": "^2.0.5|3.*",
+                    "symfony/config": "^2.2|3.*",
+                    "symfony/event-dispatcher": "^2.1|3.*",
+                    "friendsofsymfony/jsrouting-bundle": "@dev"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "1.4.0-RC2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.4.0-RC2",
+                "version_normalized": "1.4.0.0-RC2",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "da333f0cf45a8602b4aeb316cf7ce41e030ef92a"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/da333f0cf45a8602b4aeb316cf7ce41e030ef92a",
+                    "reference": "da333f0cf45a8602b4aeb316cf7ce41e030ef92a",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2016-01-21T10:11:44+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.4-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.3.9|^7.0",
+                    "symfony/routing": "^2.2|3.*",
+                    "symfony/http-kernel": "^2.2|3.*",
+                    "psr/log": "1.*"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3@dev",
+                    "symfony/dependency-injection": "^2.0.5|3.*",
+                    "symfony/config": "^2.2|3.*",
+                    "symfony/event-dispatcher": "^2.1|3.*",
+                    "friendsofsymfony/jsrouting-bundle": "@dev"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "1.4.0-RC1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.4.0-RC1",
+                "version_normalized": "1.4.0.0-RC1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "9a59d986e2238f6a47142bf4436248f44ee0b7fb"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/9a59d986e2238f6a47142bf4436248f44ee0b7fb",
+                    "reference": "9a59d986e2238f6a47142bf4436248f44ee0b7fb",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2016-01-09T13:00:37+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.4-dev"
+                    }
+                },
+                "require": {
+                    "php": "^5.3.9|^7.0",
+                    "symfony/routing": "^2.2|3.*",
+                    "symfony/http-kernel": "^2.2|3.*",
+                    "psr/log": "1.*"
+                },
+                "require-dev": {
+                    "symfony-cmf/testing": "^1.3@dev",
+                    "symfony/dependency-injection": "^2.0.5|3.*",
+                    "symfony/config": "^2.2|3.*",
+                    "symfony/event-dispatcher": "^2.1|3.*",
+                    "friendsofsymfony/jsrouting-bundle": "@dev"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version (~2.1)"
+                }
+            },
+            "1.3.0": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.3.0",
+                "version_normalized": "1.3.0.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "8e87981d72c6930a27585dcd3119f3199f6cb2a6"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/8e87981d72c6930a27585dcd3119f3199f6cb2a6",
+                    "reference": "8e87981d72c6930a27585dcd3119f3199f6cb2a6",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-10-20T20:55:17+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.3-dev"
+                    }
+                },
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0@stable",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.3.0-RC4": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.3.0-RC4",
+                "version_normalized": "1.3.0.0-RC4",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "17463cc24cfdf6708819027c662a97a1248c4b97"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/17463cc24cfdf6708819027c662a97a1248c4b97",
+                    "reference": "17463cc24cfdf6708819027c662a97a1248c4b97",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-10-03T13:02:49+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.3-dev"
+                    }
+                },
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0@stable",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.3.0-RC3": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.3.0-RC3",
+                "version_normalized": "1.3.0.0-RC3",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "4f160e223a8914d4b17cde2966ebf52d1b2b58f1"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/4f160e223a8914d4b17cde2966ebf52d1b2b58f1",
+                    "reference": "4f160e223a8914d4b17cde2966ebf52d1b2b58f1",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-09-04T19:11:17+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.3-dev"
+                    }
+                },
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.3.0-RC2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.3.0-RC2",
+                "version_normalized": "1.3.0.0-RC2",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "286f7aa06a68c63e06dca493558986e4f777659c"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/286f7aa06a68c63e06dca493558986e4f777659c",
+                    "reference": "286f7aa06a68c63e06dca493558986e4f777659c",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-08-26T08:13:59+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.3-dev"
+                    }
+                },
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.3.0-RC1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.3.0-RC1",
+                "version_normalized": "1.3.0.0-RC1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "fd2e1244bec21cae08dd5346b3a683f5d1fa609a"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/fd2e1244bec21cae08dd5346b3a683f5d1fa609a",
+                    "reference": "fd2e1244bec21cae08dd5346b3a683f5d1fa609a",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-08-21T12:28:25+00:00",
+                "autoload": {
+                    "psr-4": {
+                        "Symfony\\Cmf\\Component\\Routing\\": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.3-dev"
+                    }
+                },
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.2.0": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.2.0",
+                "version_normalized": "1.2.0.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "c67258b875eef3cb08009bf1428499d0f01ce5e7"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/c67258b875eef3cb08009bf1428499d0f01ce5e7",
+                    "reference": "c67258b875eef3cb08009bf1428499d0f01ce5e7",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-05-08T19:37:14+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.2-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.2.0-RC1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.2.0-RC1",
+                "version_normalized": "1.2.0.0-RC1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "81f23fddd7ed00b2dc5d185b23b017d4727b26d6"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/81f23fddd7ed00b2dc5d185b23b017d4727b26d6",
+                    "reference": "81f23fddd7ed00b2dc5d185b23b017d4727b26d6",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2014-04-07T17:03:09+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.2-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.1.0": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0",
+                "version_normalized": "1.1.0.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "9f8607950cbf888ec678713a35f3d0088857c85f"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/9f8607950cbf888ec678713a35f3d0088857c85f",
+                    "reference": "9f8607950cbf888ec678713a35f3d0088857c85f",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-10-14T15:32:46+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ~2.1"
+                }
+            },
+            "1.1.0-RC4": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-RC4",
+                "version_normalized": "1.1.0.0-RC4",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "dd9e8a26dcef15b2608955358b362a3cda1dcdd3"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/dd9e8a26dcef15b2608955358b362a3cda1dcdd3",
+                    "reference": "dd9e8a26dcef15b2608955358b362a3cda1dcdd3",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-09-30T13:01:30+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, ~2.2",
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching, ~2.1"
+                }
+            },
+            "1.1.0-RC3": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-RC3",
+                "version_normalized": "1.1.0.0-RC3",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "0a66187607ab11079aa123a72f5ea0a092e27671"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/0a66187607ab11079aa123a72f5ea0a092e27671",
+                    "reference": "0a66187607ab11079aa123a72f5ea0a092e27671",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-09-03T12:34:23+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, ~2.2",
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching, ~2.1"
+                }
+            },
+            "1.1.0-RC2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-RC2",
+                "version_normalized": "1.1.0.0-RC2",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "c3e0c82a92da2973ffbab1f06f7144dae8701112"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/c3e0c82a92da2973ffbab1f06f7144dae8701112",
+                    "reference": "c3e0c82a92da2973ffbab1f06f7144dae8701112",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-08-05T11:18:50+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, ~2.2",
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching, ~2.1"
+                }
+            },
+            "1.1.0-RC1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-RC1",
+                "version_normalized": "1.1.0.0-RC1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "fd7f892a2e90450cfc2bf7dd1adf39e3d8cb90f9"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/fd7f892a2e90450cfc2bf7dd1adf39e3d8cb90f9",
+                    "reference": "fd7f892a2e90450cfc2bf7dd1adf39e3d8cb90f9",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-07-31T21:06:34+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2",
+                    "symfony/event-dispatcher": "~2.1"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, ~2.2",
+                    "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching, ~2.1"
+                }
+            },
+            "1.1.0-beta2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-beta2",
+                "version_normalized": "1.1.0.0-beta2",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "fa6de65046f316a61fe4b39b1af18997055f1e70"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/fa6de65046f316a61fe4b39b1af18997055f1e70",
+                    "reference": "fa6de65046f316a61fe4b39b1af18997055f1e70",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-07-15T16:22:43+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "require-dev": {
+                    "symfony/dependency-injection": "~2.0",
+                    "symfony/config": "~2.2"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, ~2.2"
+                }
+            },
+            "1.0.2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.2",
+                "version_normalized": "1.0.2.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "b898a06fbd59e36d82f00f8308d6c577cd0f4e63"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/b898a06fbd59e36d82f00f8308d6c577cd0f4e63",
+                    "reference": "b898a06fbd59e36d82f00f8308d6c577cd0f4e63",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-07-04T07:32:29+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, >=2.1,<2.3-dev"
+                }
+            },
+            "1.1.0-beta1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-beta1",
+                "version_normalized": "1.1.0.0-beta1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "3b2f6da542f41be853fb1c9a2623b8e0cb9bb674"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/3b2f6da542f41be853fb1c9a2623b8e0cb9bb674",
+                    "reference": "3b2f6da542f41be853fb1c9a2623b8e0cb9bb674",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-06-03T17:23:01+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.3",
+                    "symfony/routing": "~2.2",
+                    "symfony/http-kernel": "~2.2",
+                    "psr/log": "~1.0"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, ~2.2"
+                }
+            },
+            "1.1.0-alpha2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-alpha2",
+                "version_normalized": "1.1.0.0-alpha2",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "762114a637a54ac892211043dc4a8596aeac3669"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/762114a637a54ac892211043dc4a8596aeac3669",
+                    "reference": "762114a637a54ac892211043dc4a8596aeac3669",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-05-28T19:50:20+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.2,<2.4-dev",
+                    "symfony/http-kernel": ">=2.2,<2.4-dev",
+                    "psr/log": "~1.0"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, >=2.2,<2.3-dev"
+                }
+            },
+            "1.1.0-alpha1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.1.0-alpha1",
+                "version_normalized": "1.1.0.0-alpha1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "29ab0cac65da436f8a7415b36f4bf2921a59b09b"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/29ab0cac65da436f8a7415b36f4bf2921a59b09b",
+                    "reference": "29ab0cac65da436f8a7415b36f4bf2921a59b09b",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-05-07T06:30:59+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.1-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.2,<2.3-dev",
+                    "symfony/http-kernel": ">=2.2,<2.3-dev",
+                    "psr/log": "~1.0"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, >=2.2,<2.3-dev"
+                }
+            },
+            "1.0.1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.1",
+                "version_normalized": "1.0.1.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "a98a795555d4b9d456eecceb2654bb2590320303"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/a98a795555d4b9d456eecceb2654bb2590320303",
+                    "reference": "a98a795555d4b9d456eecceb2654bb2590320303",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-04-30T09:20:58+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                },
+                "suggest": {
+                    "symfony/http-foundation": "ChainRouter/DynamicRouter have optional support for Request instances, several enhancers require a Request instances, >=2.1,<2.3-dev"
+                }
+            },
+            "1.0.0": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.0",
+                "version_normalized": "1.0.0.0",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "0c16093c0aec714eda1b87e140910f2664904f0b"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/0c16093c0aec714eda1b87e140910f2664904f0b",
+                    "reference": "0c16093c0aec714eda1b87e140910f2664904f0b",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-03-25T15:02:40+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                }
+            },
+            "1.0.0-beta1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.0-beta1",
+                "version_normalized": "1.0.0.0-beta1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "7ee7e31cb8b0ca5432c78b9571911b52d45fc00f"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/7ee7e31cb8b0ca5432c78b9571911b52d45fc00f",
+                    "reference": "7ee7e31cb8b0ca5432c78b9571911b52d45fc00f",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-03-18T08:20:28+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                }
+            },
+            "1.0.0-alpha4": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.0-alpha4",
+                "version_normalized": "1.0.0.0-alpha4",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "92ee467ea2ed1797acd630c9576543d2120ca97a"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/92ee467ea2ed1797acd630c9576543d2120ca97a",
+                    "reference": "92ee467ea2ed1797acd630c9576543d2120ca97a",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2013-01-21T09:10:52+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                }
+            },
+            "1.0.0-alpha3": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.0-alpha3",
+                "version_normalized": "1.0.0.0-alpha3",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "04da0f0a8e308e199c52549d1d04b208cc2058db"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/04da0f0a8e308e199c52549d1d04b208cc2058db",
+                    "reference": "04da0f0a8e308e199c52549d1d04b208cc2058db",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2012-12-16T17:52:57+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                }
+            },
+            "1.0.0-alpha2": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.0-alpha2",
+                "version_normalized": "1.0.0.0-alpha2",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "4f5f38b93cf5413a5a1794a1397229163adbfbc3"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/4f5f38b93cf5413a5a1794a1397229163adbfbc3",
+                    "reference": "4f5f38b93cf5413a5a1794a1397229163adbfbc3",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2012-12-03T14:30:17+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": ">=2.1,<2.3-dev",
+                    "symfony/http-kernel": ">=2.1,<2.3-dev"
+                }
+            },
+            "1.0.0-alpha1": {
+                "name": "symfony-cmf/routing",
+                "description": "Extends the Symfony2 routing component for dynamic routes and chaining several routers",
+                "keywords": [
+                    "database",
+                    "routing"
+                ],
+                "homepage": "http://cmf.symfony.com",
+                "version": "1.0.0-alpha1",
+                "version_normalized": "1.0.0.0-alpha1",
+                "license": [
+                    "MIT"
+                ],
+                "authors": [
+                    {
+                        "name": "Symfony CMF Community",
+                        "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                    }
+                ],
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/symfony-cmf/Routing.git",
+                    "reference": "a05bcaaaa43025037a0667e158aed9b65a147e80"
+                },
+                "dist": {
+                    "type": "zip",
+                    "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/a05bcaaaa43025037a0667e158aed9b65a147e80",
+                    "reference": "a05bcaaaa43025037a0667e158aed9b65a147e80",
+                    "shasum": ""
+                },
+                "type": "library",
+                "time": "2012-06-04T18:03:08+00:00",
+                "autoload": {
+                    "psr-0": {
+                        "Symfony\\Cmf\\Component\\Routing": ""
+                    }
+                },
+                "extra": {
+                    "branch-alias": {
+                        "dev-master": "1.0-dev"
+                    }
+                },
+                "target-dir": "Symfony/Cmf/Component/Routing",
+                "require": {
+                    "php": ">=5.3.2",
+                    "symfony/routing": "2.1.*",
+                    "symfony/http-kernel": "2.1.*"
+                }
+            }
+        }
+    }
 }
