@@ -71,6 +71,9 @@ library or they introduce a complete new concept.
   * :doc:`seo/introduction`
   * :doc:`seo/seo_aware`
   * :doc:`seo/extractors`
+  * :doc:`seo/twig`
+  * :doc:`seo/sitemap`
+  * :doc:`seo/error_pages`
   * :doc:`seo/configuration`
 
 * :doc:`tree_browser/index`
@@ -104,7 +107,7 @@ bundle based on the key bundles.
 Contributed Bundles
 ~~~~~~~~~~~~~~~~~~~
 
-Besides that, the Symfony CMF team also maintains some 3th party bundles which
+Besides that, the Symfony CMF team also maintains some third party bundles which
 help with integrating PHPCR concepts into the Symfony Framework.
 
 * :doc:`phpcr_odm/index`
@@ -119,4 +122,4 @@ help with integrating PHPCR concepts into the Symfony Framework.
 
 * SonataDoctrinePHPCRAdminBundle_
 
-.. _SonataDoctrinePHPCRAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
+.. _SonataDoctrinePHPCRAdminBundle: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html

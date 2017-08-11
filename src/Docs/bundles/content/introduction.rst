@@ -50,7 +50,7 @@ to multiple routes and menu items. A simple page can be created like this::
     $documentManager->flush(); // save changes
 
 This code adds a ``/hello`` route and a ``hello-world`` content document, both
-connected to eachother. This means visiting ``/hello`` should give you the
+connected to each other. This means visiting ``/hello`` should give you the
 content of ``hello-world``. But before that, the correct controller needs to
 be configured.
 
@@ -226,11 +226,24 @@ removing static content from the admin panel. To enable the admin, use the
 also provides :ref:`several useful extensions <bundles-core-persistence>` for
 SonataAdminBundle.
 
+.. tip::
+
+    Install the IvoryCKEditorBundle_ to enable a CKEditor to edit the content
+    body:
+
+    .. code-block:: bash
+
+        $ composer require egeloen/ckeditor-bundle
+
+    .. versionadded:: 1.3
+        IvoryCKEditorBundle integration was introduced in CmfContentBundle 1.3.
+
 Read On
 -------
 
 * :doc:`configuration`
 * :doc:`exposing_content_via_rest`
 
-.. _`with composer`: http://getcomposer.org
+.. _`with composer`: https://getcomposer.org
 .. _`symfony-cmf/content-bundle`: https://packagist.org/packages/symfony-cmf/content-bundle
+.. _IvoryCKEditorBundle: https://github.com/egeloen/IvoryCKEditorBundle

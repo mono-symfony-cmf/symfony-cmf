@@ -72,7 +72,7 @@ have an additional suffix and MUST extend the "Read" and "Write" interfaces IF
 either exists.
 
 If either or both "Read" and "Write" interfaces do not exist, then the
-"Read/Write" interface MUST incorporate the methods required to fulfil the
+"Read/Write" interface MUST incorporate the methods required to fulfill the
 "Read/Write" contract::
 
     <?php
@@ -105,7 +105,7 @@ Refer to the `service naming conventions`_ in the Symfony documentation.
 Meta: README, CHANGELOG, etc
 ----------------------------
 
-Bundles MUST have the following metafiles:
+Bundles MUST have the following meta files:
 
 .. code-block:: text
 
@@ -202,7 +202,7 @@ Core configuration files MUST be in **XML**, this includes:
 In other cases XML should be preferred over other configuration formats where
 there is a choice.
 
-Bundles MUST adhere to the following directory and filename schema
+Bundles MUST adhere to the following directory and file name schema
 as applicable:
 
 .. code-block:: text
@@ -244,12 +244,12 @@ instructions on how the component should be integrated.
 
 .. _`README template on wiki`: https://github.com/symfony-cmf/symfony-cmf/wiki/README-Template
 .. _`CHANGELOG template on wiki`: https://github.com/symfony-cmf/symfony-cmf/wiki/Change-log-format
-.. _`suggested bundle best practices`: http://symfony.com/doc/current/cookbook/bundles/best_practices.html
-.. _`Mapping Model Classes`: http://symfony.com/doc/master/cookbook/doctrine/mapping_model_classes.html
-.. _`DI alias of the bundle`: http://symfony.com/doc/current/cookbook/bundles/extension.html#creating-an-extension-class
-.. _`XML in the configuration class`: http://symfony.com/doc/current/components/config/definition.html#normalization
+.. _`suggested bundle best practices`: https://symfony.com/doc/current/cookbook/bundles/best_practices.html
+.. _`Mapping Model Classes`: https://symfony.com/doc/master/cookbook/doctrine/mapping_model_classes.html
+.. _`DI alias of the bundle`: https://symfony.com/doc/current/cookbook/bundles/extension.html#creating-an-extension-class
+.. _`XML in the configuration class`: https://symfony.com/doc/current/components/config/definition.html#normalization
 .. _`XML schema`: https://en.wikipedia.org/wiki/.xsd
-.. _`XLIFF format`: http://symfony.com/doc/current/book/translation.html#basic-translation
-.. _`CONTRIBUTING file from CoreBundle`: https://github.com/symfony-cmf/CoreBundle/blob/master/CONTRIBUTING.md
+.. _`XLIFF format`: https://symfony.com/doc/current/book/translation.html#basic-translation
+.. _`CONTRIBUTING file from CoreBundle`: https://github.com/symfony-cmf/core-bundle/blob/master/CONTRIBUTING.md
 .. _`LICENSE template on wiki`: https://github.com/symfony-cmf/symfony-cmf/wiki/LICENSE-Template
-.. _`service naming conventions`: http://symfony.com/doc/current/contributing/code/standards.html#service-naming-conventions
+.. _`service naming conventions`: https://symfony.com/doc/current/contributing/code/standards.html#service-naming-conventions

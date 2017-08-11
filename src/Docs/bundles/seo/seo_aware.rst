@@ -23,7 +23,7 @@ the ``SeoMetadata``::
         {
             return $this->seoMetadata;
         }
-        
+
         public function setSeoMetadata($metadata)
         {
             $this->seoMetadata = $metadata;
@@ -91,7 +91,7 @@ To be able to use this document, you have to enable the PHPCR persistence:
     bundle. See :doc:`the CoreBundle docs <../core/persistence>` for more
     information.
 
-After you've enabled PHPCR, map your seoMetadata as a child:
+After you've enabled PHPCR, map ``$seoMetadata`` as a child:
 
 .. configuration-block::
 
@@ -235,16 +235,34 @@ do this, you have to enable ORM support just like you enabled PHPCR enabled
 above and add a OneToOne or ManyToOne relation between the content entity and
 the ``SeoMetadata`` entity.
 
+.. _bundles-seo-metadata-form-type:
+
 Form Type
 ---------
 
-The bundle also provides a special form type called ``seo_metadata``. This
-form type can be used in forms to edit the ``SeoMetadata`` object.
+The bundle also provides a special form type called ``Symfony\Cmf\Bundle\SeoBundle\Form\Type\SeoMetadataType``
+(use ``seo_metadata`` for Symfony versions older than 2.8). This form type can be
+used in forms to edit the ``SeoMetadata`` object::
+
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Symfony\Cmf\Bundle\SeoBundle\Form\Type\SeoMetadataType;
+
+    /** @var FormMapper $formMapper */
+    $formMapper
+        ->add('seoMetadata', SeoMetadataType::class)
+    ;
 
 .. caution::
 
-    The bundle requires the `BurgovKeyValueFormBundle`_ when using the form
-    type. Make sure you install and enable it.
+    The form type requires the `BurgovKeyValueFormBundle`_ to be installed and
+    registered.
+
+.. note::
+
+    If you use Doctrine ORM, you need the form option ``by_reference`` set to
+    ``false``. If you enabled the ORM backend but not the PHPCR backend, this
+    option is set by default, otherwise you need to explicitly specify it in
+    your ORM forms.
 
 Sonata Admin Integration
 ------------------------

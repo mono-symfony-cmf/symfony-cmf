@@ -129,11 +129,11 @@ you could build a tree:
 In the same bundle, the `PhpcrOdmTree`_ implements the tree interface and
 provides an example how to implement the methods.
 
-Customizing the Tree Behaviour
-------------------------------
+Customizing the Tree Behavior
+-----------------------------
 
 The TreeBrowserBundle is based on `jsTree`_. jsTree works with events,
-dispatched everytime the user does an action. A simple way to customize the
+dispatched every time the user does an action. A simple way to customize the
 tree behavior is to bind your actions to those events.
 
 If you have a look at ``admin_tree.js`` and ``select_tree.js``, you will
@@ -237,10 +237,10 @@ Read On
 * :doc:`configuration`
 
 .. _`Packagist`: https://packagist.org/packages/symfony-cmf/tree-browser-bundle
-.. _`with composer`: http://getcomposer.org
+.. _`with composer`: https://getcomposer.org
 .. _`FOSJsRoutingBundle`: https://github.com/FriendsOfSymfony/FOSJsRoutingBundle
-.. _`admin_tree.js`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/views/Tree/tree.html.twig
-.. _`select_tree.js`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Resources/views/Form/form_admin_fields.html.twig
-.. _`PhpcrOdmTree`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/master/Tree/PhpcrOdmTree.php
-.. _`jsTree`: http://www.jstree.com/
-.. _SonataDoctrinePHPCRAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
+.. _`admin_tree.js`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/1.2/Resources/views/Tree/tree.html.twig
+.. _`select_tree.js`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/1.2/Resources/views/Form/form_admin_fields.html.twig
+.. _`PhpcrOdmTree`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle/blob/1.2/Tree/PhpcrOdmTree.php
+.. _`jsTree`: https://www.jstree.com/
+.. _SonataDoctrinePHPCRAdminBundle: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html

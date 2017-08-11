@@ -139,7 +139,7 @@ commands:
 
 This is all it takes to enable read support via JSON or XML!
 
-The JMS serializer comes with sense defaults for Doctrine object mappers.
+The JMS serializer comes with sensible defaults for Doctrine object mappers.
 However it might be necessary to add additional mapping to more tightly
 control what gets exposed. See the `documentation of the JMS serializer`_
 for details.
@@ -151,7 +151,7 @@ for details.
 
 .. _`FOSRestBundle`: https://github.com/FriendsOfSymfony/FOSRestBundle
 .. _`JMSSerializerBundle`: https://github.com/schmittjoh/JMSSerializerBundle
-.. _`FOSRestBundle view layer`: https://github.com/FriendsOfSymfony/FOSRestBundle/blob/master/Resources/doc/2-the-view-layer.md
-.. _Composer: http://getcomposer.org/
+.. _`FOSRestBundle view layer`: https://symfony.com/doc/master/bundles/FOSRestBundle/2-the-view-layer.html
+.. _Composer: https://getcomposer.org/
 .. _`documentation of the JMS serializer`: http://jmsyst.com/libs/#serializer
-.. _`default response format changed between 1.0 and 1.1 of the ContentBundle`: https://github.com/symfony-cmf/ContentBundle/pull/91
+.. _`default response format changed between 1.0 and 1.1 of the ContentBundle`: https://github.com/symfony-cmf/content-bundle/pull/91

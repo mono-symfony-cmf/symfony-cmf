@@ -59,7 +59,7 @@ including how you can configure a query.
 
 If you are using SonataDoctrinePHPCRAdminBundle_, you might want to look into
 ``sonata_type_collection``. That form type allows to edit related
-documents (references as well as children) inline and also to create
+documents (references as well as children) in-line and also to create
 and remove them on the fly.
 
 phpcr_odm_reference_collection
@@ -180,6 +180,6 @@ correct.
         }
 
 .. _BurgovKeyValueFormBundle: https://github.com/Burgov/KeyValueFormBundle
-.. _`Symfony documentation on the entity form type`: http://symfony.com/doc/current/reference/forms/types/entity.html
-.. _SonataDoctrinePHPCRAdminBundle: http://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
+.. _`Symfony documentation on the entity form type`: https://symfony.com/doc/current/reference/forms/types/entity.html
+.. _SonataDoctrinePHPCRAdminBundle: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
 .. _`currently broken`: https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues/145

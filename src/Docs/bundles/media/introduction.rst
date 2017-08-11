@@ -76,6 +76,7 @@ displaying, add the following lines to your routing file:
 
               <import resource="@CmfMediaBundle/Resources/config/routing/file.xml" />
               <import resource="@CmfMediaBundle/Resources/config/routing/image.xml" />
+              <import resource="@LiipImagineBundle/Resources/config/routing.xml" />
            </routes>
 
        .. code-block:: php
@@ -86,6 +87,9 @@ displaying, add the following lines to your routing file:
            );
            $collection->addCollection(
                $loader->import("@CmfMediaBundle/Resources/config/routing/image.xml")
+           );
+           $collection->addCollection(
+               $loader->import("@LiipImagineBundle/Resources/config/routing.xml")
            );
 
            return $collection;
@@ -212,6 +216,20 @@ The media bundle contains a Twig extension, it contains the following functions:
 
           <img src="<?php echo $view['cmf_media']->displayUrl($image) ?>" alt="" />
 
+    If :doc:`LiipImagine <adapters/liip_imagine>` is enabled you can also pass :doc:`filter </bundles/LiipImagineBundle/filters>` and `runtime_config` like below:
+
+      .. code-block:: html+jinja
+
+        <a href="{{ cmf_media_display_url(file, {
+           imagine_filter: 'my_filter',
+           imagine_runtime_config: {
+              'thumbnail': {'size': [120, 60]}
+           }
+        }) }}" title="Download">Download</a>
+
+.. versionadded:: 1.3
+    Option `imagine_runtime_config` was introduced in MediaBundle 1.3
+
 SonataMediaBundle Integration
 -----------------------------
 
@@ -269,8 +287,8 @@ and Symfony bundles:
 * :doc:`adapters/gaufrette`
 
 .. _`symfony-cmf/media-bundle`: https://packagist.org/packages/symfony-cmf/media-bundle
-.. _`with composer`: http://getcomposer.org
-.. _`MediaBundle`: https://github.com/symfony-cmf/MediaBundle#readme
+.. _`with composer`: https://getcomposer.org
+.. _`MediaBundle`: https://github.com/symfony-cmf/media-bundle#readme
 .. _`KnpLabs/Gaufrette`: https://github.com/KnpLabs/Gaufrette
 .. _`phpcr/phpcr-utils`: https://github.com/phpcr/phpcr-utils
 .. _`jms/serializer-bundle`: https://github.com/schmittjoh/JMSSerializerBundle

@@ -36,7 +36,7 @@ Downloading the Symfony CMF Standard Edition
 --------------------------------------------
 
 When you want to start using the CMF for a new project, you can download the
-Symfony CMF Standard Edition. The Symfony CMF Standard Edition is similair to
+Symfony CMF Standard Edition. The Symfony CMF Standard Edition is similar to
 the `Symfony Standard Edition`_, but contains and configures essential Symfony
 CMF bundles. It also adds a very simple bundle to show some of the basic
 Symfony CMF features.
@@ -45,7 +45,7 @@ The best way to download the Symfony CMF Standard Edition is using Composer_:
 
 .. code-block:: bash
 
-    $ composer create-project symfony-cmf/standard-edition cmf ~1.2
+    $ composer create-project symfony-cmf/standard-edition cmf '~1.2'
 
 Setting up the Database
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,7 +81,7 @@ The Request Flow
 .. tip::
 
     When you have at least PHP 5.4, use the ``server:run`` command to run a
-    local server for the demo. Otherwise, use a localhost and prefix the URLs
+    local server for the demo. Otherwise, use a ``localhost`` and prefix the URLs
     in this document with ``/path-to-project/web/app_dev.php/``.
 
 Now, the Standard Edition is ready to use. Navigate to the homepage
@@ -100,7 +100,7 @@ which executes the controller and that controller uses models to generate a
 view to put in the response.
 
 On top of this, the CMF adds the green blocks. In the coming sections, you'll
-learn more about these seperately.
+learn more about these separately.
 
 The Model
 ~~~~~~~~~
@@ -149,7 +149,7 @@ The Controller
 When a Route matches, a Controller is executed. This Controller normally just
 gets the Content object from the Route and renders it. Because it is almost
 always the same, the CMF uses a generic Controller which it will execute. This
-can be overriden by setting a specific controller for a Route or Content
+can be overridden by setting a specific controller for a Route or Content
 object.
 
 The View
@@ -173,7 +173,7 @@ just need to edit such a data file, which is located in the
 
 .. code-block:: yaml
 
-    # src/Acme/MainBundle/Resources/data/pages.yml
+    # src/Acme/DemoBundle/Resources/data/pages.yml
     Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr\Page:
         # ...
 
@@ -220,11 +220,11 @@ some CMS bundles. If you want to discover more, you can dive into the next
 section: ":doc:`the_model`".
 
 .. _`decoupled CMS`: http://decoupledcms.org
-.. _`Symfony Framework Quick Tour`: http://symfony.com/doc/current/quick_tour/the_big_picture.html
+.. _`Symfony Framework Quick Tour`: https://symfony.com/doc/current/quick_tour/the_big_picture.html
 .. _`Symfony Standard Edition`: https://github.com/symfony/symfony-standard
-.. _JCR: http://en.wikipedia.org/wiki/Content_repository_API_for_Java
+.. _JCR: https://en.wikipedia.org/wiki/Content_repository_API_for_Java
 .. _PHPCR: http://phpcr.github.io/
 .. _KnpMenuBundle: http://knpbundles.com/KnpLabs/KnpMenuBundle
-.. _Composer: http://getcomposer.org/
+.. _Composer: https://getcomposer.org/
 .. _`Create.js`: http://createjs.org/
 .. _CreatePHP: http://demo.createphp.org/

@@ -72,8 +72,7 @@ Add the following to your application configuration:
             dynamic:
                 enabled: true
                 persistence:
-                    phpcr:
-                        route_basepath: /cms/routes
+                    phpcr: true
 
     .. code-block:: xml
 
@@ -86,7 +85,7 @@ Add the following to your application configuration:
                 </chain>
                 <dynamic>
                     <persistence>
-                        <phpcr route-basepath="/cms/routes" />
+                        <phpcr />
                     </persistence>
                 </dynamic>
             </config>
@@ -98,10 +97,7 @@ Add the following to your application configuration:
         $container->loadFromExtension('cmf_routing', array(
             'dynamic' => array(
                 'persistence' => array(
-                    'phpcr' => array(
-                        'enabled' => true,
-                        'route_basepath' => '/cms/routes',
-                    ),
+                    'phpcr' => true,
                 ),
             ),
         ));
@@ -165,13 +161,13 @@ You can now proceed to mapping your documents, create the following in your
 
     .. code-block:: yaml
 
-        # src/Acme/BasicCmsBundle/Resources/config/cmf_routing_auto.yml
-        Acme\BasicCmsBundle\Document\Page:
+        # src/AppBundle/Resources/config/cmf_routing_auto.yml
+        AppBundle\Document\Page:
             uri_schema: /page/{title}
             token_providers:
                 title: [content_method, { method: getTitle }]
 
-        Acme\BasicCmsBundle\Document\Post:
+        AppBundle\Document\Post:
             uri_schema: /post/{date}/{title}
             token_providers:
                 date: [content_datetime, { method: getDate }]
@@ -179,9 +175,9 @@ You can now proceed to mapping your documents, create the following in your
 
     .. code-block:: xml
 
-        <!-- src/Acme/BasicCmsBundle/Resources/config/cmf_routing_auto.xml -->
+        <!-- src/AppBundle/Resources/config/cmf_routing_auto.xml -->
         <auto-mapping xmlns="http://cmf.symfony.com/schema/routing_auto">
-            <mapping class="Acme\BasicCmsBundle\Document\Page"
+            <mapping class="AppBundle\Document\Page"
                 uri-schema="/page/{title}">
 
                 <token-provider token="title" name="content_method">
@@ -189,7 +185,7 @@ You can now proceed to mapping your documents, create the following in your
                 </token-provider>
             </mapping>
 
-            <mapping class="Acme\BasicCmsBundle\Document\Post"
+            <mapping class="AppBundle\Document\Post"
                 uri-schema="/post/{date}/{title}">
 
                 <token-provider token="date" name="content_datetime">
@@ -250,6 +246,6 @@ Have a look at what you have:
 
 The routes have been automatically created!
 
-.. _`routingautobundle documentation`: http://symfony.com/doc/current/cmf/bundles/routing_auto.html
+.. _`routingautobundle documentation`: https://symfony.com/doc/current/cmf/bundles/routing_auto.html
 .. _`SonataDoctrinePhpcrAdminBundle`: https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle
-.. _`routingbundle`: http://symfony.com/doc/master/cmf/bundles/routing/index.html
+.. _`routingbundle`: https://symfony.com/doc/master/cmf/bundles/routing/index.html

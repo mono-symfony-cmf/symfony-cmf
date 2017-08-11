@@ -37,7 +37,7 @@ versioning and access control.
 
 Doctrine PHPCR-ODM has the same API as the other Doctrine libraries, like the
 `Doctrine ORM`_. The Doctrine PHPCR-ODM adds another great feature to PHPCR:
-Multilanguage support.
+multi-language support.
 
 .. sidebar:: PHPCR Implementations
 
@@ -114,12 +114,12 @@ class via annotations:
             protected $id;
 
             /**
-             * @PHPCR\String()
+             * @PHPCR\Field(type="string")
              */
             protected $description;
 
             /**
-             * @PHPCR\Boolean()
+             * @PHPCR\Field(type="boolean")
              */
             protected $done = false;
 
@@ -171,7 +171,7 @@ After this, you have to create getters and setters for the properties.
     This Document uses the parent document and a node name to determine its
     position in the tree. Because there isn't any name set, it is generated
     automatically. If you want to use a specific node name, such as a
-    sluggified version of the title, you need to add a property mapped as
+    slugified version of the title, you need to add a property mapped as
     ``Nodename``.
 
     A Document must have an id property. This represents the full path (parent
@@ -272,7 +272,7 @@ you've configured a route to display a specific task by name::
 
 To retrieve objects from the document repository using both the ``find`` and
 ``findMany`` methods and all helper methods of a class-specific repository. In
-PHPCR, it's often unkown for developers which node has the data for a specific
+PHPCR, it's often unknown for developers which node has the data for a specific
 document, in that case you should use the document manager to find the nodes
 (for instance, when you want to get the root document). In example above, we
 know they are ``Task`` documents and so we can use the repository.
@@ -294,7 +294,7 @@ The repository contains all sorts of helpful methods::
 .. tip::
 
     If you use the repository class, you can also create a custom repository
-    for a specific document. This helps with "Seperation of Concern" when using more
+    for a specific document. This helps with "Separation of Concern" when using more
     complex queries. This is similar to how it's done in Doctrine ORM, for
     more information read "`Custom Repository Classes`_" in the core
     documentation.
@@ -370,10 +370,10 @@ take different actions as objects go through their persistence lifecycle.
 
 .. _`Doctrine PHPCR-ODM`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/index.html
 .. _`PHP Content Repository`: http://phpcr.github.io/
-.. _`JSR-283 specification`: http://jcp.org/en/jsr/detail?id=283
-.. _`Doctrine ORM`: http://symfony.com/doc/current/book/doctrine.html
+.. _`JSR-283 specification`: https://jcp.org/en/jsr/detail?id=283
+.. _`Doctrine ORM`: https://symfony.com/doc/current/book/doctrine.html
 .. _`doctrine documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/basic-mapping.html#basicmapping-identifier-generation-strategies
-.. _`Basic Mapping Documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/annotations-reference.html
+.. _`Basic Mapping Documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/basic-mapping.html
 .. _`the QueryBuilder documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/query-builder.html
 .. _`create complex queries`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/query-builder.html
-.. _`Custom Repository Classes`: http://symfony.com/doc/current/book/doctrine.html#custom-repository-classes
+.. _`Custom Repository Classes`: https://symfony.com/doc/current/book/doctrine.html#custom-repository-classes

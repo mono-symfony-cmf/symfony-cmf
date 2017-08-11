@@ -8,7 +8,7 @@ Installation
 ------------
 
 You can install this bundle `with composer`_ using the
-``symfony-cmf/seo-content-bundle`` package on `Packagist`_.
+``symfony-cmf/seo-bundle`` package on `Packagist`_.
 
 This bundle extends the SonataSeoBundle which must be registered in the
 kernel as well::
@@ -124,13 +124,29 @@ The ContentListener
 ~~~~~~~~~~~~~~~~~~~
 
 The ``Symfony\Cmf\Bundle\SeoBundle\EventListener\ContentListener`` looks for a
-content document in the request attributes. If it finds a document, it calls
-``SeoPresentationInterface::updateSeoPage``.
+content document in the request attributes. If the listener finds a document,
+it calls ``SeoPresentationInterface::updateSeoPage`` to populate the metadata
+information if possible.
 
 If the :doc:`RoutingBundle <../routing/introduction>` is installed, the default
 attribute name is defined by the constant ``DynamicRouter::CONTENT_KEY``. When
-not using the RoutingBundle, you need to configure a key in
-``cmf_seo.content_key``.
+not using the RoutingBundle, you need to disable the listener or configure a
+key in ``cmf_seo.content_key``.
+
+If you need different behavior, build your own mechanism to extract the SEO
+information and disable this listener at ``cmf_seo.content_listener.enabled``
+to avoid duplicated work. Things that happen on every request are expensive in
+terms of application performance.
+
+The Twig Extension
+~~~~~~~~~~~~~~~~~~
+
+.. versionadded:: 1.2
+    The twig extension was added in SeoBundle 1.2.
+
+This bundle provides a twig function ``cmf_seo_update_metadata``
+which lets you populate the seo page from an object.
+For details on using the twig extension, read :doc:`twig`.
 
 Extracting Metadata
 ~~~~~~~~~~~~~~~~~~~
@@ -363,6 +379,24 @@ For changing the default translation domain (messages), you should use the
             ),
         );
 
+.. _bundles-seo-alternate-locale:
+
+Alternate Locales Support
+-------------------------
+
+Alternate locales are a way of telling search engines how to find translations
+of the current page. The SeoBundle provides a way to manage alternate locales
+and output them together with the other SEO information.
+
+This feature is explained in :doc:`alternate_locale`.
+
+Sitemap Support
+---------------
+
+The SEO bundle can help you provide XML sitemaps to be consumed by search engines.
+
+This feature is explained in :doc:`sitemap`.
+
 Conclusion
 ----------
 
@@ -373,6 +407,6 @@ Now you can start reading the full :doc:`configuration reference
 <configuration>` to learn even more about the settings.
 
 .. _`SonataSeoBundle`: https://github.com/sonata-project/SonataSeoBundle
-.. _`with composer`: http://getcomposer.org
+.. _`with composer`: https://getcomposer.org
 .. _`packagist`: https://packagist.org/packages/symfony-cmf/seo-bundle
-.. _`Sonata documentation`: http://sonata-project.org/bundles/seo/master/doc/index.html
+.. _`Sonata documentation`: https://sonata-project.org/bundles/seo/master/doc/index.html

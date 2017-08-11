@@ -7,4 +7,8 @@ SeoBundle
     introduction
     seo_aware
     extractors
+    sitemap
+    alternate_locale
+    error_pages
     configuration
+    twig
