@@ -12,8 +12,8 @@
 
 namespace Symfony\Cmf\Component\Testing\Functional\DbManager;
 
+use Doctrine\Bundle\PHPCRBundle\DataFixtures\PHPCRExecutor;
 use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
-use Doctrine\Common\DataFixtures\Executor\PHPCRExecutor;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ODM\PHPCR\DocumentManager;
@@ -25,11 +25,24 @@ class PHPCR
     protected $container;
     protected $om;
 
+    /**
+     * @var PHPCRExecutor
+     */
+    private $executor;
+
+    /**
+     * @param ContainerInterface
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * Return the PHPCR ODM registry
+     *
+     * @return Symfony\Bridge\Doctrine\RegistryInterface
+     */
     public function getRegistry()
     {
         return $this->container->get('doctrine_phpcr');
@@ -48,24 +61,42 @@ class PHPCR
         return $this->om;
     }
 
-    public function loadFixtures(array $classNames)
+    /**
+     * Purge the database
+     *
+     * @param boolean $initialize If the ODM repository initializers should be executed.
+     */
+    public function purgeRepository($initialize = false)
     {
-        $loader = new ContainerAwareLoader($this->container);;
         $purger = new PHPCRPurger();
-        $executor = new PHPCRExecutor($this->getOm(), $purger);
+        $this->getExecutor($initialize)->purge();
+    }
 
-        $referenceRepository = new ProxyReferenceRepository($this->getOm());
+    /**
+     * Load fixtures
+     *
+     * @param array $classNames Fixture classes to load
+     * @param boolean $initialize  If the ODM repository initializers should be executed.
+     */
+    public function loadFixtures(array $classNames, $initialize = false)
+    {
+        $this->purgeRepository();
 
-        $executor->setReferenceRepository($referenceRepository);
-        $executor->purge();
+        $loader = new ContainerAwareLoader($this->container);;
 
         foreach ($classNames as $className) {
             $this->loadFixtureClass($loader, $className);
         }
 
-        $executor->execute($loader->getFixtures(), true);
+        $this->getExecutor($initialize)->execute($loader->getFixtures(), true);
     }
 
+    /**
+     * Load the named fixture class with the given loader.
+     *
+     * @param \Doctrine\Common\DataFixtures\Loader $loader
+     * @param string $className
+     */
     public function loadFixtureClass($loader, $className)
     {
         if (!class_exists($className)) {
@@ -91,6 +122,9 @@ class PHPCR
         }
     }
 
+    /**
+     * Create a test node, if the test node already exists, remove it.
+     */
     public function createTestNode()
     {
         $session = $this->container->get('doctrine_phpcr.session');
@@ -102,5 +136,30 @@ class PHPCR
         $session->getRootNode()->addNode('test', 'nt:unstructured');
 
         $session->save();
+    }
+
+    /**
+     * Return the PHPCR Executor class
+     *
+     * @return PHPCRExecutor
+     */
+    private function getExecutor($initialize = false)
+    {
+        static $lastInitialize = null;
+
+        if ($this->executor && $initialize === $lastInitialize) {
+            return $this->executor;
+        }
+
+        $initializerManager = $initialize ? $this->container->get('doctrine_phpcr.initializer_manager') : null;
+        $purger = new PHPCRPurger();
+        $executor = new PHPCRExecutor($this->getOm(), $purger, $initializerManager);
+        $referenceRepository = new ProxyReferenceRepository($this->getOm());
+        $executor->setReferenceRepository($referenceRepository);
+
+        $this->executor = $executor;
+        $lastInitialize = $initialize;
+
+        return $executor;
     }
 }

@@ -1,6 +1,16 @@
 Changelog
 =========
 
+1.2.0-RC2
+---------
+
+* **2014-10-06**: Added purgeDatabase method to ORM manager
+
+1.2.0-RC1
+---------
+
+* **2014-07-27**: Added DataFixture support to the ORM DbManager
+* **2014-06-16**: Initializer for phpcr fixture loading
 * **2014-06-06**: Updated to PSR-4 autoloading
 
 1.1.0-RC2
