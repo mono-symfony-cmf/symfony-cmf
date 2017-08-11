@@ -91,7 +91,7 @@ install:
     - |
       run_tests () {
           set -e
-          echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'" &&
+          echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
       }
 
 script:
