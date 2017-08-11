@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\MenuBundle\Voter;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -50,12 +51,12 @@ class RequestContentIdentityVoter implements VoterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function matchItem(ItemInterface $item = null)
     {
-        if (! $this->request) {
-            return null;
+        if (!$this->request) {
+            return;
         }
 
         $content = $item->getExtra('content');
@@ -67,6 +68,6 @@ class RequestContentIdentityVoter implements VoterInterface
             return true;
         }
 
-        return null;
+        return;
     }
 }

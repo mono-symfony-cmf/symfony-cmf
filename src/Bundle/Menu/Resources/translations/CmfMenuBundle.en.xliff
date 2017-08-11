@@ -80,7 +80,7 @@
       </trans-unit>
       <trans-unit id="form.label_parent">
         <source>form.label_parent</source>
-        <target>Parent</target>
+        <target>Menu</target>
       </trans-unit>
       <trans-unit id="form.label_name">
         <source>form.label_name</source>
@@ -109,6 +109,10 @@
       <trans-unit id="form.label_link_type">
         <source>form.label_link_type</source>
         <target>Link type</target>
+      </trans-unit>
+      <trans-unit id="form.label_link">
+        <source>form.label_link</source>
+        <target>Link</target>
       </trans-unit>
       <trans-unit id="form.label_weak">
         <source>form.label_weak</source>

@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\MenuBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ODM\PHPCR\DocumentManager;
+use Knp\Menu\Loader\NodeLoader;
 use PHPCR\RepositoryException;
 use Symfony\Component\HttpFoundation\Request;
 use PHPCR\PathNotFoundException;
@@ -26,9 +27,9 @@ use Knp\Menu\Provider\MenuProviderInterface;
 class PhpcrMenuProvider implements MenuProviderInterface
 {
     /**
-     * @var FactoryInterface
+     * @var NodeLoader
      */
-    protected $factory = null;
+    protected $loader;
 
     /**
      * @var Request
@@ -36,7 +37,8 @@ class PhpcrMenuProvider implements MenuProviderInterface
     protected $request;
 
     /**
-     * base for menu ids
+     * base for menu ids.
+     *
      * @var string
      */
     protected $menuRoot;
@@ -44,12 +46,14 @@ class PhpcrMenuProvider implements MenuProviderInterface
     /**
      * Depth to use to prefetch all menu nodes. Only used if > 0, otherwise
      * no prefetch is attempted.
+     *
      * @var int
      */
     protected $prefetch = 10;
 
     /**
-     * doctrine document class name
+     * doctrine document class name.
+     *
      * @var string
      */
     protected $className;
@@ -74,11 +78,11 @@ class PhpcrMenuProvider implements MenuProviderInterface
      * @param string           $menuRoot        root id of the menu
      */
     public function __construct(
-        FactoryInterface $factory,
+        NodeLoader $loader,
         ManagerRegistry $managerRegistry,
         $menuRoot
     ) {
-        $this->factory = $factory;
+        $this->loader = $loader;
         $this->managerRegistry = $managerRegistry;
         $this->menuRoot = $menuRoot;
     }
@@ -165,12 +169,10 @@ class PhpcrMenuProvider implements MenuProviderInterface
     {
         $menu = $this->find($name, $options, true);
 
-        $menuItem = $this->factory->createFromNode($menu);
+        $menuItem = $this->loader->load($menu);
         if (empty($menuItem)) {
             throw new \InvalidArgumentException("Menu at '$name' is misconfigured (f.e. the route might be incorrect) and could therefore not be instanciated");
         }
-
-        $menuItem->setCurrentUri($this->request->getRequestUri());
 
         return $menuItem;
     }
@@ -185,7 +187,7 @@ class PhpcrMenuProvider implements MenuProviderInterface
      *                        absolute PHPCR path or one relative to the menu root.
      * @param array  $options
      *
-     * @return boolean Whether a menu with this name can be loaded by this provider.
+     * @return bool Whether a menu with this name can be loaded by this provider.
      */
     public function has($name, array $options = array())
     {
@@ -193,14 +195,14 @@ class PhpcrMenuProvider implements MenuProviderInterface
     }
 
     /**
-     * @param string  $name    Name of the menu to load
-     * @param array   $options
-     * @param boolean $throw   Whether to throw an exception if the menu is not
-     *                         found or no valid menu. Returns false if $throw is false and there
-     *                         is no menu at $name.
+     * @param string $name    Name of the menu to load
+     * @param array  $options
+     * @param bool   $throw   Whether to throw an exception if the menu is not
+     *                        found or no valid menu. Returns false if $throw is false and there
+     *                        is no menu at $name.
      *
-     * @return object|boolean The menu root found with $name or false if $throw
-     *                        is false and the menu was not found.
+     * @return object|bool The menu root found with $name or false if $throw
+     *                     is false and the menu was not found.
      *
      * @throws \InvalidArgumentException Only if $throw is true throws this
      *                                   exception if the name is empty or no menu found.
@@ -259,7 +261,7 @@ class PhpcrMenuProvider implements MenuProviderInterface
 
             return false;
         }
-        if (! $menu instanceof NodeInterface) {
+        if (!$menu instanceof NodeInterface) {
             if ($throw) {
                 throw new \InvalidArgumentException("Menu at '$name' is not a valid menu node");
             }

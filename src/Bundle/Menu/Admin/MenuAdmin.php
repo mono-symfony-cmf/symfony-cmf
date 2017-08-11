@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,26 +17,26 @@ use Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu;
 class MenuAdmin extends AbstractMenuNodeAdmin
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
         parent::configureFormFields($formMapper);
 
         $subject = $this->getSubject();
-        $isNew = $subject->getId() ? false : true;
+        $isNew = $subject->getId() === null;
 
-        if (false === $isNew) {
+        if (!$isNew) {
             $formMapper
                 ->with('form.group_items', array())
-                ->add('children', 'doctrine_phpcr_odm_tree_manager', array(
-                    'root' => $this->menuRoot,
-                    'edit_in_overlay' => false,
-                    'create_in_overlay' => false,
-                    'delete_in_overlay' => false
-                ), array(
-                    'help' => 'help.items_help'
-                ))
+                    ->add('children', 'doctrine_phpcr_odm_tree_manager', array(
+                        'root' => $this->menuRoot,
+                        'edit_in_overlay' => false,
+                        'create_in_overlay' => false,
+                        'delete_in_overlay' => false,
+                    ), array(
+                        'help' => 'help.items_help',
+                    ))
                 ->end()
             ;
         }

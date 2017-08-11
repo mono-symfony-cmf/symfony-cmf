@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Cmf\Bundle\RoutingBundle\Routing\DynamicRouter;
 
@@ -32,9 +31,8 @@ class CmfMenuExtension extends Extension
         );
 
         $loader->load('menu.xml');
-        $factory = $container->getDefinition($this->getAlias().'.factory');
-        $factory->replaceArgument(1, new Reference($config['content_url_generator']));
-        $container->setParameter($this->getAlias() . '.allow_empty_items', $config['allow_empty_items']);
+        $container->setAlias('cmf_menu.content_router', $config['content_url_generator']);
+        $container->setParameter($this->getAlias().'.allow_empty_items', $config['allow_empty_items']);
 
         $this->loadVoters($config, $loader, $container);
 
@@ -46,7 +44,9 @@ class CmfMenuExtension extends Extension
             $this->loadExtensions($config, $loader, $container);
         }
 
-        if ($config['publish_workflow']['enabled']) {
+        if (true === $config['publish_workflow']['enabled']
+            || 'auto' === $config['publish_workflow']['enabled'] && isset($bundles['CmfCoreBundle'])
+        ) {
             $loader->load('publish-workflow.xml');
         }
     }
@@ -57,14 +57,14 @@ class CmfMenuExtension extends Extension
 
         if (isset($config['voters']['content_identity'])) {
             if (empty($config['voters']['content_identity']['content_key'])) {
-                if (! class_exists('Symfony\\Cmf\\Bundle\\RoutingBundle\\Routing\\DynamicRouter')) {
+                if (!class_exists('Symfony\\Cmf\\Bundle\\RoutingBundle\\Routing\\DynamicRouter')) {
                     throw new \RuntimeException('You need to set the content_key when not using the CmfRoutingBundle DynamicRouter');
                 }
                 $contentKey = DynamicRouter::CONTENT_KEY;
             } else {
                 $contentKey = $config['voters']['content_identity']['content_key'];
             }
-            $container->setParameter($this->getAlias() . '.content_key', $contentKey);
+            $container->setParameter($this->getAlias().'.content_key', $contentKey);
         } else {
             $container->removeDefinition('cmf_menu.current_item_voter.content_identity');
         }
@@ -90,7 +90,7 @@ class CmfMenuExtension extends Extension
 
         foreach ($keys as $sourceKey => $targetKey) {
             $container->setParameter(
-                $this->getAlias() . '.persistence.phpcr.'. $targetKey,
+                $this->getAlias().'.persistence.phpcr.'.$targetKey,
                 $config[$sourceKey]
             );
         }
@@ -113,7 +113,7 @@ class CmfMenuExtension extends Extension
         foreach (array('menu', 'node') as $key) {
             if (isset($config[$key.'_admin_class'])) {
                 $container->setParameter(
-                    $this->getAlias() . '.persistence.phpcr.'.$key.'_admin.class',
+                    $this->getAlias().'.persistence.phpcr.'.$key.'_admin.class',
                     $config[$key.'_admin_class']
                 );
             }
@@ -138,7 +138,7 @@ class CmfMenuExtension extends Extension
             throw new InvalidConfigurationException('To use advanced menu options, you need the burgov/key-value-form-bundle in your project.');
         }
 
-        $container->setParameter($this->getAlias() . '.admin_extensions.menu_options.advanced', $config['admin_extensions']['menu_options']['advanced']);
+        $container->setParameter($this->getAlias().'.admin_extensions.menu_options.advanced', $config['admin_extensions']['menu_options']['advanced']);
 
         $loader->load('admin-extension.xml');
     }

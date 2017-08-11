@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28,7 +28,7 @@ class MenuAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/menu/menu/list');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode(), $res->getContent());
+        $this->assertResponseSuccess($res);
         $this->assertCount(1, $crawler->filter('html:contains("test-menu")'), $res->getContent());
     }
 
@@ -36,7 +36,7 @@ class MenuAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/menu/menu/test/menus/test-menu/edit');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode(), $res->getContent());
+        $this->assertResponseSuccess($res);
         $this->assertCount(1, $crawler->filter('input[value="test-menu"]'), $res->getContent());
     }
 
@@ -44,7 +44,7 @@ class MenuAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/menu/menu/test/menus/test-menu/show');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode(), $res->getContent());
+        $this->assertResponseSuccess($res);
         $this->assertCount(2, $crawler->filter('td:contains("test-menu")'), $res->getContent());
     }
 
@@ -52,13 +52,13 @@ class MenuAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/menu/menu/create');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode(), $res->getContent());
+        $this->assertResponseSuccess($res);
 
         $button = $crawler->selectButton('Create');
         $form = $button->form();
         $node = $form->getFormNode();
         $actionUrl = $node->getAttribute('action');
-        $uniqId = substr(strchr($actionUrl, '='), 1);
+        $uniqId = substr(strstr($actionUrl, '='), 1);
 
         $form[$uniqId.'[name]'] = 'foo-test';
         $form[$uniqId.'[label]'] = 'Foo Test';
@@ -74,7 +74,7 @@ class MenuAdminTest extends BaseTestCase
     {
         $crawler = $this->client->request('GET', '/admin/cmf/menu/menu/test/menus/test-menu/delete');
         $res = $this->client->getResponse();
-        $this->assertEquals(200, $res->getStatusCode());
+        $this->assertResponseSuccess($res);
 
         $button = $crawler->selectButton('Yes, delete');
         $form = $button->form();

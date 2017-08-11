@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,10 +13,7 @@ namespace Symfony\Cmf\Bundle\MenuBundle\Event;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\NodeInterface;
-
 use Symfony\Component\EventDispatcher\Event;
-
-use Symfony\Cmf\Bundle\MenuBundle\ContentAwareFactory;
 
 /**
  * This event is raised when a menu node is to be transformed into a menu item.
@@ -40,34 +37,25 @@ class CreateMenuItemFromNodeEvent extends Event
     private $item;
 
     /**
-     * @var ContentAwareFactory
-     */
-    private $factory;
-
-    /**
-     * Whether or not to skip processing of this node
+     * Whether or not to skip processing of this node.
      *
-     * @var boolean
+     * @var bool
      */
     private $skipNode = false;
 
     /**
-     * Whether or not to skip processing of child nodes
+     * Whether or not to skip processing of child nodes.
      *
-     * @var boolean
+     * @var bool
      */
     private $skipChildren = false;
 
     /**
-     * @param NodeInterface       $node
-     * @param ContentAwareFactory $factory
+     * @param NodeInterface $node
      */
-    public function __construct(
-        NodeInterface $node,
-        ContentAwareFactory $factory
-    ) {
+    public function __construct(NodeInterface $node)
+    {
         $this->node = $node;
-        $this->factory = $factory;
     }
 
     /**
@@ -153,17 +141,5 @@ class CreateMenuItemFromNodeEvent extends Event
     public function isSkipChildren()
     {
         return $this->skipChildren;
-    }
-
-    /**
-     * Get the menu factory that raised this event.
-     *
-     * You can use the factory to build a custom menu item.
-     *
-     * @return ContentAwareFactory
-     */
-    public function getFactory()
-    {
-        return $this->factory;
     }
 }

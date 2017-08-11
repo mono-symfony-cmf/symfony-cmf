@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony CMF package.
+ *
+ * (c) 2011-2015 Symfony CMF
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Symfony\Cmf\Bundle\MenuBundle\Model;
 
 use Knp\Menu\NodeInterface;
@@ -9,83 +18,82 @@ use Knp\Menu\NodeInterface;
  *
  * @author Mojtaba Koosej <mkoosej@gmail.com>
  */
-
 interface MenuOptionsInterface extends NodeInterface
 {
     /**
-     * Whether or not to display this menu
+     * Whether or not to display this menu.
      *
-     * @return boolean
+     * @return bool
      */
-    function getDisplay();
+    public function getDisplay();
 
     /**
-     * Set whether or not this menu should be displayed
+     * Set whether or not this menu should be displayed.
      *
-     * @param boolean $bool
+     * @param bool $bool
      *
      * @return MenuOptionsInterface
      */
-    function setDisplay($bool);
+    public function setDisplay($bool);
 
     /**
      * Whether or not this menu should show its children.
      *
-     * @return boolean
+     * @return bool
      */
-    function getDisplayChildren();
+    public function getDisplayChildren();
 
     /**
-     * Set whether or not this menu should show its children
+     * Set whether or not this menu should show its children.
      *
-     * @param boolean $bool
+     * @param bool $bool
      *
      * @return MenuOptionsInterface
      */
-    function setDisplayChildren($bool);
+    public function setDisplayChildren($bool);
 
-     /**
-     * Return the attributes associated with this menu node
+    /**
+     * Return the attributes associated with this menu node.
      *
      * @return array
      */
-    function getAttributes();
+    public function getAttributes();
 
-     /**
-     * Set the attributes associated with this menu node
+    /**
+     * Set the attributes associated with this menu node.
      *
      * @param $attributes array
      *
      * @return Page The current Page instance
      */
-    function setAttributes(array $attributes);
+    public function setAttributes(array $attributes);
 
     /**
-     * Return the given attribute, optionally specifying a default value
+     * Return the given attribute, optionally specifying a default value.
      *
      * @param string $name    The name of the attribute to return
      * @param string $default The value to return if the attribute doesn't exist
      *
      * @return string
      */
-    function getAttribute($name, $default = null);
+    public function getAttribute($name, $default = null);
 
     /**
-     * Set the named attribute
+     * Set the named attribute.
      *
      * @param string $name  attribute name
      * @param string $value attribute value
      *
      * @return Page The current Page instance
      */
-    function setAttribute($name, $value);
+    public function setAttribute($name, $value);
 
     /**
      * Get the link HTML attributes.
      *
      * @return array
      */
-    function getLinkAttributes();
+    public function getLinkAttributes();
 
     /**
      * Set the link HTML attributes as associative array.
@@ -94,30 +102,30 @@ interface MenuOptionsInterface extends NodeInterface
      *
      * @return Page The current Page instance
      */
-    function setLinkAttributes($linkAttributes);
+    public function setLinkAttributes($linkAttributes);
 
     /**
-     * Return the children attributes
+     * Return the children attributes.
      *
      * @return array
      */
-    function getChildrenAttributes();
+    public function getChildrenAttributes();
 
     /**
-     * Set the children attributes
+     * Set the children attributes.
      *
      * @param array $attributes
      *
      * @return Page The current Page instance
      */
-    function setChildrenAttributes(array $childrenAttributes);
+    public function setChildrenAttributes(array $childrenAttributes);
 
     /**
      * Get the label HTML attributes.
      *
      * @return array
      */
-    function getLabelAttributes();
+    public function getLabelAttributes();
 
     /**
      * Set the label HTML attributes as associative array.
@@ -126,6 +134,5 @@ interface MenuOptionsInterface extends NodeInterface
      *
      * @return Page The current Page instance
      */
-    function setLabelAttributes($labelAttributes);
-
+    public function setLabelAttributes($labelAttributes);
 }

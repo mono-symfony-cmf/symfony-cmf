@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,10 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\MenuBundle\Voter;
 
+use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
-
-use Knp\Menu\ItemInterface;
 
 /**
  * This voter checks if the content entry in the menu item extras is a Symfony
@@ -41,12 +41,12 @@ class UriPrefixVoter implements VoterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function matchItem(ItemInterface $item)
     {
-        if (! $this->request) {
-            return null;
+        if (!$this->request) {
+            return;
         }
 
         $content = $item->getExtra('content');
@@ -54,11 +54,11 @@ class UriPrefixVoter implements VoterInterface
         if ($content instanceof Route && $content->hasOption('currentUriPrefix')) {
             $currentUriPrefix = $content->getOption('currentUriPrefix');
             $currentUriPrefix = str_replace('{_locale}', $this->request->getLocale(), $currentUriPrefix);
-            if (0 === strncmp($this->request->getPathinfo(), $currentUriPrefix, strlen($currentUriPrefix))) {
+            if (0 === strncmp($this->request->getPathInfo(), $currentUriPrefix, strlen($currentUriPrefix))) {
                 return true;
             }
         }
 
-        return null;
+        return;
     }
 }

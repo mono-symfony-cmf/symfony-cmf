@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,6 +12,7 @@
 namespace Symfony\Cmf\Bundle\MenuBundle\Voter;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
  * *getParentDocument()* is identical to the content item in the menu items extras.
  *
  * Note that there is no check, you have to make sure the $childClass does
- * indeed have a getParent method.
+ * indeed have a getParentDocument method.
  *
  * @author David Buchmann <mail@davidbu.ch>
  */
@@ -46,7 +47,7 @@ class RequestParentContentIdentityVoter implements VoterInterface
      *                           attributes
      * @param string $childClass Fully qualified class name of the model class
      *                           the content in the request must have to
-     *                           attempt calling getParent on it.
+     *                           attempt calling getParentDocument on it.
      */
     public function __construct($requestKey, $childClass)
     {
@@ -60,12 +61,12 @@ class RequestParentContentIdentityVoter implements VoterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function matchItem(ItemInterface $item = null)
     {
-        if (! $this->request) {
-            return null;
+        if (!$this->request) {
+            return;
         }
 
         $content = $item->getExtra('content');
@@ -78,6 +79,6 @@ class RequestParentContentIdentityVoter implements VoterInterface
             return true;
         }
 
-        return null;
+        return;
     }
 }

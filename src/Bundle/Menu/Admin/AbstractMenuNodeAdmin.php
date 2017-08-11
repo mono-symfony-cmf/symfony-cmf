@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,20 +15,13 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
-use Symfony\Cmf\Bundle\MenuBundle\Model\MenuNode;
 use Symfony\Cmf\Bundle\MenuBundle\Model\MenuNodeBase;
-use Symfony\Cmf\Bundle\MenuBundle\ContentAwareFactory;
 
 /**
- * Common base admin for Menu and MenuNode
+ * Common base admin for Menu and MenuNode.
  */
 abstract class AbstractMenuNodeAdmin extends Admin
 {
-    /**
-     * @var ContentAwareFactory
-     */
-    protected $contentAwareFactory;
-
     /**
      * @var string
      */
@@ -47,16 +40,13 @@ abstract class AbstractMenuNodeAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id', 'text')
-            ->add('name', 'text')
+            ->addIdentifier('name', 'text')
             ->add('label', 'text')
-            ->add('uri', 'text')
-            ->add('route', 'text')
-            ;
+        ;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -66,37 +56,6 @@ abstract class AbstractMenuNodeAdmin extends Admin
                 ->add('label', 'text')
             ->end()
         ;
-
-        if (null === $this->getParentFieldDescription()) {
-
-            // Add the choice for the node links "target"
-            $formMapper
-                ->with('form.group_general')
-                    ->add('linkType', 'choice_field_mask', array(
-                        'choices' => array_combine(
-                            $this->contentAwareFactory->getLinkTypes(),
-                            $this->contentAwareFactory->getLinkTypes()
-                        ),
-                        'map' => array(
-                            'route' => array('route'),
-                            'uri' => array('uri'),
-                            'content' => array('content', 'doctrine_phpcr_odm_tree'),
-                        ),
-                        'empty_value' => 'auto',
-                        'required' => false
-                    ))
-                    ->add('route', 'text', array('required' => false))
-                    ->add('uri', 'text', array('required' => false))
-                    ->add('content', 'doctrine_phpcr_odm_tree',
-                        array(
-                            'root_node' => $this->contentRoot,
-                            'choice_list' => array(),
-                            'required' => false
-                        )
-                    )
-                ->end()
-            ;
-        }
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
@@ -113,16 +72,6 @@ abstract class AbstractMenuNodeAdmin extends Admin
     public function getExportFormats()
     {
         return array();
-    }
-
-    public function getContentAwareFactory()
-    {
-        return $this->contentAwareFactory;
-    }
-
-    public function setContentAwareFactory(ContentAwareFactory $contentAwareFactory)
-    {
-        $this->contentAwareFactory = $contentAwareFactory;
     }
 
     public function setContentRoot($contentRoot)

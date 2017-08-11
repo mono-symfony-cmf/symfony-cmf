@@ -80,7 +80,7 @@
       </trans-unit>
       <trans-unit id="form.label_parent">
         <source>form.label_parent</source>
-        <target>Übergeordnet</target>
+        <target>Menüs</target>
       </trans-unit>
       <trans-unit id="form.label_name">
         <source>form.label_name</source>
@@ -105,6 +105,10 @@
       <trans-unit id="form.label_link_type">
         <source>form.label_link_type</source>
         <target>Linktyp</target>
+      </trans-unit>
+      <trans-unit id="form.label_link">
+        <source>form.label_link</source>
+        <target>Link</target>
       </trans-unit>
       <trans-unit id="show.label_id">
         <source>show.label_id</source>
