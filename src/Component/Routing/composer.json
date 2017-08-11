@@ -1,4 +1,10 @@
 {
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "file:///home/maximilian/OpenSource/MonoCMF/symfony-cmf/"
+        }
+    ],
     "name": "symfony-cmf/routing",
     "type": "library",
     "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",

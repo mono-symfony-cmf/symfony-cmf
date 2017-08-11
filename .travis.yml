@@ -66,7 +66,7 @@ before_install:
           phpenv config-rm xdebug.ini || echo "xdebug not available"
       fi
       export COMPOSER_ROOT_VERSION=$SYMFONY_VERSION.x-dev
-      COMPONENTS=$(find src -mindepth 3 -type f -name phpunit.xml.dist -printf '%h\n')
+      export COMPONENTS=$(find src -mindepth 3 -type f -name phpunit.xml.dist -printf '%h\n')
       if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
       phpenv config-rm xdebug.ini || true
       skip=0
@@ -80,7 +80,7 @@ install:
           cp composer.json composer.json.orig &&
           echo -e '{\n"require":{'"$(grep phpunit-bridge composer.json)"'"php":"*"},"minimum-stability":"dev"}' > composer.json &&
           if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
-          CHAGEDCOMPONENTS=$(php .github/build-packages.php master $COMPONENTS) &&
+          export CHAGEDCOMPONENTS=$(php .github/build-packages.php master $COMPONENTS)
           mv composer.json composer.json.phpunit &&
           mv composer.json.orig composer.json
       fi
@@ -98,7 +98,7 @@ install:
           set -e
           if [[ 1 != $TEST_THEM_ALL ]]; then
             # Test changed components only:
-            echo "Changed: $CHAGEDCOMPONENTS\n"
+            echo "Changed: $CHAGEDCOMPONENTS"
             echo "$CHAGEDCOMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
           else
             # Test them all
