@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -40,11 +40,13 @@ class SeoContentAdminExtension extends AdminExtension
 
     public function configureFormFields(FormMapper $formMapper)
     {
+        $isSf28 = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
         $formMapper
             ->with($this->formGroup, array(
                 'translation_domain' => 'CmfSeoBundle',
             ))
-                ->add('seoMetadata', 'seo_metadata', array('label' => false))
+                ->add('seoMetadata', $isSf28 ? 'Symfony\Cmf\Bundle\SeoBundle\Form\Type\SeoMetadataType' : 'seo_metadata', array('label' => false))
             ->end()
         ;
     }

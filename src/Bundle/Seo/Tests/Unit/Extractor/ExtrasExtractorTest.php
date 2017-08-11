@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony CMF package.
+ *
+ * (c) 2011-2016 Symfony CMF
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Unit\Extractor;
 
 use Symfony\Cmf\Bundle\SeoBundle\Extractor\ExtrasExtractor;
@@ -27,11 +36,10 @@ class ExtrasExtractorTest extends BaseTestCase
         $document->expects($this->any())
             ->method('getSeoExtras')
             ->will($this->returnValue(array(
-                'property'   => array('og:title' => 'Extra Title'),
-                'name'       => array('robots' => 'index, follow'),
+                'property' => array('og:title' => 'Extra Title'),
+                'name' => array('robots' => 'index, follow'),
                 'http-equiv' => array('Content-Type' => 'text/html; charset=utf-8'),
             )));
-        ;
 
         $this->seoMetadata->expects($this->once())
             ->method('addExtraProperty')

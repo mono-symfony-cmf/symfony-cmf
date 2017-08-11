@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,15 +12,15 @@
 namespace Symfony\Cmf\Bundle\SeoBundle;
 
 use Sonata\SeoBundle\Seo\SeoPage;
+use Symfony\Cmf\Bundle\SeoBundle\Cache\CacheInterface;
+use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\ConfigValues;
+use Symfony\Cmf\Bundle\SeoBundle\Exception\InvalidArgumentException;
+use Symfony\Cmf\Bundle\SeoBundle\Extractor\ExtractorInterface;
 use Symfony\Cmf\Bundle\SeoBundle\Model\AlternateLocaleCollection;
 use Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadata;
 use Symfony\Cmf\Bundle\SeoBundle\Model\SeoMetadataInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Cmf\Bundle\SeoBundle\Extractor\ExtractorInterface;
-use Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\ConfigValues;
-use Symfony\Cmf\Bundle\SeoBundle\Cache\CacheInterface;
-use Symfony\Cmf\Bundle\SeoBundle\Exception\InvalidArgumentException;
 
 /**
  * This presentation model prepares the data for the SeoPage service of the
@@ -50,8 +50,8 @@ class SeoPresentation implements SeoPresentationInterface
     const ORIGINAL_URL_REDIRECT = 'redirect';
 
     public static $originalUrlBehaviours = array(
-        SeoPresentation::ORIGINAL_URL_CANONICAL,
-        SeoPresentation::ORIGINAL_URL_REDIRECT,
+        self::ORIGINAL_URL_CANONICAL,
+        self::ORIGINAL_URL_REDIRECT,
     );
 
     /**
@@ -60,12 +60,12 @@ class SeoPresentation implements SeoPresentationInterface
     private $sonataPage;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $redirectResponse = false;
 
     /**
-     * @var array
+     * @var ExtractorInterface[]
      */
     private $extractors = array();
 
@@ -114,7 +114,7 @@ class SeoPresentation implements SeoPresentationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getRedirectResponse()
     {
@@ -122,7 +122,7 @@ class SeoPresentation implements SeoPresentationInterface
     }
 
     /**
-     * Adds extractors.
+     * Add an extractor for SEO metadata.
      *
      * @param ExtractorInterface $extractor
      * @param int                $priority
@@ -136,14 +136,13 @@ class SeoPresentation implements SeoPresentationInterface
     }
 
     /**
-     * Gets the SeoMetadata based on the content that contains the content.
+     * Extract the SEO metadata from this object.
      *
-     * @param object $content
+     * @param object $content The content to extract metadata from.
      *
-     * @throws Exception\InvalidArgumentException
-     * @return SeoMetadata
+     * @return SeoMetadataInterface
      */
-    private function getSeoMetadata($content)
+    public function getSeoMetadata($content)
     {
         if ($content instanceof SeoAwareInterface) {
             $contentSeoMetadata = $content->getSeoMetadata();
@@ -165,7 +164,7 @@ class SeoPresentation implements SeoPresentationInterface
             $seoMetadata = new SeoMetadata();
         }
 
-        $cachingAvailable = (boolean) $this->cache;
+        $cachingAvailable = (bool) $this->cache;
         if ($cachingAvailable) {
             $extractors = $this->cache->loadExtractorsFromCache(get_class($content));
 
@@ -189,14 +188,14 @@ class SeoPresentation implements SeoPresentationInterface
      *
      * @param object $content
      *
-     * @return array
+     * @return ExtractorInterface[]
      */
     private function getExtractorsForContent($content)
     {
         $extractors = array();
         ksort($this->extractors);
         foreach ($this->extractors as $priority) {
-            $supportedExtractors = array_filter($priority, function ($extractor) use ($content) {
+            $supportedExtractors = array_filter($priority, function (ExtractorInterface $extractor) use ($content) {
                 return $extractor->supports($content);
             });
 
@@ -207,7 +206,7 @@ class SeoPresentation implements SeoPresentationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function updateSeoPage($content)
     {
@@ -242,7 +241,6 @@ class SeoPresentation implements SeoPresentationInterface
                 : $seoMetadata->getTitle();
 
             $this->sonataPage->setTitle($pageTitle);
-            $this->sonataPage->addMeta('name', 'title', $pageTitle);
         }
 
         if ($seoMetadata->getMetaDescription()) {
@@ -299,7 +297,7 @@ class SeoPresentation implements SeoPresentationInterface
            ? $metas['name']['keywords'][0]
            : '';
 
-        return ('' !== $sonataKeywords ? $sonataKeywords.', ' : '') . $contentKeywords;
+        return ('' !== $sonataKeywords ? $sonataKeywords.', ' : '').$contentKeywords;
     }
 
     /**
@@ -319,13 +317,13 @@ class SeoPresentation implements SeoPresentationInterface
             ->setMetaDescription($contentSeoMetadata->getMetaDescription())
             ->setOriginalUrl($contentSeoMetadata->getOriginalUrl())
             ->setExtraProperties($contentSeoMetadata->getExtraProperties() ?: array())
-            ->setExtraNames($contentSeoMetadata->getExtraNames()?:array())
-            ->setExtraHttp($contentSeoMetadata->getExtraHttp()?:array())
+            ->setExtraNames($contentSeoMetadata->getExtraNames() ?: array())
+            ->setExtraHttp($contentSeoMetadata->getExtraHttp() ?: array())
         ;
     }
 
     /**
-     * {inheritDoc}
+     * {inheritDoc}.
      */
     public function updateAlternateLocales(AlternateLocaleCollection $collection)
     {

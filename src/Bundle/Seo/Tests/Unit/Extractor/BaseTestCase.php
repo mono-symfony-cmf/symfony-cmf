@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -47,7 +47,6 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase
         $document->expects($this->any())
             ->method($this->extractMethod)
             ->will($this->returnValue('extracted'));
-        ;
 
         $this->seoMetadata->expects($this->once())
             ->method($this->metadataMethod)

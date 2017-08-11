@@ -1,6 +1,28 @@
 Changelog
 =========
 
+1.2.0
+-----
+
+* **2016-04-04**: Moved content-language from http-equiv to a real header.
+* **2016-03-31**: [Form] Form type for seo metadata set by_reference to false by default when ORM is active.
+* **2015-09-30**: Add `cmf_seo_update_metadata` twig function for updating seo metadata from templates using
+* **2015-09-08**: Add meta tag for language information
+* **2015-08-20**: Added templates configuration and `exclusion_rules` (based on the request matcher) to
+  the error handling configuration
+* **2015-08-12**: Added configuration for the default data class of the `seo_metadata` form type.
+* **2015-07-20**: Cleaned up the sitemap generation. If you used the unreleased 
+  version of sitemaps, you will need to adjust your code. See https://github.com/symfony-cmf/SeoBundle/pull/225
+  Options are available to keep all or no voters|guessers|loaders enabled or 
+  enable them one by one by their service id.
+* **2015-02-24**: Configuration for `content_key` moved to the `content_listener` 
+  section, and its now possible to disable the content listener by setting 
+  `cmf_seo.content_listener.enabled: false`
+* **2015-02-14**: Added sitemap generation
+* **2015-02-14**: [BC BREAK] Changed method visibility of 
+  `SeoPresentation#getSeoMetadata()` from private to public.
+* **2014-10-04**: Custom exception controller for error handling.
+
 1.1.1
 -----
 

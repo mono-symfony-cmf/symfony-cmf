@@ -9,20 +9,36 @@
     <xsd:complexType name="config">
         <xsd:sequence>
             <xsd:element name="persistence" type="persistence" minOccurs="0" />
+            <xsd:element name="alternate-locale" type="alternate_locale" minOccurs="0" />
+            <xsd:element name="error" type="error_handling" minOccurs="0" />
+            <xsd:element name="sitemap" type="sitemap" minOccurs="0" />
+            <xsd:element name="content-listener" type="content_listener" minOccurs="0" />
+            <xsd:element name="form" type="form" minOccurs="0" />
         </xsd:sequence>
 
         <xsd:attribute name="translation-domain" type="xsd:string" />
         <xsd:attribute name="title" type="xsd:string" />
         <xsd:attribute name="description" type="xsd:string" />
         <xsd:attribute name="original-route-pattern" type="original_route_pattern" />
+        <!-- Deprecated as of version 1.1, to be removed in version 2.0. Use the content-listener element instead. -->
         <xsd:attribute name="content-key" type="xsd:string" />
         <xsd:attribute name="metadata-listener" type="enable_auto" />
         <xsd:attribute name="sonata-admin-extension" type="enable_auto" />
     </xsd:complexType>
 
     <xsd:complexType name="persistence">
+        <xsd:all minOccurs="0">
+            <xsd:element name="phpcr" type="persistence_layer" />
+            <xsd:element name="orm" type="persistence_layer" />
+        </xsd:all>
+
         <xsd:attribute name="phpcr" type="xsd:boolean" />
         <xsd:attribute name="orm" type="xsd:boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="content_listener">
+        <xsd:attribute name="enabled" type="xsd:boolean" default="true" />
+        <xsd:attribute name="content-key" type="xsd:string" />
     </xsd:complexType>
 
     <xsd:simpleType name="enable_auto">
@@ -39,4 +55,86 @@
             <xsd:enumeration value="canonical" />
         </xsd:restriction>
     </xsd:simpleType>
+
+    <xsd:complexType name="alternate_locale">
+        <xsd:attribute name="provider-id" type="xsd:string" default="null" />
+    </xsd:complexType>
+
+    <xsd:complexType name="error_handling">
+        <xsd:sequence>
+            <xsd:element name="exclusion-rule" type="exclusion_rule" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="enable-parent-provider" type="xsd:boolean" default="false" />
+        <xsd:attribute name="enable-sibling-provider" type="xsd:boolean"  default="false" />
+    </xsd:complexType>
+
+    <xsd:complexType name="sitemap">
+        <xsd:sequence>
+            <xsd:element name="defaults" type="sitemap_configuration" minOccurs="0"/>
+            <xsd:element name="configuration" type="named_sitemap_configuration" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="enabled" type="xsd:boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="sitemap_configuration">
+        <xsd:sequence>
+            <xsd:element name="template" type="sitemap_template" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element name="loader" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="voter" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="guesser" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="default-change-frequency" type="change_frequency" default="always" />
+
+    </xsd:complexType>
+
+    <xsd:complexType name="named_sitemap_configuration">
+        <xsd:complexContent>
+            <xsd:extension base="sitemap_configuration">
+                <xsd:attribute name="name" type="xsd:string" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="change_frequency">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="always" />
+            <xsd:enumeration value="hourly" />
+            <xsd:enumeration value="daily" />
+            <xsd:enumeration value="weekly" />
+            <xsd:enumeration value="monthly" />
+            <xsd:enumeration value="yearly" />
+            <xsd:enumeration value="never" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="sitemap_template">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="format" type="xsd:string" />
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="form">
+        <xsd:sequence>
+            <xsd:element name="data_class" type="form_data_class" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="form_data_class">
+        <xsd:sequence>
+            <xsd:element name="seo_metadata" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="exclusion_rule">
+        <xsd:attribute name="path" type="xsd:string" />
+        <xsd:attribute name="ips" type="xsd:string" />
+        <xsd:attribute name="host" type="xsd:string" />
+        <xsd:attribute name="methods" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="persistence_layer">
+        <xsd:attribute name="manager-name" type="xsd:string"/>
+    </xsd:complexType>
 </xsd:schema>

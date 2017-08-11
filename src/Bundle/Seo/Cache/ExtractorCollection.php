@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2016 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,7 +29,7 @@ class ExtractorCollection implements \IteratorAggregate, \Serializable
     private $resource;
 
     /**
-     * @var integer
+     * @var int
      */
     private $createdAt;
 
@@ -46,7 +46,7 @@ class ExtractorCollection implements \IteratorAggregate, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getIterator()
     {
@@ -56,9 +56,9 @@ class ExtractorCollection implements \IteratorAggregate, \Serializable
     /**
      * Checks if the cache needs to be updated or not.
      *
-     * @param null|integer $timestamp
+     * @param null|int $timestamp
      *
-     * @return boolean whether cache needs to be updated.
+     * @return bool whether cache needs to be updated.
      */
     public function isFresh($timestamp = null)
     {
@@ -78,7 +78,7 @@ class ExtractorCollection implements \IteratorAggregate, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -90,7 +90,7 @@ class ExtractorCollection implements \IteratorAggregate, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function unserialize($data)
     {
