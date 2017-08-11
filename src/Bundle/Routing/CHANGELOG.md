@@ -1,6 +1,39 @@
 Changelog
 =========
 
+2.0.0
+-----
+
+Released
+
+2.0.0-RC3
+---------
+
+ * **2017-02-17**: [BC BREAK] DynamicRouter::setRequest has been replaced with DynamicRouter::setRequestStack.
+
+2.0.0-RC2
+---------
+
+ * **2017-02-06**: [BC BREAK] The `_template` request parameter will be renamed
+   to the `template` attribute instead of the `contentTemplate` attribute. The
+   old attribute will still be available for backwards compatibility.
+ * **2017-02-03**: [BC BREAK] Removed unused `cmf_routing.dynamic.persistence.phpcr.content_basepath`
+
+2.0.0-RC1
+---------
+
+ * **2016-12-02**: [BC BREAK] Moved all sonata related code to sonata-phpcr-admin-integration-bundle
+ * **2016-10-10**: [ORM] Add option to use custom Route class in ORM
+ * **2016-06-18**: [BC BREAK] Removed all `*.class` parameters.
+ * **2016-06-18**: [BC BREAK] Removed the `cmf_routing.dynamic.persistence.phpcr.route_basepath`
+   setting.
+ * **2016-06-18**: [BC BREAK] Removed the `getAddFormatPattern()`/`setAddFormatPattern()`
+   and `getPattern()` methods from the model `Route`.
+ * **2016-06-18**: [BC BREAK] Removed the `getAddTrailingSlash()`/`setAddTrailingSlash()`
+   methods from the PHPCR `Route` and `RedirectRoute`.
+ * **2016-06-18**: [BC BREAK] Removed `RouteAdmin::setControllerResolver()` and
+   `RouteAdmin::$controllerResolver`.
+
 1.4.0
 -----
 

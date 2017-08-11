@@ -1,6 +1,6 @@
 # Symfony CMF Routing Bundle
 
-[![Build Status](https://travis-ci.org/symfony-cmf/RoutingBundle.svg?branch=master)](https://travis-ci.org/symfony-cmf/RoutingBundle)
+[![Build Status](https://travis-ci.org/symfony-cmf/routing-bundle.svg?branch=master)](https://travis-ci.org/symfony-cmf/routing-bundle)
 [![StyleCI](https://styleci.io/repos/4221277/shield)](https://styleci.io/repos/4221277)
 [![Latest Stable Version](https://poser.pugx.org/symfony-cmf/routing-bundle/version.png)](https://packagist.org/packages/symfony-cmf/routing-bundle)
 [![Total Downloads](https://poser.pugx.org/symfony-cmf/routing-bundle/d/total.png)](https://packagist.org/packages/symfony-cmf/routing-bundle)
@@ -10,13 +10,14 @@ and licensed under the [MIT License](LICENSE).
 
 The RoutingBundle enables the
 [CMF Routing component](https://github.com/symfony-cmf/Routing)
-as a Symfony2 bundle. It provides route documents for Doctrine PHPCR-ODM and a
+as a Symfony bundle. It provides route documents for Doctrine PHPCR-ODM and a
 controller for redirection routes.
 
 
 ## Requirements
 
-* Symfony 2.3+
+* PHP 5.6 / 7
+* Symfony 2.8 / 3
 * See also the `require` section of [composer.json](composer.json)
 
 
