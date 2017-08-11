@@ -41,8 +41,8 @@ before_install:
       [ -d ~/.composer ] || mkdir ~/.composer
       cp .composer/* ~/.composer/
       export PHPUNIT=$(readlink -f ./phpunit)
-      export PHPUNIT_X="$PHPUNIT --exclude-group tty,benchmark,intl-data"
-      export COMPOSER_UP='composer update --no-progress --no-suggest --ansi'
+      export PHPUNIT_X="$PHPUNIT"
+      export COMPOSER_UP="composer update --no-progress --no-suggest --ansi $COMPOSER_FLAGS"
 
       # tfold is a helper to create folded reports
       tfold () {
@@ -63,49 +63,27 @@ before_install:
           INI=~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
           phpenv config-rm xdebug.ini || echo "xdebug not available"
       fi
-      echo date.timezone = Europe/Paris >> $INI
-      echo memory_limit = -1 >> $INI
-      echo session.gc_probability = 0 >> $INI
-      echo opcache.enable_cli = 1 >> $INI
-      echo hhvm.jit = 0 >> $INI
-      echo apc.enable_cli = 1 >> $INI
-      echo extension = redis.so >> $INI
-      echo extension = memcached.so >> $INI
       export COMPOSER_ROOT_VERSION=$SYMFONY_VERSION.x-dev
-      [[ $PHP = 5.* ]] && echo extension = memcache.so >> $INI
-      if [[ $PHP = 5.* ]]; then
-          echo extension = mongo.so >> $INI
-      elif [[ $PHP = 7.* ]]; then
-          echo extension = mongodb.so >> $INI
-      fi
-
-      # Matrix lines for intermediate PHP versions are skipped for pull requests
-      if [[ ! $deps && ! $PHP = ${MIN_PHP%.*} && $TRAVIS_PULL_REQUEST != false ]]; then
-          deps=skip
-          skip=1
-      else
-          COMPONENTS=$(find src -mindepth 3 -type f -name phpunit.xml.dist -printf '%h\n')
-      fi
+      COMPONENTS=$(find src -mindepth 3 -type f -name phpunit.xml.dist -printf '%h\n')
       if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
       phpenv config-rm xdebug.ini || true
+      skip=0
 
 install:
     - |
       # Create local composer packages for each patched components and reference them in composer.json files when cross-testing components
+      composer self-update
       if [[ ! $skip ]]; then
           export SYMFONY_DEPRECATIONS_HELPER=weak &&
           cp composer.json composer.json.orig &&
           echo -e '{\n"require":{'"$(grep phpunit-bridge composer.json)"'"php":"*"},"minimum-stability":"dev"}' > composer.json &&
+          if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
           php .github/build-packages.php HEAD^ $COMPONENTS &&
           mv composer.json composer.json.phpunit &&
           mv composer.json.orig composer.json
       fi
 
     - |
-      composer self-update
-      if [ "$DEPS" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi
-      if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
-      if [[ ! $skip ]]; then $COMPOSER_UP; fi
       if [[ ! $skip ]]; then ./phpunit install; fi
       # phpinfo
       if [[ ! $PHP = hhvm* ]]; then php -i; else hhvm --php -r 'print_r($_SERVER);print_r(ini_get_all());'; fi
@@ -113,17 +91,8 @@ install:
     - |
       run_tests () {
           set -e
-          if [[ $skip ]]; then
-              echo -e "\\n\\e[1;34mIntermediate PHP version $PHP is skipped for pull requests.\\e[0m"
-          elif [[ $deps = high ]]; then
-              echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X$LEGACY'"
-          elif [[ $deps = low ]]; then
-              echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP --prefer-lowest --prefer-stable && $PHPUNIT_X'"
-          elif [[ $PHP = hhvm* ]]; then
-              $PHPUNIT --exclude-group benchmark,intl-data
-          else
-              echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}"
-              tfold tty-group $PHPUNIT --group tty
+          echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}"
+          tfold tty-group $PHPUNIT --group tty
           fi
       }
 
