@@ -17,16 +17,16 @@
         "symfony/framework-bundle": "~2.3",
         "doctrine/phpcr-bundle" :"~1.0",
         "doctrine/phpcr-odm": "~1.0",
-        "sonata-project/block-bundle": ">=2.2.8,<=2.2.11",
+        "sonata-project/block-bundle": ">=2.2.8,<=2.2.13",
         "symfony-cmf/core-bundle": "~1.0"
     },
     "conflict": {
         "symfony/framework-bundle": ">=2.3.0,<2.3.2"
     },
     "require-dev": {
-        "symfony-cmf/testing": "1.1.*",
-        "symfony-cmf/menu-bundle": "1.1.*",
-        "sonata-project/doctrine-phpcr-admin-bundle": "1.1.*",
+        "symfony-cmf/testing": "~1.1",
+        "symfony-cmf/menu-bundle": "~1.1",
+        "sonata-project/doctrine-phpcr-admin-bundle": "~1.1",
         "sonata-project/cache-bundle": ">=2.1.3,<2.1.6",
         "twig/twig": "~1.11"
     },
@@ -37,14 +37,13 @@
         "eko/feedbundle": "When using the RssBlock"
     },
     "autoload":{
-        "psr-0":{
-            "Symfony\\Cmf\\Bundle\\BlockBundle": ""
+        "psr-4":{
+            "Symfony\\Cmf\\Bundle\\BlockBundle\\": ""
         }
     },
-    "target-dir": "Symfony/Cmf/Bundle/BlockBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "1.2-dev"
         }
     }
 }
