@@ -1,7 +1,45 @@
 Changelog
 =========
+
+2.0.0
+-----
+
+Released 2.0.0
+
+2.0.0-RC3
+---------
+
+ * **2017-02-10**: `content_basepath` is now prepended on the CmfSeoBundle.
+ * **2017-02-10**: `content_basepath` is no longer prepended on the
+   CmfRoutingBundle, as the setting is removed.
+
+2.0.0-RC2
+---------
+
+ * **2017-01-29**: Persistence configuration is no longer prepended to the
+   CmfTreeBrowserBundle as these options have been removed.
+ * **2017-01-29**: Fixed security voters to allow non-object subjects.
+
+2.0.0-RC1
+---------
+
+ * **2017-01-17**: [BC BREAK] Removed DoctrineOrmMappingsPass - all active Doctrine versions contain the mapping pass. Use `Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass` instead. 
+ * **2017-01-13**: [BC BREAK] Removed the `Slugifier` classes and the
+   dependency on `symfony-cmf/slugifier-api`.
+ * **2016-12-03**: [BC BREAK] Moved sonata admin related classes and
+   configuration to the CmfSonataAdminIntegrationBundle.
+ * **2016-06-19**: [BC BREAK] Removed second and third argument from `CmfHelper` constructor.
+ * **2016-06-19**: [BC BREAK] Removed `RequestAwarePass` class.
+ * **2016-06-19**: [BC BREAK] Removed `TranslatableExtension` class and related
+   `cmf_core.admin_extension.translatable` service.
+ * **2016-06-18**: [BC BREAK] Removed all `*.class` parameters.
+ * **2016-04-30**: [BC BREAK] Dropped PHP <5.5 support.
+ * **2016-04-30**: [BC BREAK] Dropped Symfony <2.8 support.
+
 1.3.0
 -----
+
+Released 1.3.0
 
 1.3.0-RC1
 ---------
