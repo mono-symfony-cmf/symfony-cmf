@@ -18,6 +18,8 @@ matrix:
       env: SYMFONY_VERSION=3.3.* DEPS=dev
     - php: 7.0
       env: SYMFONY_VERSION=3.1.*
+    - php: 7.1
+      env: SYMFONY_VERSION=3.3.* TEST_THEM_ALL=1
   fast_finish: true
 
 git:
@@ -94,7 +96,13 @@ install:
     - |
       run_tests () {
           set -e
-          echo "$CHAGEDCOMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
+          if [[ !TEST_THEM_ALL]]; then
+            # Test changed components only
+            echo "$CHAGEDCOMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
+          else
+            # Test them all
+            echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
+          fi
       }
 
 script:
