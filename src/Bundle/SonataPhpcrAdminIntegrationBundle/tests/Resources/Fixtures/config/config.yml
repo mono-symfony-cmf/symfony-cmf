@@ -1,0 +1,3 @@
+cmf_sonata_phpcr_admin_integration:
+    bundles:
+        seo: ~

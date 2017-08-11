@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.core.extension.child"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Core\Extension\ChildExtension"
+                public="false">
+            <tag name="sonata.admin.extension"/>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.core.extension.publish_workflow.publishable"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Core\Extension\PublishableExtension"
+                public="false">
+            <argument>%cmf_sonata_phpcr_admin_integration.core.extension.publishable.form_group%</argument>
+            <argument>%cmf_sonata_phpcr_admin_integration.core.extension.publishable.form_tab%</argument>
+            <tag name="sonata.admin.extension"/>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.core.extension.publish_workflow.time_period"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Core\Extension\PublishTimePeriodExtension"
+                public="false">
+            <argument>%cmf_sonata_phpcr_admin_integration.core.extension.publish_time.form_group%</argument>
+            <argument>%cmf_sonata_phpcr_admin_integration.core.extension.publish_time.form_tab%</argument>
+            <tag name="sonata.admin.extension"/>
+        </service>
+
+    </services>
+</container>
