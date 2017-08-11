@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -31,7 +31,7 @@ class TestController extends Controller
     }
 
     /**
-     * Generic way to render blocks
+     * Generic way to render blocks.
      *
      * @param  $id
      *
@@ -39,7 +39,7 @@ class TestController extends Controller
      */
     protected function renderBlock($id)
     {
-        $block = $this->get('doctrine_phpcr')->getManager()->find(null, '/test/blocks/' . $id);
+        $block = $this->get('doctrine_phpcr')->getManager()->find(null, '/test/blocks/'.$id);
 
         return $this->render('::tests/render.html.twig', array('block' => $block));
     }
@@ -93,6 +93,7 @@ class TestController extends Controller
     {
         return $this->renderBlock('menu-block-1');
     }
+
     /**
      * @param Request $request
      *

@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,12 +15,12 @@ use Sonata\BlockBundle\Block\BlockContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Block that renders a controller action
+ * Block that renders a controller action.
  */
 class ActionBlock extends AbstractBlock
 {
     /**
-     * The Symfony action string
+     * The Symfony action string.
      *
      * @var string
      */
@@ -41,7 +41,7 @@ class ActionBlock extends AbstractBlock
     protected $requestParams = array('_locale');
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -136,12 +136,12 @@ class ActionBlock extends AbstractBlock
     }
 
     /**
-     * Overload this method to define a default action name
+     * Overload this method to define a default action name.
      *
      * @return string|null
      */
     public function getDefaultActionName()
     {
-        return null;
+        return;
     }
 }

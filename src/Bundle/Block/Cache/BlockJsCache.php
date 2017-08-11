@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Cache a block through Javascript code
+ * Cache a block through Javascript code.
  */
 class BlockJsCache implements CacheAdapterInterface
 {
@@ -45,11 +45,11 @@ class BlockJsCache implements CacheAdapterInterface
         BlockContextManagerInterface $blockContextManager,
         $sync = false
     ) {
-        $this->router              = $router;
-        $this->blockRenderer       = $blockRenderer;
-        $this->blockLoader         = $blockLoader;
+        $this->router = $router;
+        $this->blockRenderer = $blockRenderer;
+        $this->blockLoader = $blockLoader;
         $this->blockContextManager = $blockContextManager;
-        $this->sync                = $sync;
+        $this->sync = $sync;
     }
 
     /**
@@ -90,8 +90,6 @@ class BlockJsCache implements CacheAdapterInterface
      * @throws \RuntimeException
      *
      * @param array $keys
-     *
-     * @return void
      */
     private function validateKeys(array $keys)
     {
@@ -111,7 +109,7 @@ class BlockJsCache implements CacheAdapterInterface
     {
         $dashifiedId = $this->dashify($keys['block_id']);
 
-        return sprintf(<<<CONTENT
+        return sprintf(<<<'CONTENT'
 <div id="block%s" >
     <script type="text/javascript">
         /*<![CDATA[*/
@@ -153,12 +151,13 @@ CONTENT
     }
 
     /**
-     * @param  array  $keys
+     * @param array $keys
+     *
      * @return string
      */
     protected function getAsync(array $keys)
     {
-        return sprintf(<<<CONTENT
+        return sprintf(<<<'CONTENT'
 <div id="block%s" >
     <script type="text/javascript">
         /*<![CDATA[*/
@@ -220,7 +219,7 @@ CONTENT
             return $response;
         }
 
-        $response->setContent(sprintf(<<<JS
+        $response->setContent(sprintf(<<<'JS'
     (function () {
         var block = document.getElementById('block%s'),
             div = document.createElement("div"),

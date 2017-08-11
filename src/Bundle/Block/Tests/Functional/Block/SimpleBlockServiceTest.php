@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,8 +12,8 @@
 namespace Symfony\Cmf\Bundle\BlockBundle\Tests\Functional\Block;
 
 use Sonata\BlockBundle\Block\BlockContext;
-use Symfony\Cmf\Bundle\BlockBundle\Block\SimpleBlockService,
-    Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\SimpleBlock;
+use Symfony\Cmf\Bundle\BlockBundle\Block\SimpleBlockService;
+use Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\SimpleBlock;
 
 class SimpleBlockServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,7 +32,7 @@ class SimpleBlockServiceTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo($template),
                 $this->equalTo(array(
-                    'block'=> $simpleBlock
+                    'block' => $simpleBlock,
                 ))
             );
 

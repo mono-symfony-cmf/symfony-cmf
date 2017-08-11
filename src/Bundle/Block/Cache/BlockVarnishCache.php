@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Cache block through varnish via an esi statement
+ * Cache block through varnish via an esi statement.
  */
 class BlockVarnishCache extends VarnishCache
 {
@@ -50,7 +50,7 @@ class BlockVarnishCache extends VarnishCache
     protected $fragmentHandler;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string                       $token               A token
      * @param FragmentHandler              $fragmentHandler     A fragment handler
@@ -68,23 +68,21 @@ class BlockVarnishCache extends VarnishCache
         BlockLoaderInterface $blockLoader,
         BlockContextManagerInterface $blockContextManager,
         FragmentHandler $fragmentHandler,
-        array $servers = array(),
+        array $servers,
         $purgeInstruction
     ) {
         parent::__construct($token, $servers, $router, $purgeInstruction, null);
 
-        $this->blockRenderer       = $blockRenderer;
-        $this->blockLoader         = $blockLoader;
+        $this->blockRenderer = $blockRenderer;
+        $this->blockLoader = $blockLoader;
         $this->blockContextManager = $blockContextManager;
-        $this->fragmentHandler     = $fragmentHandler;
+        $this->fragmentHandler = $fragmentHandler;
     }
 
     /**
      * @throws \RuntimeException
      *
      * @param array $keys
-     *
-     * @return void
      */
     private function validateKeys(array $keys)
     {
@@ -130,7 +128,7 @@ class BlockVarnishCache extends VarnishCache
     {
         // values are casted into string for non numeric id
         return hash('sha256', $this->token.serialize(array(
-            'block_id'   => (string) $keys['block_id'],
+            'block_id' => (string) $keys['block_id'],
             'updated_at' => (string) $keys['updated_at'],
         )));
     }

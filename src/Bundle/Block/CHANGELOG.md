@@ -1,6 +1,20 @@
 Changelog
 =========
 
+1.3.1
+-----
+
+* **2016-06-22** Make embedding multiple blocks into the content work.
+
+1.3.0
+-----
+
+* Support Symfony 2.8
+* Support PHP 7
+
+1.2.0
+-----
+
 1.2.0-RC1
 ---------
 

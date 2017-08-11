@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,6 @@ namespace Symfony\Cmf\Bundle\BlockBundle\Templating\Helper;
 
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
-
 use Sonata\BlockBundle\Templating\Helper\BlockHelper as SonataBlockHelper;
 
 /**
@@ -40,8 +39,8 @@ class CmfBlockHelper extends Helper
     public function __construct(SonataBlockHelper $sonataBlock, $prefix, $postfix, LoggerInterface $logger = null)
     {
         $this->sonataBlock = $sonataBlock;
-        $this->prefix = preg_quote($prefix, '#');
-        $this->postfix = preg_quote($postfix, '#');
+        $this->prefix = $prefix;
+        $this->postfix = $postfix;
         $this->logger = $logger;
     }
 
@@ -51,14 +50,11 @@ class CmfBlockHelper extends Helper
      *
      * @param string $text
      *
-     * @return mixed
+     * @return string
      */
     public function embedBlocks($text)
     {
-        // with the default prefix and postfix, this will do %embed-block|block-identifier|end%
-        $endDelimiter = preg_quote($this->postfix[0], '#');
-
-        return preg_replace_callback('#' . $this->prefix . '([^' . $endDelimiter .']+)' . $this->postfix . '#', array($this, 'embeddedRender'), $text);
+        return $this->parse($text);
     }
 
     /**
@@ -93,20 +89,62 @@ class CmfBlockHelper extends Helper
     /**
      * Executes the block as specified in the content.
      *
-     * @param array $block An array including the block name
+     * @param $name
      *
-     * @return string the rendered block
+     * @return string
      */
-    protected function embeddedRender($block)
+    protected function embeddedRender($name)
     {
         try {
-            return $this->sonataBlock->render(array('name' => trim($block[1])));
+            return $this->render(array('name' => $name));
         } catch (\Exception $e) {
             if ($this->logger) {
-                $this->logger->warn('Failed to render block "' . $block[1] . '" embedded in content: ' . $e->getTraceAsString());
+                $this->logger->warn('Failed to render block "'.$name.'" embedded in content: '.$e->getTraceAsString());
             }
         }
 
         return '';
+    }
+
+    /**
+     * @param $text
+     *
+     * @return string
+     */
+    protected function parse($text)
+    {
+        $segments = $this->segmentize($text);
+        foreach ($segments as &$segment) {
+            if (!is_array($segment)) {
+                continue;
+            }
+
+            $segment[0] = $this->embeddedRender($segment[0]);
+            $segment = implode('', $segment);
+        }
+
+        return implode('', $segments);
+    }
+
+    /**
+     * @param string $text
+     *
+     * @return array
+     */
+    protected function segmentize($text)
+    {
+        $segments = explode($this->prefix, $text);
+        foreach ($segments as $index => &$segment) {
+            if ($index == 0) {
+                continue;
+            }
+
+            if (strpos($segment, $this->postfix) !== false) {
+                $segment = array_filter(explode($this->postfix, $segment));
+                $segment[0] = trim($segment[0]);
+            }
+        }
+
+        return $segments;
     }
 }

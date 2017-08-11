@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@ namespace Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 
 /**
- * Block that contains only text
+ * Block that contains only text.
  */
 class StringBlock extends AbstractBlock implements TranslatableInterface
 {
@@ -32,7 +32,7 @@ class StringBlock extends AbstractBlock implements TranslatableInterface
     }
 
     /**
-     * Set body
+     * Set body.
      *
      * @param string $body
      *
@@ -46,7 +46,7 @@ class StringBlock extends AbstractBlock implements TranslatableInterface
     }
 
     /**
-     * Get body
+     * Get body.
      *
      * @return string
      */

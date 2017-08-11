@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,13 +11,10 @@
 
 namespace Symfony\Cmf\Bundle\BlockBundle\Block;
 
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Validator\ErrorElement;
 use Sonata\BlockBundle\Block\BaseBlockService;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\BlockRendererInterface;
 use Sonata\BlockBundle\Block\BlockServiceInterface;
-use Sonata\BlockBundle\Model\BlockInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -55,22 +52,6 @@ class ContainerBlockService extends BaseBlockService implements BlockServiceInte
     /**
      * {@inheritdoc}
      */
-    public function buildEditForm(FormMapper $form, BlockInterface $block)
-    {
-        throw new \RuntimeException('Not used at the moment, editing using a frontend or backend UI could be changed here');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateBlock(ErrorElement $errorElement, BlockInterface $block)
-    {
-        throw new \RuntimeException('Not used at the moment, validation for editing using a frontend or backend UI could be changed here');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         if (!$response) {
@@ -87,8 +68,8 @@ class ContainerBlockService extends BaseBlockService implements BlockServiceInte
 
         if ($block->getEnabled()) {
             return $this->renderResponse($settings['template'], array(
-                'block'       => $block,
-                'settings'    => $settings,
+                'block' => $block,
+                'settings' => $settings,
             ), $response);
         }
 
@@ -100,17 +81,32 @@ class ContainerBlockService extends BaseBlockService implements BlockServiceInte
      */
     public function setDefaultSettings(OptionsResolverInterface $resolver)
     {
+        $this->configureSettings($resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureSettings(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
-            'template'       => $this->template,
-            'divisible_by'    => 0,
+            'template' => $this->template,
+            'divisible_by' => 0,
             'divisible_class' => '',
-            'child_class'     => '',
+            'child_class' => '',
         ));
 
-        $resolver->addAllowedTypes(array(
-            'divisible_by'    => array('integer'),
-            'divisible_class' => array('string'),
-            'child_class'     => array('string'),
-        ));
+        if (method_exists($resolver, 'setDefault')) {
+            // Symfony >2.6
+            $resolver->addAllowedTypes('divisible_by', 'integer');
+            $resolver->addAllowedTypes('divisible_class', 'string');
+            $resolver->addAllowedTypes('child_class', 'string');
+        } else {
+            $resolver->addAllowedTypes(array(
+                'divisible_by' => array('integer'),
+                'divisible_class' => array('string'),
+                'child_class' => array('string'),
+            ));
+        }
     }
 }

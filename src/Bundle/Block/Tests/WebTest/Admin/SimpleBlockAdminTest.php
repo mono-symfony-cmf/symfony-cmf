@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -47,9 +47,9 @@ class SimpleBlockAdminTest extends AbstractBlockAdminTestCase
             '/admin/cmf/block/simpleblock/create',
             array(
                 'parentDocument' => '/test/blocks',
-                'name'           => 'foo-test',
-                'title'          => 'Foo Test',
-                'body'           => 'Block body foo bar.',
+                'name' => 'foo-test',
+                'title' => 'Foo Test',
+                'body' => 'Block body foo bar.',
             )
         );
     }

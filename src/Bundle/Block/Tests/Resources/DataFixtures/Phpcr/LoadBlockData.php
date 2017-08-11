@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -34,7 +34,7 @@ class LoadBlockData implements FixtureInterface
         NodeHelper::createPath($manager->getPhpcrSession(), '/test');
 
         $root = $manager->find(null, '/test');
-        $parent = new Generic;
+        $parent = new Generic();
         $parent->setParent($root);
         $parent->setNodename('blocks');
         $manager->persist($parent);
@@ -105,7 +105,7 @@ class LoadBlockData implements FixtureInterface
         // Menu Nodes
         NodeHelper::createPath($manager->getPhpcrSession(), '/test/menus');
         $menuRoot = $manager->find(null, '/test/menus');
-        $menu = new Menu;
+        $menu = new Menu();
         $menu->setName('test-menu');
         $menu->setLabel('Test Menu');
         $menu->setParentDocument($menuRoot);
@@ -113,13 +113,13 @@ class LoadBlockData implements FixtureInterface
 
         $menuNodeOne = new MenuNode();
         $menuNodeOne->setName('menu-node-1');
-        $menuNodeOne->setLabel("menu-node-1");
+        $menuNodeOne->setLabel('menu-node-1');
         $menuNodeOne->setParentDocument($menu);
         $manager->persist($menuNodeOne);
 
         $menuNodeTwo = new MenuNode();
         $menuNodeTwo->setName('menu-node-2');
-        $menuNodeTwo->setLabel("menu-node-2");
+        $menuNodeTwo->setLabel('menu-node-2');
         $menuNodeTwo->setParentDocument($menu);
         $manager->persist($menuNodeTwo);
 

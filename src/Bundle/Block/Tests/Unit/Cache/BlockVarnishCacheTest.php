@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\BlockBundle\Tests\Unit\Cache;
 
 use Symfony\Cmf\Bundle\BlockBundle\Cache\BlockVarnishCache;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 
@@ -81,7 +80,7 @@ class BlockVarnishCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($cache->flushAll());
 
         $keys = array(
-            'block_id'   => '/cms/content/home/additionalInfoBlock',
+            'block_id' => '/cms/content/home/additionalInfoBlock',
             'updated_at' => 'as',
         );
 
@@ -105,8 +104,8 @@ class BlockVarnishCacheTest extends \PHPUnit_Framework_TestCase
     {
         $token = 'My Token';
         $keys = array(
-            'block_id'   => '/cms/content/home/additionalInfoBlock',
-            'updated_at' => 'as'
+            'block_id' => '/cms/content/home/additionalInfoBlock',
+            'updated_at' => 'as',
         );
 
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
@@ -131,8 +130,8 @@ class BlockVarnishCacheTest extends \PHPUnit_Framework_TestCase
     {
         $token = 'My Token';
         $keys = array(
-            'block_id'   => '/not/found',
-            'updated_at' => 'as'
+            'block_id' => '/not/found',
+            'updated_at' => 'as',
         );
 
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
