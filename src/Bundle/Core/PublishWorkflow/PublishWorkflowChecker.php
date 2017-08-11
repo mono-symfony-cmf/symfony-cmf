@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow;
 
@@ -53,13 +52,16 @@ class PublishWorkflowChecker implements SecurityContextInterface
     const VIEW_ANONYMOUS_ATTRIBUTE = 'VIEW_ANONYMOUS';
 
     /**
+     * We cannot inject the security context directly as this would lead to a
+     * circular dependency.
+     *
      * @var ContainerInterface
      */
     private $container;
 
     /**
      * @var bool|string Role allowed to bypass the published check if the
-     *      VIEW attribute is used, or false to never bypass
+     *      VIEW attribute is used, or false to never bypass.
      */
     private $bypassingRole;
 
@@ -74,13 +76,12 @@ class PublishWorkflowChecker implements SecurityContextInterface
     private $token;
 
     /**
-     * @param ContainerInterface $container to get the security context from.
-     *      We cannot inject the security context directly as this would lead
-     *      to a circular reference.
-     * @param AccessDecisionManagerInterface $accessDecisionManager
-     * @param boolean|string                 $bypassingRole         A role that
-     *      is allowed to bypass the published check if we ask for the VIEW
-     *      attribute.
+     * @param ContainerInterface             $container             To get the security context from.
+     * @param AccessDecisionManagerInterface $accessDecisionManager Service to do the actual decision.
+     * @param boolean|string                 $bypassingRole         A role that is allowed to bypass
+     *                                                              the published check if we ask for
+     *                                                              the VIEW permission. Ignored on
+     *                                                              VIEW_ANONYMOUS.
      */
     public function __construct(ContainerInterface $container, AccessDecisionManagerInterface $accessDecisionManager, $bypassingRole = false)
     {
@@ -97,10 +98,8 @@ class PublishWorkflowChecker implements SecurityContextInterface
      */
     public function getToken()
     {
-        if (null === $this->token) {
-            $securityContext = $this->container->get('security.context');
-
-            return $securityContext->getToken();
+        if (null === $this->token && $this->container->has('security.context')) {
+            return $this->container->get('security.context')->getToken();
         }
 
         return $this->token;
@@ -135,21 +134,19 @@ class PublishWorkflowChecker implements SecurityContextInterface
             $attributes = array($attributes);
         }
 
-        $securityContext = $this->container->get('security.context');
-
-        if (null !== $securityContext->getToken()
-            && (count($attributes) === 1)
+        if ((count($attributes) === 1)
             && self::VIEW_ATTRIBUTE === reset($attributes)
-            && $securityContext->isGranted($this->bypassingRole)
+            && $this->container->has('security.context')
+            && null !== $this->container->get('security.context')->getToken()
+            && $this->container->get('security.context')->isGranted($this->bypassingRole)
         ) {
             return true;
         }
 
         $token = $this->getToken();
-        if (null === $token) {
-            // not logged in, surely we can not skip the check.
-            // create a dummy token to check for publication even if no
-            // firewall is present.
+
+        // not logged in, just check with a dummy token
+        if (!$token) {
             $token = new AnonymousToken('', '');
         }
 

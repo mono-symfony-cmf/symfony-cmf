@@ -3,17 +3,15 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace Symfony\Cmf\Bundle\CoreBundle\Doctrine\Phpcr;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\PHPCR\Mapping\ClassMetadata;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
@@ -47,16 +45,18 @@ class NonTranslatableMetadataListener implements EventSubscriber
         /** @var $meta ClassMetadata */
         $meta = $eventArgs->getClassMetadata();
 
-        if ($meta->getReflectionClass()->implementsInterface('Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface')) {
-            foreach ($meta->translatableFields as $field) {
-                unset($meta->mappings[$field]['translated']);
-            }
-            $meta->translatableFields = array();
-            if (null !== $meta->localeMapping) {
-                unset($meta->mappings[$meta->localeMapping]);
-                $meta->localeMapping = null;
-            }
-            $meta->translator = null;
+        if (!$meta->translator) {
+            return;
         }
+
+        foreach ($meta->translatableFields as $field) {
+            unset($meta->mappings[$field]['translated']);
+        }
+        $meta->translatableFields = array();
+        if (null !== $meta->localeMapping) {
+            unset($meta->mappings[$meta->localeMapping]);
+            $meta->localeMapping = null;
+        }
+        $meta->translator = null;
     }
 }

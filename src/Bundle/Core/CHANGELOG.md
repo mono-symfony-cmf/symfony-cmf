@@ -1,6 +1,29 @@
 Changelog
 =========
 
+1.1.0
+-----
+
+* **2014-05-08** [Multilang]: When using phpcr-odm but not configuring
+  cmf_core.multilang.locales, the metadata listener now makes all documents
+  non-translated. It no longer checks whether the document implements
+  `TranslatableInterface`.
+
+1.1.0-RC2
+---------
+
+* **2014-04-11**: drop Symfony 2.2 compatibility, also the "cmf_request_aware" tag
+    has been deprecated. please add the ``setRequest()`` call manually now:
+  ``<call method="setRequest"><argument type="service" id="request" on-invalid="null" strict="false"/></call>``
+
+1.1.0-RC1
+---------
+
+* **2014-02-14**: Twig function cmf_linkable_children now uses cmf_linkable
+  which considers documents to be linkable if they are either route, or have
+  actually a route pointing to them. (Previously, just having the interface
+  for route referrers was enough, even if there was no route.)
+
 1.0.0-RC7
 ---------
 

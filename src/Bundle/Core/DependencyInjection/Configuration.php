@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection;
 
@@ -43,7 +42,18 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->scalarNode('translation_strategy')->defaultNull()->end()
                             ->end()
-                        ->end()
+                        ->end() // phpcr
+                        ->arrayNode('orm')
+                            ->addDefaultsIfNotSet()
+                            ->canBeEnabled()
+                            ->children()
+                                ->scalarNode('manager_name')->defaultNull()->end()
+                                ->enumNode('use_sonata_admin')
+                                    ->values(array(true, false, 'auto'))
+                                    ->defaultValue('auto')
+                                ->end()
+                            ->end()
+                        ->end() // orm
                     ->end()
                 ->end()
                 ->arrayNode('multilang')
@@ -63,6 +73,34 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('checker_service')->defaultValue('cmf_core.publish_workflow.checker.default')->end()
                         ->scalarNode('view_non_published_role')->defaultValue('ROLE_CAN_VIEW_NON_PUBLISHED')->end()
                         ->booleanNode('request_listener')->defaultTrue()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('sonata_admin')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('extensions')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('publishable')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('form_group')->defaultValue('form.group_publish_workflow')->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('publish_time')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('form_group')->defaultValue('form.group_publish_workflow')->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translatable')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('form_group')->defaultValue('form.group_general')->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()

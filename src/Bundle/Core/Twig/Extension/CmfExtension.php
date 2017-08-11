@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Twig\Extension;
 
@@ -32,6 +31,7 @@ class CmfExtension extends \Twig_Extension
     {
         $functions = array(
             new \Twig_SimpleFunction('cmf_is_published', array($this->cmfHelper, 'isPublished')),
+            new \Twig_SimpleFunction('cmf_is_linkable', array($this->cmfHelper, 'isLinkable')),
             new \Twig_SimpleFunction('cmf_child', array($this->cmfHelper, 'getChild')),
             new \Twig_SimpleFunction('cmf_children', array($this->cmfHelper, 'getChildren')),
             new \Twig_SimpleFunction('cmf_prev', array($this->cmfHelper, 'getPrev')),

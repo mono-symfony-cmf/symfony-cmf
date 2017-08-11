@@ -3,14 +3,13 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
-namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Twig;
+namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Templating\Helper;
 
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Cmf\Bundle\CoreBundle\Templating\Helper\CmfHelper;
@@ -65,14 +64,19 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     {
         $document = new \stdClass();
 
-        $this->assertEquals(false, $this->extension->getNodeName($document));
+        $this->uow->expects($this->at(0))
+            ->method('getDocumentId')
+            ->with($document)
+            ->will($this->throwException(new \Exception()))
+        ;
 
-        $this->uow->expects($this->once())
+        $this->uow->expects($this->at(1))
             ->method('getDocumentId')
             ->with($document)
             ->will($this->returnValue('/foo/bar'))
         ;
 
+        $this->assertEquals(false, $this->extension->getNodeName($document));
         $this->assertEquals('bar', $this->extension->getNodeName($document));
     }
 
@@ -243,6 +247,30 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
         $this->extension->isPublished(new \stdClass());
+    }
+
+    public function testIsLinkable()
+    {
+        $this->assertFalse($this->extension->isLinkable(null));
+        $this->assertFalse($this->extension->isLinkable('a'));
+        $this->assertFalse($this->extension->isLinkable($this));
+
+        $content = $this->getMock('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        $content
+            ->expects($this->once())
+            ->method('getRoutes')
+            ->will($this->returnValue(array()))
+        ;
+        $this->assertFalse($this->extension->isLinkable($content));
+
+        $route = $this->getMockBuilder('Symfony\Component\Routing\Route')->disableOriginalConstructor()->getMock();
+        $content = $this->getMock('Symfony\Cmf\Component\Routing\RouteReferrersReadInterface');
+        $content
+            ->expects($this->once())
+            ->method('getRoutes')
+            ->will($this->returnValue(array($route)))
+        ;
+        $this->assertTrue($this->extension->isLinkable($content));
     }
 
     public function testGetLocalesFor()

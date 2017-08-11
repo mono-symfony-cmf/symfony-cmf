@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Admin\Extension;
 
@@ -24,16 +23,28 @@ use Sonata\AdminBundle\Form\FormMapper;
 class PublishableExtension extends AdminExtension
 {
     /**
+     * @var string
+     */
+    protected $formGroup;
+
+    /**
+     * @param string $formGroup - group to use for form mapper
+     */
+    public function __construct($formGroup = 'form.group_publish_workflow')
+    {
+        $this->formGroup = $formGroup;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function configureFormFields(FormMapper $formMapper)
     {
-        $formMapper->with('form.group_publish_workflow', array(
+        $formMapper->with($this->formGroup, array(
             'translation_domain' => 'CmfCoreBundle',
             ))
             ->add('publishable', 'checkbox', array(
                 'required' => false,
-            ), array(
             ))
             ->end();
     }

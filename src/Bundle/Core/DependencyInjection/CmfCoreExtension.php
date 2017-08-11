@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\CoreBundle\DependencyInjection;
 
@@ -31,20 +30,17 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
-        // process the configuration of SymfonyCmfCoreExtension
+        // process the configuration of CmfCoreExtension
         $configs = $container->getExtensionConfig($this->getAlias());
         $parameterBag = $container->getParameterBag();
         $configs = $parameterBag->resolveValue($configs);
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $extensions = $container->getExtensions();
-        if (isset($config['multilang']['locales'])){
+        if (isset($config['multilang']['locales'])) {
             $prependConfig = array('multilang' => $config['multilang']);
             if (isset($extensions['cmf_routing'])) {
                 $container->prependExtensionConfig('cmf_routing', array('dynamic' => $prependConfig['multilang']));
-            }
-            if (isset($extensions['cmf_simple_cms'])) {
-                $container->prependExtensionConfig('cmf_simple_cms', $prependConfig);
             }
         }
 
@@ -91,6 +87,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         // setting.
                         if (!isset($extensions['cmf_media'])) {
                             $prependConfig['persistence']['phpcr']['image'] = array(
+                                'enabled' => false,
                                 'basepath' => $persistenceConfig['basepath'].'/media',
                             );
                         }
@@ -120,6 +117,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         );
                         break;
                     case 'cmf_routing':
+                        $routePaths = array($persistenceConfig['basepath'].'/routes');
+                        if (isset($extensions['cmf_simple_cms'])) {
+                            $routePaths[] = $persistenceConfig['basepath'].'/simple';
+                        }
                         $prependConfig = array(
                             'dynamic' => array(
                                 'enabled' => true,
@@ -128,7 +129,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                         'enabled' => $persistenceConfig['enabled'],
                                         'use_sonata_admin' => $persistenceConfig['use_sonata_admin'],
                                         'content_basepath' => $persistenceConfig['basepath'].'/content',
-                                        'route_basepath' => $persistenceConfig['basepath'].'/routes',
+                                        'route_basepaths' => $routePaths,
                                         'manager_name' => $persistenceConfig['manager_name'],
                                     )
                                 )
@@ -176,6 +177,64 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                             )
                         );
                         break;
+                    case 'cmf_seo':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'phpcr' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                ),
+                            ),
+                            'sonata_admin_extension' => array(
+                                'enabled' => $persistenceConfig['use_sonata_admin'],
+                            ),
+                        );
+                        break;
+                }
+
+                if ($prependConfig) {
+                    $container->prependExtensionConfig($name, $prependConfig);
+                }
+            }
+        }
+
+        if ($config['persistence']['orm']) {
+            $bundles = $container->getParameter('kernel.bundles');
+            $persistenceConfig = $config['persistence']['orm'];
+
+            foreach ($container->getExtensions() as $name => $extension) {
+                $prependConfig = array();
+
+                switch ($name) {
+                    case 'cmf_routing':
+                        $prependConfig = array(
+                            'dynamic' => array(
+                                'enabled' => true,
+                                'persistence' => array(
+                                    'orm' => array(
+                                        'enabled' => $persistenceConfig['enabled'],
+                                        'manager_name' => $persistenceConfig['manager_name'],
+                                    )
+                                )
+                            )
+                        );
+
+                        if (isset($bundles['CmfContentBundle'])) {
+                            $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
+                        }
+                        break;
+
+                    case 'cmf_seo':
+                        $prependConfig = array(
+                            'persistence' => array(
+                                'orm' => array(
+                                    'enabled' => $persistenceConfig['enabled'],
+                                ),
+                            ),
+                            'sonata_admin_extension' => array(
+                                'enabled' => $persistenceConfig['use_sonata_admin'],
+                            ),
+                        );
+                        break;
                 }
 
                 if ($prependConfig) {
@@ -201,6 +260,10 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
 
             $templatingHelper = $container->getDefinition($this->getAlias() . '.templating.helper');
             $templatingHelper->replaceArgument(1, new Reference($config['persistence']['phpcr']['manager_registry']));
+
+            if ($config['persistence']['phpcr']['use_sonata_admin']) {
+                $this->loadSonataPhpcrAdmin($config, $loader, $container);
+            }
         }
         if ($config['publish_workflow']['enabled']) {
             $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
@@ -220,7 +283,24 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
             $loader->load('translatable-disabled.xml');
         }
 
+        foreach ($config['sonata_admin']['extensions'] as $extensionName => $options) {
+            foreach ($options as $key => $value) {
+                $container->setParameter('cmf_core.sonata_admin.extension.' . $extensionName . '.' . $key, $value);
+            }
+        }
+
         $this->setupFormTypes($container, $loader);
+    }
+
+    public function loadSonataPhpcrAdmin($config, XmlFileLoader $loader, ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if ('auto' === $config['persistence']['phpcr']['use_sonata_admin'] && !isset($bundles['SonataDoctrinePHPCRAdminBundle'])) {
+            return;
+        }
+
+        $loader->load('admin-phpcr.xml');
     }
 
     /**

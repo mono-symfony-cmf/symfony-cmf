@@ -3,12 +3,11 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2013 Symfony CMF
+ * (c) 2011-2014 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Admin\Extension;
 
@@ -26,16 +25,23 @@ use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 class TranslatableExtension extends AdminExtension
 {
     /**
+     * @var string
+     */
+    protected $formGroup;
+
+    /**
      * @var array
      */
     protected $locales;
 
     /**
-     * @param array $locales
+     * @param array  $locales   Available locales to select.
+     * @param string $formGroup The group name to use for form mapper.
      */
-    public function __construct($locales)
+    public function __construct($locales, $formGroup = 'form.group_general')
     {
         $this->locales = $locales;
+        $this->formGroup = $formGroup;
     }
 
     /**
@@ -44,7 +50,10 @@ class TranslatableExtension extends AdminExtension
     public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('locales', 'choice', array('template' => 'SonataDoctrinePHPCRAdminBundle:CRUD:locales.html.twig'))
+            ->add('locales', 'choice', array(
+                'template' => 'SonataDoctrinePHPCRAdminBundle:CRUD:locales.html.twig',
+                'translation_domain' => 'CmfCoreBundle',
+            ))
         ;
     }
 
@@ -54,12 +63,12 @@ class TranslatableExtension extends AdminExtension
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('form.group_general')
+            ->with($this->formGroup)
+            // do not set a translation_domain for this group or group_general will be translated by our domain.
             ->add('locale', 'choice', array(
-                'translation_domain' => 'CmfCoreBundle',
                 'choices' => array_combine($this->locales, $this->locales),
                 'empty_value' => '',
-            ))
+            ), array('translation_domain' => 'CmfCoreBundle'))
             ->end()
         ;
     }
@@ -82,6 +91,5 @@ class TranslatableExtension extends AdminExtension
                 $object->setLocale($currentLocale);
             }
         }
-
     }
 }
