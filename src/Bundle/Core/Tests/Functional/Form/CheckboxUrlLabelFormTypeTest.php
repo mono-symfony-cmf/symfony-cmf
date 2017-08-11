@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Functional\Form;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class CheckboxUrlLabelFormTypeTest extends BaseTestCase
@@ -31,8 +32,8 @@ class CheckboxUrlLabelFormTypeTest extends BaseTestCase
                 'routes' => array(
                     '%a%' => array('parameters' => array('content_id' => '/test/content/a')),
                     '%b%' => array('parameters' => array('content_id' => '/test/content/b')),
-                    '%c%' => array('name' => 'hello', 'parameters' => array('name' => 'world'), 'referenceType' => true),
-                )
+                    '%c%' => array('name' => 'hello', 'parameters' => array('name' => 'world'), 'referenceType' => UrlGeneratorInterface::ABSOLUTE_URL),
+                ),
             ))
             ->getForm()
             ->createView();

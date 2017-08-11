@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,6 @@ namespace Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\Voter;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableReadInterface;
 
 /**
@@ -45,24 +44,24 @@ class PublishableVoter implements VoterInterface
     /**
      * {@inheritdoc}
      *
-     * @param PublishableReadInterface $object
+     * @param PublishableReadInterface $subject
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        if (!is_object($subject) || !$this->supportsClass(get_class($subject))) {
             return self::ACCESS_ABSTAIN;
         }
 
         $decision = self::ACCESS_GRANTED;
         foreach ($attributes as $attribute) {
-            if (! $this->supportsAttribute($attribute)) {
+            if (!$this->supportsAttribute($attribute)) {
                 // there was an unsupported attribute in the request.
                 // now we only abstain or deny if we find a supported attribute
                 // and the content is not publishable
                 $decision = self::ACCESS_ABSTAIN;
                 continue;
             }
-            if (! $object->isPublishable()) {
+            if (!$subject->isPublishable()) {
                 return self::ACCESS_DENIED;
             }
         }

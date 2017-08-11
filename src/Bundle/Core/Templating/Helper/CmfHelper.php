@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,6 +30,16 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishWorkflowChecker;
 class CmfHelper extends Helper
 {
     /**
+     * @var ManagerRegistry
+     */
+    private $doctrineRegistry;
+
+    /**
+     * @var string
+     */
+    private $doctrineManagerName;
+
+    /**
      * @var DocumentManager
      */
     protected $dm;
@@ -40,18 +50,39 @@ class CmfHelper extends Helper
     protected $publishWorkflowChecker;
 
     /**
+     * The $registry constructor argument is deprecated in favor of
+     * setDcotrineRegistry in order to avoid circular dependencies when a
+     * doctrine event listener needs twig injected.
+     *
      * @param SecurityContextInterface $publishWorkflowChecker
      * @param ManagerRegistry          $registry               For loading PHPCR-ODM documents from
-     *                                                         Doctrine.
-     * @param string                   $objectManagerName
+     *                                                         Doctrine
+     * @param string                   $managerName
      */
-    public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $objectManagerName = null)
+    public function __construct(SecurityContextInterface $publishWorkflowChecker = null, $registry = null, $managerName = null)
     {
         $this->publishWorkflowChecker = $publishWorkflowChecker;
 
-        if ($registry && $registry instanceof ManagerRegistry) {
-            $this->dm = $registry->getManager($objectManagerName);
+        if (null !== $registry) {
+            @trigger_error('The second and third argument of '.__METHOD__.' is deprecated since 1.3 and will be removed in 2.0. Execute setDoctrineRegistry() instead.', E_USER_DEPRECATED);
+            $this->setDoctrineRegistry($registry, $managerName);
         }
+    }
+
+    /**
+     * Set the doctrine manager registry to fetch the object manager from.
+     *
+     * @param ManagerRegistry $registry
+     * @param string|null     $managerName Manager name if not the default
+     */
+    public function setDoctrineRegistry($registry, $managerName = null)
+    {
+        if ($this->doctrineRegistry) {
+            throw new \LogicException('Do not call this setter repeatedly or after using constructor injection');
+        }
+
+        $this->doctrineRegistry = $registry;
+        $this->doctrineManagerName = $managerName;
     }
 
     /**
@@ -60,7 +91,11 @@ class CmfHelper extends Helper
     protected function getDm()
     {
         if (!$this->dm) {
-            throw new \RuntimeException('Doctrine is not available.');
+            if (!$this->doctrineRegistry) {
+                throw new \RuntimeException('Doctrine is not available.');
+            }
+
+            $this->dm = $this->doctrineRegistry->getManager($this->doctrineManagerName);
         }
 
         return $this->dm;
@@ -77,9 +112,9 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param  object         $document
+     * @param object $document
      *
-     * @return boolean|string node name or false if the document is not in the unit of work
+     * @return bool|string node name or false if the document is not in the unit of work
      */
     public function getNodeName($document)
     {
@@ -92,9 +127,9 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param  object         $document
+     * @param object $document
      *
-     * @return boolean|string node name or false if the document is not in the unit of work
+     * @return bool|string node name or false if the document is not in the unit of work
      */
     public function getParentPath($document)
     {
@@ -107,9 +142,9 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param  object         $document
+     * @param object $document
      *
-     * @return boolean|string path or false if the document is not in the unit of work
+     * @return bool|string path or false if the document is not in the unit of work
      */
     public function getPath($document)
     {
@@ -133,13 +168,33 @@ class CmfHelper extends Helper
     }
 
     /**
+     * Finds a document by path and locale.
+     *
+     * @param string|object $pathOrDocument the identifier of the class (path or document object)
+     * @param string        $locale         the language to try to load
+     * @param bool          $fallback       set to true if the language fallback mechanism should be used
+     *
+     * @return null|object
+     */
+    public function findTranslation($pathOrDocument, $locale, $fallback = true)
+    {
+        if (is_object($pathOrDocument)) {
+            $path = $this->getDm()->getUnitOfWork()->getDocumentId($pathOrDocument);
+        } else {
+            $path = $pathOrDocument;
+        }
+
+        return $this->getDm()->findTranslation(null, $path, $locale, $fallback);
+    }
+
+    /**
      * Gets a document instance and validate if its eligible.
      *
      * @param string|object $document   the id of a document or the document
      *                                  object itself
-     * @param boolean|null  $ignoreRole whether the bypass role should be
+     * @param bool|null     $ignoreRole whether the bypass role should be
      *                                  ignored (leading to only show published content regardless of the
-     *                                  current user) or null to skip the published check completely.
+     *                                  current user) or null to skip the published check completely
      * @param null|string   $class      class name to filter on
      *
      * @return null|object
@@ -150,7 +205,7 @@ class CmfHelper extends Helper
             try {
                 $document = $this->getDm()->find(null, $document);
             } catch (MissingTranslationException $e) {
-                return null;
+                return;
             }
         }
 
@@ -163,18 +218,18 @@ class CmfHelper extends Helper
             || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document))
             || (null != $class && !($document instanceof $class))
         ) {
-            return null;
+            return;
         }
 
         return $document;
     }
 
     /**
-     * @param array          $paths      list of paths
-     * @param int|Boolean    $limit      int limit or false
-     * @param string|Boolean $offset     string node name to which to skip to or false
-     * @param Boolean|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
-     * @param null|string    $class      class name to filter on
+     * @param array       $paths      list of paths
+     * @param int|bool    $limit      int limit or false
+     * @param string|bool $offset     string node name to which to skip to or false
+     * @param bool|null   $ignoreRole if the role should be ignored or null if publish workflow should be ignored
+     * @param null|string $class      class name to filter on
      *
      * @return array
      */
@@ -193,7 +248,7 @@ class CmfHelper extends Helper
 
             $result[] = $document;
             if (false !== $limit) {
-                $limit--;
+                --$limit;
                 if (!$limit) {
                     break;
                 }
@@ -211,7 +266,7 @@ class CmfHelper extends Helper
      *
      * @param object $document
      *
-     * @return boolean
+     * @return bool
      */
     public function isPublished($document)
     {
@@ -227,10 +282,10 @@ class CmfHelper extends Helper
     }
 
     /**
-     * Get the locales of the document
+     * Get the locales of the document.
      *
-     * @param  string|object $document         Document instance or path
-     * @param  Boolean       $includeFallbacks
+     * @param string|object $document         Document instance or path
+     * @param bool          $includeFallbacks
      *
      * @return array
      */
@@ -257,9 +312,9 @@ class CmfHelper extends Helper
      * @param string|object $parent parent path/document
      * @param string        $name
      *
-     * @return boolean|null|object child or null if the child cannot be found
-     *                             or false if the parent is not managed by
-     *                             the configured document manager.
+     * @return bool|null|object child or null if the child cannot be found
+     *                          or false if the parent is not managed by
+     *                          the configured document manager
      */
     public function getChild($parent, $name)
     {
@@ -277,15 +332,15 @@ class CmfHelper extends Helper
     /**
      * Gets child documents.
      *
-     * @param string|object  $parent     parent id or document.
-     * @param int|Boolean    $limit      maximum number of children to get or
-     *                                   false for no limit.
-     * @param string|Boolean $offset     node name to which to skip to or false
-     * @param null|string    $filter     child name filter (optional)
-     * @param Boolean|null   $ignoreRole whether the role should be ignored or
-     *                                   null if publish workflow should be
-     *                                   ignored (defaults to false)
-     * @param null|string    $class      class name to filter on (optional)
+     * @param string|object $parent     parent id or document
+     * @param int|bool      $limit      maximum number of children to get or
+     *                                  false for no limit
+     * @param string|bool   $offset     node name to which to skip to or false
+     * @param null|string   $filter     child name filter (optional)
+     * @param bool|null     $ignoreRole whether the role should be ignored or
+     *                                  null if publish workflow should be
+     *                                  ignored (defaults to false)
+     * @param null|string   $class      class name to filter on (optional)
      *
      * @return array
      */
@@ -331,7 +386,7 @@ class CmfHelper extends Helper
 
             $result[] = $child;
             if (false !== $limit) {
-                $limit--;
+                --$limit;
                 if (!$limit) {
                     break;
                 }
@@ -346,15 +401,15 @@ class CmfHelper extends Helper
      *
      * This has the same semantics as the isLinkable method.
      *
-     * @param string|object  $parent     parent path/document.
-     * @param int|Boolean    $limit      limit or false for no limit.
-     * @param string|Boolean $offset     node name to which to skip to or false
-     *                                   to not skip any elements
-     * @param null|string    $filter     child name filter
-     * @param Boolean|null   $ignoreRole whether the role should be ignored or
-     *                                   null if publish workflow should be
-     *                                   ignored (defaults to false).
-     * @param string|null    $class      class name to filter on.
+     * @param string|object $parent     parent path/document
+     * @param int|bool      $limit      limit or false for no limit
+     * @param string|bool   $offset     node name to which to skip to or false
+     *                                  to not skip any elements
+     * @param null|string   $filter     child name filter
+     * @param bool|null     $ignoreRole whether the role should be ignored or
+     *                                  null if publish workflow should be
+     *                                  ignored (defaults to false)
+     * @param string|null   $class      class name to filter on
      *
      * @return array
      *
@@ -386,7 +441,7 @@ class CmfHelper extends Helper
      *
      * @param object $document
      *
-     * @return boolean true if it is possible to generate a link to $document
+     * @return bool true if it is possible to generate a link to $document
      */
     public function isLinkable($document)
     {
@@ -401,9 +456,9 @@ class CmfHelper extends Helper
     /**
      * Gets the paths of children.
      *
-     * @param string  $path
-     * @param array   $children
-     * @param integer $depth
+     * @param string $path
+     * @param array  $children
+     * @param int    $depth
      */
     private function getChildrenPaths($path, array &$children, $depth)
     {
@@ -426,9 +481,9 @@ class CmfHelper extends Helper
     }
 
     /**
-     * @param string|object $parent parent path/document.
+     * @param string|object $parent parent path/document
      * @param null|int      $depth  null denotes no limit, depth of 1 means
-     *                              direct children only.
+     *                              direct children only
      *
      * @return array
      */
@@ -452,7 +507,7 @@ class CmfHelper extends Helper
      *
      * @param array       $childNames
      * @param string      $path
-     * @param Boolean     $ignoreRole
+     * @param bool        $ignoreRole
      * @param null|string $class
      *
      * @return null|object
@@ -471,18 +526,18 @@ class CmfHelper extends Helper
             }
         }
 
-        return null;
+        return;
     }
 
     /**
      * Traverse the depth to find previous documents.
      *
-     * @param null|integer $depth
-     * @param integer      $anchorDepth
-     * @param array        $childNames
-     * @param string       $path
-     * @param Boolean      $ignoreRole
-     * @param null|string  $class
+     * @param null|int    $depth
+     * @param int         $anchorDepth
+     * @param array       $childNames
+     * @param string      $path
+     * @param bool        $ignoreRole
+     * @param null|string $class
      *
      * @return null|object
      */
@@ -508,7 +563,7 @@ class CmfHelper extends Helper
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -516,8 +571,8 @@ class CmfHelper extends Helper
      *
      * @param string|object $path       document instance or path from which to search
      * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|integer  $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param Boolean       $ignoreRole if to ignore the role
+     * @param null|int      $depth      depth up to which to traverse down the tree when an anchor is provided
+     * @param bool          $ignoreRole if to ignore the role
      * @param null|string   $class      the class to filter by
      *
      * @return null|object
@@ -529,7 +584,7 @@ class CmfHelper extends Helper
         }
 
         if (null === $path || '/' === $path) {
-            return null;
+            return;
         }
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
@@ -543,7 +598,7 @@ class CmfHelper extends Helper
         }
 
         if ($path === $anchor) {
-            return null;
+            return;
         }
 
         $parent = $node->getParent();
@@ -585,7 +640,7 @@ class CmfHelper extends Helper
             }
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -593,8 +648,8 @@ class CmfHelper extends Helper
      *
      * @param string|object $path       document instance or path from which to search
      * @param string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|integer  $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param Boolean       $ignoreRole if to ignore the role
+     * @param null|int      $depth      depth up to which to traverse down the tree when an anchor is provided
+     * @param bool          $ignoreRole if to ignore the role
      * @param null|string   $class      the class to filter by
      *
      * @return null|object
@@ -606,7 +661,7 @@ class CmfHelper extends Helper
         }
 
         if (null === $path || '/' === $path) {
-            return null;
+            return;
         }
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
@@ -646,7 +701,7 @@ class CmfHelper extends Helper
         while ('/' !== $parentPath) {
             $parent = $parent->getParent();
             if (false === strpos($parent->getPath(), $anchor)) {
-                return null;
+                return;
             }
 
             $childNames = $parent->getNodeNames()->getArrayCopy();
@@ -659,15 +714,15 @@ class CmfHelper extends Helper
             }
         }
 
-        return null;
+        return;
     }
 
     /**
      * Search for a related document.
      *
      * @param string|object $path       document instance or path from which to search
-     * @param Boolean       $reverse    if to traverse back
-     * @param Boolean       $ignoreRole if to ignore the role
+     * @param bool          $reverse    if to traverse back
+     * @param bool          $ignoreRole if to ignore the role
      * @param null|string   $class      the class to filter by
      *
      * @return null|object
@@ -679,7 +734,7 @@ class CmfHelper extends Helper
         }
 
         if (null === $path || '/' === $path) {
-            return null;
+            return;
         }
 
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
@@ -700,8 +755,8 @@ class CmfHelper extends Helper
      *
      * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param Boolean            $ignoreRole if to ignore the role
+     * @param null|int           $depth      depth up to which to traverse down the tree when an anchor is provided
+     * @param bool               $ignoreRole if to ignore the role
      * @param null|string        $class      the class to filter by
      *
      * @return null|object
@@ -720,8 +775,8 @@ class CmfHelper extends Helper
      *
      * @param string|object      $current    document instance or path from which to search
      * @param null|string|object $anchor     document instance or path which serves as an anchor from which to flatten the hierarchy
-     * @param null|integer       $depth      depth up to which to traverse down the tree when an anchor is provided
-     * @param Boolean            $ignoreRole if to ignore the role
+     * @param null|int           $depth      depth up to which to traverse down the tree when an anchor is provided
+     * @param bool               $ignoreRole if to ignore the role
      * @param null|string        $class      the class to filter by
      *
      * @return null|object
@@ -741,14 +796,14 @@ class CmfHelper extends Helper
      * This has the same semantics as the isLinkable method.
      *
      * @param string|object      $current    Document instance or path from
-     *                                       which to search.
+     *                                       which to search
      * @param null|string|object $anchor     Document instance or path which
      *                                       serves as an anchor from which to
-     *                                       flatten the hierarchy.
-     * @param null|integer       $depth      Depth up to which to traverse down
+     *                                       flatten the hierarchy
+     * @param null|int           $depth      Depth up to which to traverse down
      *                                       the tree when an anchor is
-     *                                       provided.
-     * @param Boolean            $ignoreRole Whether to ignore the role,
+     *                                       provided
+     * @param bool               $ignoreRole Whether to ignore the role,
      *
      * @return null|object
      *
@@ -764,7 +819,7 @@ class CmfHelper extends Helper
             $current = $candidate;
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -773,14 +828,14 @@ class CmfHelper extends Helper
      * This has the same semantics as the isLinkable method.
      *
      * @param string|object      $current    Document instance or path from
-     *                                       which to search.
+     *                                       which to search
      * @param null|string|object $anchor     Document instance or path which
      *                                       serves as an anchor from which to
-     *                                       flatten the hierarchy.
-     * @param null|integer       $depth      Depth up to which to traverse down
+     *                                       flatten the hierarchy
+     * @param null|int           $depth      Depth up to which to traverse down
      *                                       the tree when an anchor is
-     *                                       provided.
-     * @param Boolean            $ignoreRole Whether to ignore the role.
+     *                                       provided
+     * @param bool               $ignoreRole Whether to ignore the role
      *
      * @return null|object
      *
@@ -796,6 +851,6 @@ class CmfHelper extends Helper
             $current = $candidate;
         }
 
-        return null;
+        return;
     }
 }

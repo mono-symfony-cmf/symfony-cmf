@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -98,6 +98,12 @@ class PublishableVoterTest extends \PHPUnit_Framework_TestCase
             $this,
             array(PublishWorkflowChecker::VIEW_ATTRIBUTE)
         );
+        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
+    }
+
+    public function testNonClassSubject()
+    {
+        $result = $this->voter->vote($this->token, array(1, 2, 3), array(PublishWorkflowChecker::VIEW_ATTRIBUTE));
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 }

@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -36,14 +36,14 @@ class PublishableExtension extends AdminExtension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->with($this->formGroup, array(
             'translation_domain' => 'CmfCoreBundle',
             ))
-            ->add('publishable', 'checkbox', array(
+            ->add('publishable', method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix') ? 'Symfony\Component\Form\Extension\Core\Type\CheckboxType' : 'checkbox', array(
                 'required' => false,
             ))
             ->end();

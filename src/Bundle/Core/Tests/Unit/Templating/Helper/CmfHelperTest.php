@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -57,7 +57,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->uow))
         ;
 
-        $this->extension = new CmfHelper($this->pwc, $this->managerRegistry, 'foo');
+        $this->extension = new CmfHelper($this->pwc);
+        $this->extension->setDoctrineRegistry($this->managerRegistry, 'foo');
     }
 
     public function testGetNodeName()
@@ -118,7 +119,6 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->method('getDocumentId')
             ->with($document)
             ->will($this->throwException(new \Exception('test')));
-        ;
 
         $this->assertFalse($this->extension->getPath($document));
     }
@@ -135,6 +135,20 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->extension->find('/foo'));
         $this->assertEquals($document, $this->extension->find('/foo'));
+    }
+
+    public function testFindTranslation()
+    {
+        $document = new \stdClass();
+
+        $this->manager->expects($this->any())
+            ->method('findTranslation')
+            ->with(null, '/foo', 'en')
+            ->will($this->onConsecutiveCalls(null, $document, 'en'))
+        ;
+
+        $this->assertNull($this->extension->findTranslation('/foo', 'en'));
+        $this->assertEquals($document, $this->extension->findTranslation('/foo', 'en'));
     }
 
     public function testFindMany()
@@ -211,7 +225,8 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindManyNoWorkflow()
     {
-        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
+        $extension = new CmfHelper(null);
+        $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
 
         $documentA = new \stdClass();
 
@@ -221,7 +236,7 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($documentA))
         ;
 
-        $this->extension->findMany(array('/foo', '/bar'), false, false);
+        $extension->findMany(array('/foo', '/bar'), false, false);
     }
 
     public function testIsPublished()
@@ -245,8 +260,10 @@ class CmfHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsPublishedNoWorkflow()
     {
-        $this->extension = new CmfHelper(null, $this->managerRegistry, 'foo');
-        $this->extension->isPublished(new \stdClass());
+        $extension = new CmfHelper(null);
+        $extension->setDoctrineRegistry($this->managerRegistry, 'foo');
+
+        $extension->isPublished(new \stdClass());
     }
 
     public function testIsLinkable()

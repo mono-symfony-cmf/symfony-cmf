@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,12 +13,15 @@ namespace Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Slugifier;
 
 use Symfony\Cmf\Bundle\CoreBundle\Slugifier\CallbackSlugifier;
 
+/**
+ * @group legacy
+ */
 class CallbackSlugifierTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
         $this->slugifier = new CallbackSlugifier(
-            'Symfony\Cmf\Bundle\CoreBundle\Tests\Unit\Slugifier\CallbackSlugifierTest::slugify'
+            __CLASS__.'::slugify'
         );
     }
 

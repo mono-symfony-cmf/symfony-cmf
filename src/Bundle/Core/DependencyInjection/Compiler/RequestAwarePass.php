@@ -3,7 +3,7 @@
 /*
  * This file is part of the Symfony CMF package.
  *
- * (c) 2011-2014 Symfony CMF
+ * (c) 2011-2015 Symfony CMF
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,18 +25,18 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class RequestAwarePass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
         $services = $container->findTaggedServiceIds('cmf_request_aware');
         foreach ($services as $id => $attributes) {
-            trigger_error("Service $id is using the deprecated tag cmf_request_aware");
+            @trigger_error('The cmf_request_aware tag used by "'.$id.'" is deprecated since 1.1 and will be removed in 2.0. Use the "request_stack" service instead.', E_USER_DEPRECATED);
 
             $definition = $container->getDefinition($id);
             $definition
                 ->addMethodCall('setRequest', array(
-                    new Reference('request', ContainerInterface::NULL_ON_INVALID_REFERENCE, false)
+                    new Reference('request', ContainerInterface::NULL_ON_INVALID_REFERENCE, false),
                 ))
             ;
         }
