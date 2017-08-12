@@ -71,6 +71,11 @@ before_install:
       phpenv config-rm xdebug.ini || true
       skip=0
 
+    - |
+      # Determine branches
+      export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+      echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+
 install:
     - |
       # Create local composer packages for each patched components and reference them in composer.json files when cross-testing components
