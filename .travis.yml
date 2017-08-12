@@ -42,11 +42,9 @@ before_install:
       PHP=$TRAVIS_PHP_VERSION
       [ -d ~/.composer ] || mkdir ~/.composer
       cp .composer/* ~/.composer/
-      export PHPUNIT=$(readlink -f ./phpunit)
-      export PHPUNIT_X="$PHPUNIT"
+      export PHPUNIT=vendor/bin/simple-phpunit
       export COMPOSER_UP="composer update --no-progress --no-suggest --ansi $COMPOSER_FLAGS"
       export OUTPUT_FILE="./packages.txt"
-      touch $OUTPUT_FILE
 
       # tfold is a helper to create folded reports
       tfold () {
@@ -82,7 +80,7 @@ install:
           cp composer.json composer.json.orig &&
           echo -e '{\n"require":{'"$(grep phpunit-bridge composer.json)"'"php":"*"},"minimum-stability":"dev"}' > composer.json &&
           if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
-          export CHAGEDCOMPONENTS=$(php .github/build-packages.php master $OUTPUT_FILE $COMPONENTS)
+          php .github/build-packages.php master $OUTPUT_FILE $COMPONENTS
           mv composer.json composer.json.phpunit &&
           mv composer.json.orig composer.json
       fi
@@ -98,12 +96,13 @@ install:
     - |
       run_tests () {
           set -e
+          cat $OUTPUT_FILE
           if [[ 1 != $TEST_THEM_ALL ]]; then
             # Test changed components only:
-            cat $OUTPUT_FILE | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
+            cat $OUTPUT_FILE | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
           else
             # Test them all
-            echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT_X {}'"
+            echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
           fi
       }
 

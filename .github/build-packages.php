@@ -15,6 +15,9 @@ if (0 == $arguments) {
 
 $outputFile = array_shift($arguments);
 
+// clean file in a special way if exists, otherwise create it new
+file_put_contents($outputFile, '');
+
 if (0 === count($arguments)) {
     $dirsString = exec("find src -mindepth 2 -type f -name phpunit.xml.dist -printf '%h,'");
     $dirs = explode(',', trim($dirsString, ','));
