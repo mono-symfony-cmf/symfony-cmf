@@ -89,7 +89,7 @@ install:
 
     - |
       # Create components to patch
-      php bin/buildPackages origin/master $OUTPUT_FILE $COMPONENTS
+      php bin/buildPackages master $OUTPUT_FILE $COMPONENTS
 
     - |
       if [[ ! $skip ]]; then ./phpunit install; fi
