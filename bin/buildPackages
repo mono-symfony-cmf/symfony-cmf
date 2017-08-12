@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 if (1 == $_SERVER['argc']) {
@@ -13,7 +14,7 @@ if (0 == $arguments) {
     die('No output file given.');
 }
 
-$outputFile = array_shift($arguments);
+$outputFile = __DIR__.'/'.array_shift($arguments);
 
 // clean file in a special way if exists, otherwise create it new
 file_put_contents($outputFile, '');
