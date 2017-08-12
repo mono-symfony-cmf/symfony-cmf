@@ -75,15 +75,13 @@ install:
     - |
       # Create local composer packages for each patched components and reference them in composer.json files when cross-testing components
       composer self-update
-      if [[ ! $skip ]]; then
-          export SYMFONY_DEPRECATIONS_HELPER=weak &&
-          cp composer.json composer.json.orig &&
-          echo -e '{\n"require":{'"$(grep phpunit-bridge composer.json)"'"php":"*"},"minimum-stability":"dev"}' > composer.json &&
-          if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
-          php bin/buildPackages master $OUTPUT_FILE $COMPONENTS
-          mv composer.json composer.json.phpunit &&
-          mv composer.json.orig composer.json
-      fi
+      export SYMFONY_DEPRECATIONS_HELPER=weak &&
+      cp composer.json composer.json.orig &&
+      echo -e '{\n"require":{'"$(grep phpunit-bridge composer.json)"'"php":"*"},"minimum-stability":"dev"}' > composer.json &&
+      if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
+      php bin/buildPackages master $OUTPUT_FILE $COMPONENTS
+      mv composer.json composer.json.phpunit &&
+      mv composer.json.orig composer.json
 
     - |
       if [[ ! $skip ]]; then ./phpunit install; fi
