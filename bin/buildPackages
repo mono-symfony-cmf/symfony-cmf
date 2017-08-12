@@ -45,7 +45,7 @@ $flags = \PHP_VERSION_ID >= 50400 ? JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES |
 foreach ($dirs as $k => $dir) {
     $command = "git diff --name-only $mergeBase -- $dir";
     if (!system($command, $exitState)) {
-        if (!$exitState) {
+        if ($exitState) {
             echo "ERROR while CMD: $command\n";
             exit($exitState);
         }
