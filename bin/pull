@@ -37,7 +37,8 @@ if (!is_dir($project['directory'])) {
     exit(sprintf('Remote %s does not exist in the configured list of projects.', $remote));
 }
 
-$remote = $project['repository'];
+// ToDo remove suffix when live
+$remote = str_replace('symfony-cmf', 'mono-symfony-cmf', $project['repository']);
 $projectDirectory = $project['directory'];
 
 if (!branchExistsOnSource($sourceBranch)) {
