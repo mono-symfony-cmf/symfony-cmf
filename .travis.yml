@@ -79,9 +79,12 @@ install:
       cp composer.json composer.json.orig &&
       echo -e '{\n"require":{'"$(grep phpunit-bridge composer.json)"'"php":"*"},"minimum-stability":"dev"}' > composer.json &&
       if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
-      php bin/buildPackages master $OUTPUT_FILE $COMPONENTS
       mv composer.json composer.json.phpunit &&
       mv composer.json.orig composer.json
+
+    - |
+      # Create components to patch
+      php bin/buildPackages master $OUTPUT_FILE $COMPONENTS
 
     - |
       if [[ ! $skip ]]; then ./phpunit install; fi
