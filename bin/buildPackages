@@ -44,9 +44,9 @@ $packages = array();
 $flags = \PHP_VERSION_ID >= 50400 ? JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE : 0;
 foreach ($dirs as $k => $dir) {
     $command = "git diff --name-only $mergeBase -- $dir";
-    echo "CMD: $command\n";
     if (!system($command, $exitState)) {
         if (!$exitState) {
+            echo "ERROR while CMD: $command\n";
             exit($exitState);
         }
         printf("No change on %s\n", $dirs);
