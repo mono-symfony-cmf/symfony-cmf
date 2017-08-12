@@ -9,6 +9,12 @@ $arguments = $_SERVER['argv'];
 array_shift($arguments);
 $branch = array_shift($arguments);
 
+if (0 == $arguments) {
+    die('No output file given.');
+}
+
+$outputFile = array_shift($arguments);
+
 if (0 === count($arguments)) {
     $dirsString = exec("find src -mindepth 2 -type f -name phpunit.xml.dist -printf '%h,'");
     $dirs = explode(',', trim($dirsString, ','));
@@ -27,15 +33,15 @@ $mergeBase = trim(shell_exec(sprintf('git merge-base %s HEAD', $branch)));
 $packages = array();
 $flags = \PHP_VERSION_ID >= 50400 ? JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE : 0;
 foreach ($dirs as $k => $dir) {
-    exec("git diff --name-only $mergeBase -- $dir", $output, $returnValue);
-    if (!$output) {
-        if (!$returnValue) {
-            exit($returnValue);
+    if (!system("git diff --name-only $mergeBase -- $dir", $exitState)) {
+        if (!$exitState) {
+            exit($exitState);
         }
         unset($dirs[$k]);
         continue;
     }
     echo "$dir\n";
+    file_put_contents($outputFile, $dir.PHP_EOL, FILE_APPEND);
 
     $json = ltrim(file_get_contents($dir.'/composer.json'));
     if (null === $package = json_decode($json)) {

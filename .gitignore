@@ -2,4 +2,5 @@
 composer.lock
 package.tar
 packages.json
+packages.txt
 .phpunit/
