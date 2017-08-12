@@ -36,7 +36,7 @@ chdir(dirname(__DIR__));
 
 // evaluate patched directories
 exec(sprintf('git fetch origin %s', $targetBranch));
-$command = sprintf('git merge-base origin/%s HEAD', $targetBranch);
+$command = sprintf('git merge-base %s HEAD', $targetBranch);
 echo "CMD: $command\n";
 $mergeBase = trim(shell_exec($command));
 
