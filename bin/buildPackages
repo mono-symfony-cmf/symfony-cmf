@@ -14,13 +14,14 @@ if (0 == $arguments) {
     die('No output file given.');
 }
 
-$outputFile = __DIR__.'/'.array_shift($arguments);
+$outputFile = __DIR__.'/../'.array_shift($arguments);
 
 // clean file in a special way if exists, otherwise create it new
 file_put_contents($outputFile, '');
 echo "Write to file: $outputFile \n";
+
 if (0 === count($arguments)) {
-    $dirsString = exec("find src -mindepth 2 -type f -name phpunit.xml.dist -printf '%h,'");
+    $dirsString = exec("find src -maxdepth 3 -type f -name phpunit.xml.dist -printf '%h,'");
     $dirs = explode(',', trim($dirsString, ','));
 } else {
     $dirs = $arguments;
@@ -41,6 +42,7 @@ foreach ($dirs as $k => $dir) {
         if (!$exitState) {
             exit($exitState);
         }
+        printf("No change on %s\n", $dirs);
         unset($dirs[$k]);
         continue;
     }
