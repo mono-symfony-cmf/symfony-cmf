@@ -49,7 +49,7 @@ foreach ($dirs as $k => $dir) {
             echo "ERROR while CMD: $command\n";
             exit($exitState);
         }
-        printf("No change on %s\n", $dirs);
+        printf("No change on %s\n", $dir);
         unset($dirs[$k]);
         continue;
     }
