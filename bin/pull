@@ -51,7 +51,7 @@ if (!remoteExists($remote)) {
 }
 
 // push to remote
-exec(sprintf('git subtree pull --prefix=%s %s %s', $projectDirectory, $remote, $destinationBranch), $output, $exitCode);
+exec(sprintf('git subtree pull --no-commit --prefix=%s %s %s', $projectDirectory, $remote, $destinationBranch), $output, $exitCode);
 if ($exitCode) {
     exit($exitCode);
 }
