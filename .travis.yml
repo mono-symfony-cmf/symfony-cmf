@@ -96,7 +96,7 @@ install:
     - |
       run_tests () {
           set -e
-          cat $OUTPUT_FILE
+          cat "./$OUTPUT_FILE"
           if [[ 1 != $TEST_THEM_ALL ]]; then
             # Test changed components only:
             cat "./$OUTPUT_FILE" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
