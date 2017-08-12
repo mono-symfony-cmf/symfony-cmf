@@ -1,6 +1,6 @@
 /vendor/
 composer.lock
-package.tar
-packages.json
 packages.txt
-.phpunit/
+packages.json
+.phpunit
+package.tar
