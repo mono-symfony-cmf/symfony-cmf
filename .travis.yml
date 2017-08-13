@@ -106,9 +106,9 @@ install:
       run_tests () {
           set -e
           if [[ $TEST_PATCHES == "true" && $TEST_THEM_ALL != "true" ]]; then
-            cat "./$OUTPUT_FILE" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
+            cat "./$OUTPUT_FILE" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT'"
           else
-            echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
+            echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT'"
           fi
       }
 
