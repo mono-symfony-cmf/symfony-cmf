@@ -1,0 +1,54 @@
+{
+    "name": "symfony-cmf/routing-auto-bundle",
+    "description": "Bundle which automatically creates and manages routes for persisted objects",
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/routing-auto-bundle/contributors"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.0",
+        "symfony/framework-bundle": "^2.8|^3.0",
+        "symfony-cmf/routing-auto": "2.0.0-RC2",
+        "symfony-cmf/routing-bundle": "^1.2.0|^2.0",
+        "aferrandini/urlizer": "1.0.*",
+        "phpdocumentor/reflection-docblock": "^3.1, !=3.2.0"
+    },
+    "require-dev": {
+        "symfony-cmf/testing": "^1.3|^2.0",
+        "symfony/phpunit-bridge": "^3.2",
+        "symfony/yaml": "^2.8|^3.0",
+        "matthiasnoback/symfony-dependency-injection-test": "~0.6",
+        "matthiasnoback/symfony-config-test": "^1.3.1",
+        "doctrine/phpcr-odm": "^1.3"
+    },
+    "suggest": {
+        "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents",
+        "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents",
+        "symfony/yaml": "To be able to load Yaml configuration files (^2.1)"
+    },
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\RoutingAutoBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\RoutingAutoBundle\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    },
+    "scripts": {
+        "test": [
+            "vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh",
+            "SYMFONY_PHPUNIT_REMOVE=\"symfony/yaml\" vendor/bin/simple-phpunit"
+        ]
+    }
+}
