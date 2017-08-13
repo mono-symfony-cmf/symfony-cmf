@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/../bootstrap/bootstrap.php';
+
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(array('--env', '-e'), 'phpcr');
+
+// must be placed after setting $env, because it's used in bootstrapping the 
+// kernel
+$kernel = include __DIR__.'/../bootstrap/kernel_bootstrap.php';
+
+$application = new Application($kernel);
+$application->run($input);
