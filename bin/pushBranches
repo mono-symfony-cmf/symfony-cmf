@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+git branch | while read -r line; do git checkout $line; git push origin $line; done

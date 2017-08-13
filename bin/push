@@ -1,0 +1,58 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * Use this script to push the repository of a specific project.
+ * You can pass the project name (which should be the name of the git remote) and the branch name on your odestination
+ * If you wanna push as specific branch of this repository you can do too
+ *
+ * Usage:
+ *
+ * ./bin/push <project-name> <destination-branch> <source-branch>
+ *
+ * source-branch is master by default
+ */
+
+
+if (2 > $argc) {
+    exit("You have to pass project and branch to split\n");
+}
+
+require_once __DIR__ . '/gitUtils.php';
+
+$arguments = $argv;
+// we don not need file name
+array_shift($arguments);
+
+$projectIdentifier = array_shift($arguments);
+$destinationBranch = array_shift($arguments);
+$projects = require __DIR__ . '/configuration.php';
+$sourceBranch = 1 <= count($arguments) ? array_shift($arguments) : 'master';
+
+
+$project = getProjectDirectory($projectIdentifier, $projects);
+if (!$project) {
+    exit(sprintf("Project %s is not configured.\n"));
+}
+if (!is_dir($project['directory'])) {
+    exit(sprintf('Remote %s does not exist in the configured list of projects.', $remote));
+}
+
+// ToDo remove suffix when live
+$remote = str_replace('symfony-cmf', 'mono-symfony-cmf', $project['repository']);
+$projectDirectory = $project['directory'];
+
+if (!branchExistsOnSource($sourceBranch)) {
+    exit(sprintf("Branch %s does not exist.\n", $sourceBranch));
+}
+exec('git checkout ' . $sourceBranch);
+
+if (!remoteExists($remote)) {
+    exit(sprintf("Remote %s/%s does not exist.\n", $remote, $destinationBranch));
+}
+
+// push to remote
+exec(sprintf('git subtree push --prefix=%s %s %s', $projectDirectory, $remote, $destinationBranch), $output, $exitCode);
+if ($exitCode) {
+    exit($exitCode);
+}

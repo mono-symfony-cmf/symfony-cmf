@@ -1,0 +1,56 @@
+{
+    "name": "mono-symfony-cmf/symfony-cmf",
+    "description": "Monorepo of Symfony CMF",
+    "type": "library",
+    "keywords": ["framework"],
+    "homepage": "https://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ElectricMaxxx",
+            "email": "maximilian.berghoff@gmx.de"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^3.2",
+        "phpspec/prophecy": "^1.7"
+    },
+    "replace": {
+        "symfony-cmf/block-bundle":"self.version",
+        "symfony-cmf/content-bundle":"self.version",
+        "symfony-cmf/core-bundle":"self.version",
+        "symfony-cmf/menu-bundle":"self.version",
+        "symfony-cmf/resource-bundle":"self.version",
+        "symfony-cmf/resource-rest-bundle":"self.version",
+        "symfony-cmf/routing-auto-bundle":"self.version",
+        "symfony-cmf/routing-bundle":"self.version",
+        "symfony-cmf/seo-bundle":"self.version",
+        "symfony-cmf/sonata-phpcr-admin-integration-bundle":"self.version",
+        "symfony-cmf/resource":"self.version",
+        "symfony-cmf/routing":"self.version",
+        "symfony-cmf/routing-auto":"self.version",
+        "symfony-cmf/slugifier":"self.version",
+        "symfony-cmf/testing":"self.version",
+        "symfony-cmf/symfony-cmf-docs":"self.version"
+    },
+    "conflict": {
+        "phpdocumentor/reflection-docblock": "<3.0||>=3.2.0,<3.2.2",
+        "phpdocumentor/type-resolver": "<0.2.0",
+        "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Cmf\\": "src/"
+        },
+        "exclude-from-classmap": [
+            "**/Tests/"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}

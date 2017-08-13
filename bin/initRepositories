@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/gitUtils.php';
+$projects = include __DIR__ . '/configuration.php';
+
+define('DRY_RUN', false);
+
+// create branches if not exists
+$branches = array();
+foreach ($projects as $name => $configuration) {
+    foreach ($configuration['branches'] as $repositoryBranch => $sourceBranch) {
+        $branches[] = $sourceBranch;
+    }
+}
+$branches = array_unique($branches);
+sort($branches);
+
+checkout('master');
+$lastBranch = 'master';
+foreach ($branches as $branch) {
+    checkout($branch, $lastBranch);
+    $lastBranch = $branch;
+}
+
+
+foreach ($projects as $name => $configuration) {
+    foreach ($configuration['branches'] as $repositoryBranch => $sourceBranch) {
+        checkout($sourceBranch);
+        $method = is_dir($configuration['directory']) ? 'pull' : 'add';
+        subtree($method, $configuration['directory'], $configuration['repository'], $repositoryBranch);
+        checkout('master');
+        print("\n\n");
+    }
+}
