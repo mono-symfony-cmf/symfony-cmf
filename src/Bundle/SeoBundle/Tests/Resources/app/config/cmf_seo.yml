@@ -1,0 +1,19 @@
+framework:
+    translator: { enabled: true, fallback: en }
+
+sonata_seo:
+    page:
+        metas:
+            name:
+                keywords: "testkey"
+
+cmf_seo:
+    title: "Default | %%content_title%%"
+    description: "Default description. %%content_description%%"
+    original_route_pattern: canonical
+
+cmf_routing:
+    chain:
+        routers_by_id:
+            cmf_routing.dynamic_router: 20
+            router.default: 100

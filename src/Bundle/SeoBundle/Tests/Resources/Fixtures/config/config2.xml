@@ -1,0 +1,9 @@
+<config xmlns="http://cmf.symfony.com/schema/dic/seo"
+    translation-domain="messages"
+    original-route-pattern="redirect"
+    content-key="foo"
+    metadata-listener="auto"
+    sonata-admin-extension="auto">
+
+    <persistence phpcr="true" />
+</config>
