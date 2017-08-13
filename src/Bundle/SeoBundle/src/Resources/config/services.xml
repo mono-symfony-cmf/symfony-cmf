@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+
+<container
+        xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="cmf_seo.config_values" class="Symfony\Cmf\Bundle\SeoBundle\DependencyInjection\ConfigValues">
+            <call method="setTitle"><argument>%cmf_seo.title%</argument></call>
+            <call method="setDescription"><argument>%cmf_seo.description%</argument></call>
+            <call method="setTranslationDomain"><argument>%cmf_seo.translation_domain%</argument></call>
+            <call method="setOriginalUrlBehaviour"><argument>%cmf_seo.original_route_pattern%</argument></call>
+        </service>
+
+        <service id="cmf_seo.form.type.seo_metadata" class="Symfony\Cmf\Bundle\SeoBundle\Form\Type\SeoMetadataType">
+            <argument>%cmf_seo.form.data_class.seo_metadata%</argument>
+            <argument>%cmf_seo.form.options%</argument>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="cmf_seo.cache.file" class="Symfony\Cmf\Bundle\SeoBundle\Cache\FileCache">
+            <argument>%kernel.cache_dir%</argument>
+            <argument>cmf_seo</argument>
+
+            <tag name="kernel.cache_warmer" />
+            <tag name="kernel.cache_clearer" />
+        </service>
+
+        <service id="cmf_seo.cache" alias="cmf_seo.cache.file" />
+
+        <service id="cmf_seo.presentation" class="Symfony\Cmf\Bundle\SeoBundle\SeoPresentation">
+            <argument type="service" id="sonata.seo.page" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="cmf_seo.config_values" />
+            <argument type="service" id="cmf_seo.cache" />
+        </service>
+
+        <service id="cmf_seo.error.suggestion_provider.controller" class="Symfony\Cmf\Bundle\SeoBundle\Controller\SuggestionProviderController">
+            <argument type="service" id="twig" />
+            <argument>%kernel.debug%</argument>
+            <argument type="service" id="cmf_seo.error.exclusion_matcher" />
+            <argument>%cmf_seo.error.templates%</argument>
+        </service>
+
+        <service id="cmf_seo.error.request_matcher"
+                 class="Symfony\Component\HttpFoundation\RequestMatcher"
+                 public="false"
+                 abstract="true"
+        />
+
+        <service id="cmf_seo.error.exclusion_matcher" class="Symfony\Cmf\Bundle\SeoBundle\Matcher\ExclusionMatcher" />
+
+        <service id="cmf_seo.twig.extension" class="Symfony\Cmf\Bundle\SeoBundle\Twig\Extension\CmfSeoExtension" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="cmf_seo.presentation" />
+        </service>
+
+        <service id="cmf_seo.language_listener" class="Symfony\Cmf\Bundle\SeoBundle\EventListener\LanguageListener">
+            <tag name="kernel.event_subscriber" />
+        </service>
+    </services>
+
+</container>

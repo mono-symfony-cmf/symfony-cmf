@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+
+<container
+        xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="cmf_seo.sitemap.controller" class="Symfony\Cmf\Bundle\SeoBundle\Controller\SitemapController">
+            <argument type="service" id="cmf_seo.sitemap.provider" />
+            <argument type="service" id="templating" />
+            <argument>%cmf_seo.sitemap.configurations%</argument>
+        </service>
+
+        <service id="cmf_seo.sitemap.loader_chain" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\LoaderChain" />
+
+        <service id="cmf_seo.sitemap.guesser_chain" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\GuesserChain" />
+
+        <service id="cmf_seo.sitemap.guesser.seo_metadata_title" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\SeoMetadataTitleGuesser" public="false">
+            <argument type="service" id="cmf_seo.presentation" />
+            <tag name="cmf_seo.sitemap.guesser" priority="-2"/>
+        </service>
+
+        <service id="cmf_seo.sitemap.guesser.alternate_locales" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\AlternateLocalesGuesser" public="false">
+            <argument/>
+            <tag name="cmf_seo.sitemap.guesser" priority="-2"/>
+        </service>
+
+        <service id="cmf_seo.sitemap.guesser.location" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\LocationGuesser" public="false">
+            <argument type="service" id="router" />
+            <tag name="cmf_seo.sitemap.guesser" priority="-2"/>
+        </service>
+
+        <service id="cmf_seo.sitemap.guesser.default_change_frequency" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\DefaultChangeFrequencyGuesser" public="false">
+            <argument>%cmf_seo.sitemap.default_change_frequency%</argument>
+            <tag name="cmf_seo.sitemap.guesser" priority="-2"/>
+        </service>
+
+        <service id="cmf_seo.sitemap.voter_chain" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\VoterChain" />
+
+        <service id="cmf_seo.sitemap.publish_workflow_voter" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\PublishWorkflowVoter" public="false">
+            <argument type="service" id="cmf_core.publish_workflow.checker" />
+            <tag name="cmf_seo.sitemap.voter" priority="-2"/>
+        </service>
+
+        <service id="cmf_seo.sitemap.voter.sitemap_aware_document" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\SitemapAwareDocumentVoter">
+            <tag name="cmf_seo.sitemap.voter" priority="-2"/>
+        </service>
+
+        <service id="cmf_seo.sitemap.provider" class="Symfony\Cmf\Bundle\SeoBundle\Sitemap\UrlInformationProvider">
+            <argument type="service" id="cmf_seo.sitemap.loader_chain" />
+            <argument type="service" id="cmf_seo.sitemap.voter_chain" />
+            <argument type="service" id="cmf_seo.sitemap.guesser_chain" />
+        </service>
+
+    </services>
+</container>

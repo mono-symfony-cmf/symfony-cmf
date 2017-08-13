@@ -1,0 +1,44 @@
+framework:
+    translator: { enabled: true, fallback: en }
+    serializer: true
+
+sonata_seo:
+    page:
+        metas:
+            name:
+                keywords: "testkey"
+
+cmf_seo:
+    title: "Default | %%content_title%%"
+    description: "Default description. %%content_description%%"
+    original_route_pattern: canonical
+    error:
+        enable_parent_provider: true
+        enable_sibling_provider: true
+        templates:
+            html: ":tests:exception.html.twig"
+        exclusion_rules:
+            - { path: 'excluded' }
+    sitemap:
+        defaults:
+            default_change_frequency: never
+            templates:
+                xml: 'CmfSeoBundle:Sitemap:index.xml.twig'
+                html: 'CmfSeoBundle:Sitemap:index.html.twig'
+        configurations:
+            sitemap: ~
+            frequent:
+                default_change_frequency: always
+
+cmf_routing:
+    chain:
+        routers_by_id:
+            cmf_routing.dynamic_router: 20
+            router.default: 100
+
+twig:
+    exception_controller: cmf_seo.error.suggestion_provider.controller:listAction
+
+cmf_core:
+    multilang:
+        locales: [en, de]
