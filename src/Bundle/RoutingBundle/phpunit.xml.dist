@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    colors="true"
+    bootstrap="vendor/symfony-cmf/testing/bootstrap/bootstrap.php"
+>
+
+    <testsuites>
+        <testsuite name="Symfony CmfRoutingBundle Test Suite">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+
+        <testsuite name="phpcr">
+            <directory>./tests/Functional</directory>
+            <exclude>./tests/Functional/Doctrine/Orm</exclude>
+        </testsuite>
+
+        <testsuite name="orm">
+            <directory>./tests/Functional/Doctrine/Orm</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory>src/</directory>
+            <exclude>
+                <directory>Resources/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <php>
+        <server name="KERNEL_DIR" value="tests/Resources/app" />
+    </php>
+
+    <listeners>
+        <listener class="Symfony\Cmf\Component\Testing\Phpunit\DatabaseTestListener" />
+    </listeners>
+
+</phpunit>
