@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# You have to install "go" and configure the paths and "cmake" to run this script
+
+go get -d github.com/libgit2/git2go
+cd $GOPATH/src/github.com/libgit2/git2go
+git checkout next
+git submodule update --init
+make install
+
+go get github.com/splitsh/lite
+cd -
+go build -o splitsh-lite github.com/splitsh/lite
