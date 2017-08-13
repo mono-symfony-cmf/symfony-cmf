@@ -1,0 +1,17 @@
+cmf_resource:
+    repositories:
+        test_repository_phpcr_odm:
+            type: doctrine/phpcr-odm
+            basepath: /test
+
+        test_repository_phpcr:
+            type: phpcr/phpcr
+            basepath: /test
+
+        articles:
+            type: doctrine/phpcr-odm
+            basepath: /cmf/articles
+
+#        my_filesystem:
+#            type: filesystem
+#            base_dir: %kernel.root_dir%/../filesystem
