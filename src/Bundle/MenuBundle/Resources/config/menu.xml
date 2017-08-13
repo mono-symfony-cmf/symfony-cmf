@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="cmf_menu.content_router" alias="router"/>
+
+        <service id="cmf_menu.factory.quiet" class="Symfony\Cmf\Bundle\MenuBundle\QuietFactory" public="false">
+            <argument type="service" id="cmf_menu.factory.quiet.inner" />
+            <argument type="service" id="logger" on-invalid="ignore" />
+            <argument>%cmf_menu.allow_empty_items%</argument>
+        </service>
+
+        <service id="cmf_menu.factory_extension.content" class="Symfony\Cmf\Bundle\MenuBundle\Extension\ContentExtension">
+            <argument type="service" id="cmf_menu.content_router"/>
+
+            <tag name="knp_menu.factory_extension" priority="10"/>
+        </service>
+
+        <service id="cmf_menu.loader.node" class="Symfony\Cmf\Bundle\MenuBundle\Loader\VotingNodeLoader">
+            <argument type="service" id="knp_menu.factory"/>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
+
+    </services>
+
+</container>
