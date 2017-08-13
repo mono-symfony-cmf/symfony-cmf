@@ -105,11 +105,9 @@ install:
     - |
       run_tests () {
           set -e
-          if [[ $TEST_PATCHES == "true" ]]; then
-            # Test patched components only
+          if [[ $TEST_PATCHES = "true" ]]; then
             cat "./$OUTPUT_FILE" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
-          elseif [[ "$TEST_THEM_ALL" == "true" ]]; then
-            # Test them all
+          elseif [[ $TEST_THEM_ALL = "true" ]]; then
             echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
           fi
       }
