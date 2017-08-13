@@ -74,7 +74,7 @@ before_install:
       # Determine branches
       export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
       echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-      export TEST_PATCHES = $(if [[ "$TRAVIS_BRANCH" == "$BRANCH" ]]; then echo "false"; else echo "true";  fi)
+      export TEST_PATCHES=$(if [[ "$TRAVIS_BRANCH" == "$BRANCH" ]]; then echo "false"; else echo "true";  fi)
 
 install:
     - |
