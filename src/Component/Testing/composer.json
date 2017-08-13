@@ -1,0 +1,38 @@
+{
+    "name": "symfony-cmf/testing",
+    "license": "MIT",
+    "description": "Component for bootstraping functional tests for CMF bundles only.",
+    "authors": [
+        {
+            "name": "dantleech",
+            "email": "daniel@dantleech.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "symfony/symfony": "~2.3",
+        "symfony/monolog-bundle": "~2.1",
+        "doctrine/common": "~2.4",
+        "doctrine/doctrine-bundle": "1.*",
+        "doctrine/phpcr-odm": "1.*",
+        "doctrine/phpcr-bundle": "1.*",
+        "doctrine/data-fixtures": "1.0.*",
+        "jackalope/jackalope": "1.*",
+        "jackalope/jackalope-doctrine-dbal": "1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Cmf\\Component\\Testing\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Symfony\\Cmf\\Component\\Testing\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1-dev"
+        }
+    }
+}
