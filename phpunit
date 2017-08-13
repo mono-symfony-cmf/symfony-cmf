@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+// Cache-Id: https://github.com/symfony/phpunit-bridge/commit/29fa7b8196870591f35e1554dd69def482e01fb2
+if (2 === $_SERVER['argc']) {
+    array_shift($_SERVER['argv']);
+    $packageDir = array_shift($_SERVER['argv']);
+} else {
+    $packageDir = '';
+}
+if (!file_exists(__DIR__.'/'.$packageDir.'/vendor/bin/simple-phpunit')) {
+    echo "Unable to find the `simple-phpunit` script in `vendor/bin/`.\nPlease run `composer update` before running this command.\n";
+    exit(1);
+}
+/*
+ * We will need that later.
+ *
+ * if (\PHP_VERSION_ID >= 70000 && !getenv('SYMFONY_PHPUNIT_VERSION')) {
+    putenv('SYMFONY_PHPUNIT_VERSION=6.0');
+}
+*/
+
+putenv('SYMFONY_PHPUNIT_DIR='.__DIR__.'/'.$packageDir.'/.phpunit');
+require __DIR__.'/'.$packageDir.'/vendor/bin/simple-phpunit';
