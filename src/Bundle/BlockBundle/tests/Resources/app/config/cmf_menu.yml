@@ -1,0 +1,10 @@
+
+cmf_menu:
+    persistence:
+        phpcr:
+            enabled: true
+            menu_basepath: /test/menus
+    voters:
+        content_identity:
+            content_key: 'test'
+        uri_prefix: ~
