@@ -1,0 +1,44 @@
+{
+    "name": "symfony-cmf/menu-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony CMF Menu Bundle",
+    "keywords": ["Symfony CMF", "menu"],
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/MenuBundle/contributors"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": false,
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.3",
+        "doctrine/phpcr-bundle": "~1.1",
+        "doctrine/phpcr-odm": "~1.1",
+        "knplabs/knp-menu-bundle": "~1.1",
+        "symfony-cmf/core-bundle": "~1.1"
+    },
+    "require-dev": {
+        "symfony-cmf/routing-bundle": "~1.2",
+        "symfony-cmf/testing": "~1.1",
+        "sonata-project/doctrine-phpcr-admin-bundle": "~1.1",
+        "symfony/monolog-bundle": "~2.3"
+    },
+    "suggest": {
+        "sonata-project/doctrine-phpcr-admin-bundle": "if you want to have editing capabilities",
+        "burgov/key-value-form-bundle": "if you want to edit the advanced options on the node with the menu options extension"
+    },
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Cmf\\Bundle\\MenuBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2-dev"
+        }
+    }
+}
