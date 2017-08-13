@@ -1,0 +1,30 @@
+<config xmlns="http://cmf.symfony.com/schema/dic/seo"
+    translation-domain="messages"
+    original-route-pattern="redirect"
+    metadata-listener="auto"
+    sonata-admin-extension="auto">
+
+    <persistence phpcr="true" />
+
+    <alternate-locale provider-id="some-id" />
+
+    <error enable-parent-provider="true" enable-sibling-provider="true" />
+
+    <sitemap enabled="true">
+        <configuration default-change-frequency="never" name="default">
+            <template format="xml">test.xml</template>
+            <template format="html">test.html</template>
+            <loader>_none</loader>
+            <voter>_none</voter>
+            <guesser>_none</guesser>
+        </configuration>
+    </sitemap>
+
+    <content-listener enabled="true" content-key="foo" />
+
+    <form>
+        <data_class>
+            <seo_metadata>/My/Class</seo_metadata>
+        </data_class>
+    </form>
+</config>
