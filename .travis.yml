@@ -44,7 +44,6 @@ before_install:
       cp .composer/* ~/.composer/
       export PHPUNIT=vendor/bin/simple-phpunit
       export COMPOSER_UP="composer update --no-progress --no-suggest --ansi $COMPOSER_FLAGS"
-      export OUTPUT_FILE="packages.txt"
 
       # tfold is a helper to create folded reports
       tfold () {
@@ -75,6 +74,7 @@ before_install:
       # Determine branches
       export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
       echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+      export TEST_PATCHES = $(if [[ $TRAVIS_BRANCH = $BRANCH ]]; then echo 0; else echo 1;  fi)
 
 install:
     - |
@@ -89,10 +89,13 @@ install:
 
     - |
       # Create components to patch
-      php bin/buildPackages master $OUTPUT_FILE $COMPONENTS
+      if [[ 1 = $TEST_PATCHES ]]; then
+        export OUTPUT_FILE="packages.txt" &&
+        php bin/buildPackages $TRAVIS_BRANCH $OUTPUT_FILE $COMPONENTS
+      fi
 
     - |
-      if [[ ! $skip ]]; then ./phpunit install; fi
+      ./phpunit install;
       # phpinfo
       if [[ ! $PHP = hhvm* ]]; then php -i; else hhvm --php -r 'print_r($_SERVER);print_r(ini_get_all());'; fi
 
@@ -102,11 +105,10 @@ install:
     - |
       run_tests () {
           set -e
-          cat "./$OUTPUT_FILE"
-          if [[ 1 != $TEST_THEM_ALL ]]; then
-            # Test changed components only:
+          if [[ 1 = $TEST_PATCHES ]]; then
+            # Test patched components only
             cat "./$OUTPUT_FILE" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
-          else
+          elseif [[ 1 = $TEST_THEM_ALL ]]; then
             # Test them all
             echo "$COMPONENTS" | parallel --gnu -j10% "tfold {} 'cd {} && $COMPOSER_UP && $PHPUNIT {}'"
           fi
