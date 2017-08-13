@@ -1,0 +1,22 @@
+cmf_routing:
+    chain:
+        routers_by_id:
+            cmf_routing.dynamic_router: 20
+            router.default: 100
+    dynamic:
+        enabled: true
+        controllers_by_type:
+            cmf_routing_auto.redirect: cmf_routing_auto.redirect_controller:redirectAction
+        persistence:
+            phpcr:
+                enabled: true
+                route_basepath: /test/auto-route
+
+cmf_routing_auto:
+    auto_mapping: false
+    persistence:
+        phpcr:
+            route_basepath: /test/auto-route
+    mapping:
+        resources:
+            - @CmfRoutingAutoBundle/Tests/Resources/app/config/routing_auto.yml
