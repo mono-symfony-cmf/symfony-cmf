@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+    colors="true"
+    bootstrap="vendor/symfony-cmf/testing/bootstrap/bootstrap.php"
+    >
+
+    <testsuites>
+        <testsuite name="CmfResourceRestBundle Test Suite">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory>src</directory>
+            <exclude>
+                <file>*Bundle.php</file>
+                <directory>Resources/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <php>
+        <server name="KERNEL_DIR" value="tests/Resources/app" />
+    </php>
+
+</phpunit>
