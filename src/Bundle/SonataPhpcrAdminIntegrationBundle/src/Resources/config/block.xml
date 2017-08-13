@@ -1,0 +1,166 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.block.admin_extension.cache"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Block\Extension\BlockCacheExtension">
+            <argument>%cmf_sonata_phpcr_admin_integration.block.extension.block_cache.form_group%</argument>
+            <argument>%cmf_sonata_phpcr_admin_integration.block.extension.block_cache.form_tab%</argument>
+            <tag name="sonata.admin.extension"/>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.block.simple_admin"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Block\SimpleBlockAdmin"
+                parent="cmf_sonata_phpcr_admin_integration.abstract_admin">
+            <tag
+                    name="sonata.admin"
+                    manager_type="doctrine_phpcr"
+                    group="dashboard.cmf"
+                    label_catalogue="CmfBlockBundle"
+                    label="dashboard.label_simple_block"
+                    label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <argument/>
+            <argument>Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\SimpleBlock</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+
+            <call method="setRouteBuilder">
+                <argument type="service" id="sonata.admin.route.path_info_slashes" />
+            </call>
+
+            <call method="setRootPath">
+                <argument>%cmf_sonata_phpcr_admin_integration.block.basepath%</argument>
+            </call>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.block.action_admin"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Block\ActionBlockAdmin"
+                parent="cmf_sonata_phpcr_admin_integration.abstract_admin">
+            <tag
+                    name="sonata.admin"
+                    manager_type="doctrine_phpcr"
+                    group="dashboard.cmf"
+                    label_catalogue="CmfBlockBundle"
+                    label="dashboard.label_action_block"
+                    label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <argument/>
+            <argument>Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\ActionBlock</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+
+            <call method="setRouteBuilder">
+                <argument type="service" id="sonata.admin.route.path_info_slashes" />
+            </call>
+
+            <call method="setRootPath">
+                <argument>%cmf_sonata_phpcr_admin_integration.block.basepath%</argument>
+            </call>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.block.container_admin"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Block\ContainerBlockAdmin"
+                parent="cmf_sonata_phpcr_admin_integration.abstract_admin">
+            <tag
+                    name="sonata.admin"
+                    manager_type="doctrine_phpcr"
+                    group="dashboard.cmf"
+                    label_catalogue="CmfBlockBundle"
+                    label="dashboard.label_container_block"
+                    label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <argument/>
+            <argument>Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\ContainerBlock</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+
+            <call method="setRouteBuilder">
+                <argument type="service" id="sonata.admin.route.path_info_slashes" />
+            </call>
+
+            <call method="setRootPath">
+                <argument>%cmf_sonata_phpcr_admin_integration.block.basepath%</argument>
+            </call>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.block.reference_admin"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Block\ReferenceBlockAdmin"
+                parent="cmf_sonata_phpcr_admin_integration.abstract_admin">
+            <tag
+                    name="sonata.admin"
+                    manager_type="doctrine_phpcr"
+                    group="dashboard.cmf"
+                    label_catalogue="CmfBlockBundle"
+                    label="dashboard.label_reference_block"
+                    label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <argument/>
+            <argument>Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\ReferenceBlock</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+
+            <call method="setRouteBuilder">
+                <argument type="service" id="sonata.admin.route.path_info_slashes" />
+            </call>
+
+            <call method="setRootPath">
+                <argument>%cmf_sonata_phpcr_admin_integration.block.basepath%</argument>
+            </call>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.block.string_admin"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Block\StringBlockAdmin"
+                parent="cmf_sonata_phpcr_admin_integration.abstract_admin">
+            <tag
+                    name="sonata.admin"
+                    manager_type="doctrine_phpcr"
+                    group="dashboard.cmf"
+                    label_catalogue="CmfBlockBundle"
+                    label="dashboard.label_string_block"
+                    label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <argument/>
+            <argument>Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\StringBlock</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+
+            <call method="setRouteBuilder">
+                <argument type="service" id="sonata.admin.route.path_info_slashes" />
+            </call>
+
+            <call method="setRootPath">
+                <argument>%cmf_sonata_phpcr_admin_integration.block.basepath%</argument>
+            </call>
+        </service>
+
+        <service
+                id="cmf_sonata_phpcr_admin_integration.block.slideshow_admin"
+                class="Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Admin\Block\SlideshowBlockAdmin"
+                parent="cmf_sonata_phpcr_admin_integration.abstract_admin">
+            <tag
+                    name="sonata.admin"
+                    manager_type="doctrine_phpcr"
+                    group="dashboard.cmf"
+                    label_catalogue="CmfBlockBundle"
+                    label="dashboard.label_slideshow_block"
+                    label_translator_strategy="sonata.admin.label.strategy.underscore" />
+            <argument/>
+            <argument>Symfony\Cmf\Bundle\BlockBundle\Doctrine\Phpcr\SlideshowBlock</argument>
+            <argument>SonataAdminBundle:CRUD</argument>
+
+            <call method="setRouteBuilder">
+                <argument type="service" id="sonata.admin.route.path_info_slashes" />
+            </call>
+
+            <call method="setEmbeddedSlidesAdmin">
+                <argument>cmf_block.imagine.imagine_admin</argument>
+            </call>
+
+            <call method="setRootPath">
+                <argument>%cmf_sonata_phpcr_admin_integration.block.basepath%</argument>
+            </call>
+        </service>
+
+    </services>
+</container>
