@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\MenuBundle\Tests\Resources\Admin;
+namespace Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Admin;
 
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -22,6 +22,7 @@ use Symfony\Cmf\Bundle\MenuBundle\Model\MenuNode;
 class TestContentAdmin extends Admin
 {
     protected $baseRouteName = 'cmf_menu_test_content';
+
     protected $baseRoutePattern = '/cmf/menu-test/content';
 
     protected function configureListFields(ListMapper $listMapper)

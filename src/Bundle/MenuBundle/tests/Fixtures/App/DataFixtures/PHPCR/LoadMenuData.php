@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\MenuBundle\Tests\Resources\DataFixtures\PHPCR;
+namespace Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\DataFixtures\PHPCR;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,12 +17,13 @@ use Doctrine\ODM\PHPCR\DocumentManager;
 use PHPCR\Util\NodeHelper;
 use Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\Menu;
 use Symfony\Cmf\Bundle\MenuBundle\Doctrine\Phpcr\MenuNode;
-use Symfony\Cmf\Bundle\MenuBundle\Tests\Resources\Document\Content;
+use Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Document\Content;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 
 class LoadMenuData implements FixtureInterface
 {
     protected $menuRoot;
+
     protected $routeRoot;
 
     public function load(ObjectManager $manager)
