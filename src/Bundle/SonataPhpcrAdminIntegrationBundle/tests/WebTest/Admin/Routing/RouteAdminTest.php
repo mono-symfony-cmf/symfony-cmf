@@ -18,9 +18,9 @@ class RouteAdminTest extends BaseTestCase
 {
     public function setUp()
     {
-        $this->db('PHPCR')->loadFixtures(array(
-            'Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Resources\DataFixtures\Phpcr\LoadRouteData',
-        ));
+        $this->db('PHPCR')->loadFixtures([
+            'Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\DataFixtures\Phpcr\LoadRouteData',
+        ]);
         $this->client = $this->createClient();
     }
 

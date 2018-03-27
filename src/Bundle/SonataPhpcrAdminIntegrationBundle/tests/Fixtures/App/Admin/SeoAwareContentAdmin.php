@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Resources\Admin;
+namespace Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Admin;
 
 class SeoAwareContentAdmin extends BaseAdmin
 {
     protected $baseRouteName = 'cmf_seo_aware_content';
+
     protected $baseRoutePattern = 'cmf/seo/seoawarecontent';
 }

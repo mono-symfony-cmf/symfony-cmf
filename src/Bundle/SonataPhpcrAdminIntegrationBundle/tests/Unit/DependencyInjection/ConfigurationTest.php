@@ -68,12 +68,12 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
         ];
 
         $sources = array_map(function ($path) {
-            return __DIR__.'/../../Resources/Fixtures/'.$path;
-        }, array(
+            return __DIR__.'/../../Fixtures/fixtures/'.$path;
+        }, [
             'config/config.yml',
             'config/config.php',
             'config/config.xml',
-        ));
+        ]);
 
         $this->assertProcessedConfigurationEquals($expectedConfiguration, $sources);
     }

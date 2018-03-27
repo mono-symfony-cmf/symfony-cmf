@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Resources\Admin;
+namespace Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Admin;
 
 class CoreExtensionsAdmin extends BaseAdmin
 {
     protected $baseRouteName = 'cmf_core_extensions';
+
     protected $baseRoutePattern = 'cmf/core/extensions';
 }

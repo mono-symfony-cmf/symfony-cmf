@@ -25,20 +25,20 @@ class MenuAdmin extends AbstractMenuNodeAdmin
         parent::configureFormFields($formMapper);
 
         $subject = $this->getSubject();
-        $isNew = $subject->getId() === null;
+        $isNew = null === $subject->getId();
 
         if (!$isNew) {
             $formMapper
                 ->tab('form.tab_general')
                     ->with('form.group_items', ['class' => 'col-md-6'])
-                        ->add('children', TreeManagerType::class, array(
-                            'root' => $this->menuRoot,
+                        ->add('children', TreeManagerType::class, [
+                            'root' => $subject->getId(),
                             'edit_in_overlay' => false,
                             'create_in_overlay' => false,
                             'delete_in_overlay' => false,
-                        ), array(
+                        ], [
                             'help' => 'help.help_items',
-                        ))
+                        ])
                     ->end()
                 ->end()
             ;

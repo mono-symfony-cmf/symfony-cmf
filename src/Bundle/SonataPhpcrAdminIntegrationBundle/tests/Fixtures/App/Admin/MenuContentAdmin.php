@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Resources\Admin;
+namespace Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Admin;
 
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -21,6 +21,7 @@ use Sonata\DoctrinePHPCRAdminBundle\Admin\Admin;
 class MenuContentAdmin extends Admin
 {
     protected $baseRouteName = 'cmf_menu_test_content';
+
     protected $baseRoutePattern = '/cmf/menu-test/content';
 
     protected function configureListFields(ListMapper $listMapper)
@@ -31,9 +32,9 @@ class MenuContentAdmin extends Admin
         ;
 
         $listMapper
-            ->add('locales', 'choice', array(
+            ->add('locales', 'choice', [
                 'template' => 'SonataDoctrinePHPCRAdminBundle:CRUD:locales.html.twig',
-            ))
+            ])
         ;
     }
 
