@@ -56,19 +56,22 @@ class SuggestionProviderController extends ExceptionController
     /**
      * @param \Twig_Environment       $twig
      * @param bool                    $debug
-     * @param RequestMatcherInterface $requestMatcher The exclusion matcher to decider whether a route should be handled
-     *                                                by this error handling. It uses the defined exclusion_rules in the
-     *                                                error configuration.
-     * @param array                   $templates      containing the configured templates to use in custom error cases
+     * @param RequestMatcherInterface $requestMatcher     The exclusion matcher to decider whether a route should be handled
+     *                                                    by this error handling. It uses the defined exclusion_rules in the
+     *                                                    error configuration.
+     * @param array                   $templates          containing the configured templates to use in custom error cases
+     * @param array                   $suggestionProvider A list of provider and group pairs
      */
     public function __construct(
         \Twig_Environment $twig,
         $debug,
         RequestMatcherInterface $requestMatcher,
-        $templates
+        $templates,
+        $suggestionProvider
     ) {
         $this->templates = $templates;
         $this->exclusionRequestMatcher = $requestMatcher;
+        $this->suggestionProviders = $suggestionProvider;
 
         parent::__construct($twig, $debug);
     }
@@ -80,12 +83,12 @@ class SuggestionProviderController extends ExceptionController
     ) {
         $code = $exception->getStatusCode();
         if (404 !== $code || $this->exclusionRequestMatcher->matches($request)) {
-            return $this->showAction($request, $exception, $logger, $request->getRequestFormat());
+            return $this->showAction($request, $exception, $logger);
         }
 
         $templateForSuggestion = $this->getTemplateForSuggestions($request->getRequestFormat());
         if (null === $templateForSuggestion) {
-            return $this->showAction($request, $exception, $logger, $request->getRequestFormat());
+            return $this->showAction($request, $exception, $logger);
         }
 
         $currentContent = $this->getAndCleanOutputBuffering($request->headers->get('X-Php-Ob-Level', -1));
@@ -113,15 +116,6 @@ class SuggestionProviderController extends ExceptionController
             ),
             $code
         );
-    }
-
-    /**
-     * @param SuggestionProviderInterface $matcher
-     * @param string                      $group
-     */
-    public function addSuggestionProvider(SuggestionProviderInterface $matcher, $group)
-    {
-        $this->suggestionProviders[] = ['provider' => $matcher, 'group' => $group];
     }
 
     /**

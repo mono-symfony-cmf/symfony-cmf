@@ -11,6 +11,7 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\Tests\WebTest;
 
+use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 /**
@@ -20,8 +21,9 @@ class SitemapTest extends BaseTestCase
 {
     public function setUp()
     {
+        (new PHPCRPurger($this->getDbManager('PHPCR')->getOm()))->purge();
         $this->db('PHPCR')->loadFixtures([
-            'Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\DataFixtures\Phpcr\LoadSitemapData',
+            'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\DataFixtures\Phpcr\LoadSitemapData',
         ]);
         $this->client = $this->createClient();
     }

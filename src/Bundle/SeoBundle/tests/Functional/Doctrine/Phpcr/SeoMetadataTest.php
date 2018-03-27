@@ -11,15 +11,17 @@
 
 namespace Symfony\Cmf\Bundle\SeoBundle\Tests\Functional\Doctrine\Phpcr;
 
+use Doctrine\Common\DataFixtures\Purger\PHPCRPurger;
 use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Bundle\SeoBundle\Doctrine\Phpcr\SeoMetadata;
-use Symfony\Cmf\Bundle\SeoBundle\Tests\Resources\Document\SeoAwareContent;
+use Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Document\SeoAwareContent;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class SeoMetadataTest extends BaseTestCase
 {
     public function setUp()
     {
+        (new PHPCRPurger($this->getDbManager('PHPCR')->getOm()))->purge();
         $this->db('PHPCR')->createTestNode();
         $this->dm = $this->db('PHPCR')->getOm();
         $this->base = $this->dm->find(null, '/test');
