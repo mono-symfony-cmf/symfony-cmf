@@ -1,0 +1,9 @@
+cmf_resource:
+    repositories:
+        content:
+            type: doctrine_phpcr_odm
+            basepath: /cmf/content
+
+        articles:
+            type: doctrine_phpcr_odm
+            basepath: /cmf/articles
