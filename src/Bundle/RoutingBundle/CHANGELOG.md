@@ -1,6 +1,28 @@
 Changelog
 =========
 
+2.1.0 (unreleased)
+------------------
+
+* **2017-11-11**: Removed php 5.6 and 7.0 support, removed Symfony 3.0.* and 3.1.* support
+
+2.0.3
+-----
+
+* **2018-01-22**: Fixed syntax error in ValidationPass.
+
+2.0.2
+-----
+
+* **2018-01-18**: Do not fail when the validator is not enabled.
+
+2.0.1
+-----
+
+* **2017-09-25**: This bundle can now also directly use the Twig loader instead of the deprecated templating
+  component. Symfony FrameworkBundle no longer requires symfony/templating since 3.2. If the templating component
+  is available in your application, it is however still used for BC.
+
 2.0.0
 -----
 
