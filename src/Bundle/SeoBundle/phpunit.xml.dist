@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    colors="true"
+    bootstrap="./tests/bootstrap.php"
+    >
+
+    <testsuites>
+        <testsuite name="Symfony SeoBundle Test Suite">
+            <directory>./tests/Unit</directory>
+        </testsuite>
+
+        <testsuite name="phpcr">
+            <directory>./tests/WebTest</directory>
+            <directory>./tests/Functional/Doctrine/Phpcr</directory>
+        </testsuite>
+
+        <testsuite name="orm">
+            <directory>./tests/Functional/Doctrine/Orm</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory>.</directory>
+            <exclude>
+                <directory>Resources/</directory>
+                <directory>tests</directory>
+                <directory>vendor/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <php>
+        <server name="KERNEL_DIR" value="tests/Resources/app" />
+    </php>
+
+    <listeners>
+        <listener class="Symfony\Cmf\Component\Testing\Phpunit\DatabaseTestListener" />
+    </listeners>
+
+</phpunit>
