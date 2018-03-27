@@ -21,11 +21,14 @@ use Symfony\Component\Routing\Route;
 class ProviderBasedGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     protected $routeDocument;
+
     protected $routeCompiled;
+
     protected $provider;
 
     /** @var ProviderBasedGenerator */
     protected $generator;
+
     protected $context;
 
     public function setUp()
@@ -119,7 +122,7 @@ class ProviderBasedGeneratorTest extends \PHPUnit_Framework_TestCase
         $context = new RequestContext();
         $this->generator->setContext($context);
 
-        $this->assertSame(null, $this->generator->generate($route, ['number' => 'string']));
+        $this->assertNull($this->generator->generate($route, ['number' => 'string']));
     }
 }
 

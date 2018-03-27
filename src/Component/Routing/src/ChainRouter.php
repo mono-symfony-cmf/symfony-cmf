@@ -47,7 +47,7 @@ class ChainRouter implements ChainRouterInterface, WarmableInterface
     /**
      * @var RouterInterface[] Array of routers, sorted by priority
      */
-    private $sortedRouters;
+    private $sortedRouters = [];
 
     /**
      * @var RouteCollection
@@ -203,6 +203,7 @@ class ChainRouter implements ChainRouterInterface, WarmableInterface
         $info = $request
             ? "this request\n$request"
             : "url '$pathinfo'";
+
         throw $methodNotAllowed ?: new ResourceNotFoundException("None of the routers in the chain matched $info");
     }
 
@@ -287,6 +288,10 @@ class ChainRouter implements ChainRouterInterface, WarmableInterface
     private function getErrorMessage($name, $router = null, $parameters = null)
     {
         if ($router instanceof VersatileGeneratorInterface) {
+            // the $parameters are not forced to be array, but versatile generator does typehint it
+            if (!is_array($parameters)) {
+                $parameters = [];
+            }
             $displayName = $router->getRouteDebugMessage($name, $parameters);
         } elseif (is_object($name)) {
             $displayName = method_exists($name, '__toString')
