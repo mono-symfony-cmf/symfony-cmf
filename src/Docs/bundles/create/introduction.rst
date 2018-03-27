@@ -7,7 +7,9 @@ CreateBundle
 
     The CreateBundle provides modern front-end in-place editing for web
     applications. It integrates create.js and the CreatePHP library into
-    Symfony2.
+    Symfony.
+
+.. include:: ../_partials/unmaintained.rst.inc
 
 The JavaScript library `create.js`_ provides a comprehensive web editing
 interface for Content Management Systems. It is designed to provide a modern,
@@ -80,7 +82,7 @@ bundles in your kernel and properly configure Assetic as described below.
 To upload and display images the :doc:`MediaBundle <../media/introduction>` is
 used. CKEditor uses the :doc:`elfinder adapter <../media/adapters/elfinder>`.
 
-.. _bundle-create-ckeditor:
+.. _bundles-create-ckeditor:
 
 Installation
 ------------
@@ -305,7 +307,7 @@ JavaScript loader check if the current user is granted the configured
 .. tip::
 
     In order to have security in place, you need to configure a
-    "Symfony2 firewall". Read more in the `Symfony2 security chapter`_.
+    "Symfony firewall". Read more in the `Symfony security chapter`_.
     If you do not do that, create.js will not be loaded and editing
     will be disabled.
 
@@ -361,8 +363,7 @@ after those to be able to customize as needed) with:
     Make sure Assetic is rewriting the paths in your CSS files properly or you
     might not see icon images.
 
-In your page bottom area, load the JavaScript files. If you are using Symfony 2.2 or
-higher, the method reads:
+In your page bottom area, load the JavaScript files:
 
 .. configuration-block::
 
@@ -388,9 +389,9 @@ higher, the method reads:
     use the hallo editor, a plugin is enabled to use the tag editor to edit
     ``skos:related`` collections of attributes. For customization of the editor
     configuration further, you will need to use a
-    :ref:`custom template to load the editor<bundle-create-custom>`.
+    :ref:`custom template to load the editor<bundles-create-custom>`.
 
-.. _bundle-create-usage-embed:
+.. _bundles-create-usage-embed:
 
 Rendering Content
 -----------------
@@ -664,4 +665,4 @@ Read On
 .. _`symfony-cmf/create-bundle`: https://packagist.org/packages/symfony-cmf/create-bundle
 .. _`RDF`: https://en.wikipedia.org/wiki/Resource_Description_Framework
 .. _`RDFa`: https://en.wikipedia.org/wiki/RDFa
-.. _`Symfony2 security chapter`: https://symfony.com/doc/current/book/security.html
+.. _`Symfony security chapter`: https://symfony.com/doc/current/security.html

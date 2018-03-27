@@ -1,29 +1,9 @@
 .. index::
-    single: Database Layer
-    single: PHPCR-ODM
+    single: PHPCR; Bundles
+    single: DoctrinePHPCRBundle
 
-The Database Layer: PHPCR-ODM
-=============================
-
-The Symfony CMF is storage layer agnostic, meaning that it can work with many
-storage layers. By default, the Symfony CMF works with the `Doctrine PHPCR-ODM`_.
-In this chapter, you will learn how to work with the Doctrine PHPCR-ODM.
-
-.. tip::
-
-    Read more about choosing the correct storage layer in
-    :doc:`../cookbook/database/choosing_storage_layer`
-
-.. note::
-
-    This chapter assumes you are using a Symfony setup with PHPCR-ODM already
-    set up, like the :doc:`CMF Standard Edition <installation>`  or the
-    :doc:`CMF sandbox <../cookbook/editions/cmf_sandbox>`. See
-    :doc:`../bundles/phpcr_odm/introduction` for how to set up PHPCR-ODM in
-    your applications.
-
-PHPCR: A Tree Structure
------------------------
+Modeling Data with PHPCR-ODM
+============================
 
 The Doctrine PHPCR-ODM is a doctrine object-mapper on top of the
 `PHP Content Repository`_ (PHPCR), which is a PHP adaption of the
@@ -43,7 +23,7 @@ multi-language support.
 
     In order to let the Doctrine PHPCR-ODM communicate with the PHPCR, a PHPCR
     implementation is needed. See
-    ":doc:`../cookbook/database/choosing_phpcr_implementation`" for an overview
+    ":doc:`../../cookbook/database/choosing_phpcr_implementation`" for an overview
     of the available implementations.
 
 A Simple Example: A Task
@@ -185,7 +165,7 @@ After this, you have to create getters and setters for the properties.
 
     You may want to implement ``Doctrine\ODM\PHPCR\HierarchyInterface``
     which makes it for example possible to leverage the
-    :ref:`Sonata Admin Child Extension <bundle-core-child-admin-extension>`.
+    :doc:`Sonata Admin Child Extension <../sonata_phpcr_admin_integration/core>`.
 
 .. seealso::
 
@@ -365,15 +345,14 @@ table.
 
 And even though Doctrine revolves around a simple concept, it's incredibly
 powerful, allowing you to `create complex queries`_ and
-:doc:`subscribe to events <../bundles/phpcr_odm/events>` that allow you to
-take different actions as objects go through their persistence lifecycle.
+:doc:`subscribe to events <events>` that allow you to take different actions as
+objects go through their persistence lifecycle.
 
-.. _`Doctrine PHPCR-ODM`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/index.html
 .. _`PHP Content Repository`: http://phpcr.github.io/
 .. _`JSR-283 specification`: https://jcp.org/en/jsr/detail?id=283
-.. _`Doctrine ORM`: https://symfony.com/doc/current/book/doctrine.html
+.. _`Doctrine ORM`: https://symfony.com/doc/current/doctrine.html
 .. _`doctrine documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/basic-mapping.html#basicmapping-identifier-generation-strategies
 .. _`Basic Mapping Documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/basic-mapping.html
 .. _`the QueryBuilder documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/query-builder.html
 .. _`create complex queries`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/query-builder.html
-.. _`Custom Repository Classes`: https://symfony.com/doc/current/book/doctrine.html#custom-repository-classes
+.. _`Custom Repository Classes`: https://symfony.com/doc/current/doctrine/repository.html

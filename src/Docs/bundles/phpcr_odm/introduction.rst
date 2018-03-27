@@ -5,6 +5,15 @@
 DoctrinePHPCRBundle
 ===================
 
+The Symfony CMF is storage layer agnostic, meaning that it can work with many
+storage layers. But by default, the Symfony CMF works with the
+`Doctrine PHPCR-ODM`_.
+
+.. tip::
+
+    Read more about choosing the correct storage layer in
+    :doc:`../../cookbook/database/choosing_storage_layer`
+
 The `DoctrinePHPCRBundle`_ provides integration with the PHP content
 repository and optionally with Doctrine PHPCR-ODM to provide the ODM document
 manager in symfony.
@@ -15,7 +24,7 @@ Out of the box, this bundle supports the following PHPCR implementations:
 
 .. tip::
 
-    This reference only explains the Symfony2 integration of PHPCR and
+    This reference only explains the Symfony integration of PHPCR and
     PHPCR-ODM. To learn how to use PHPCR, refer to `the PHPCR website`_ and
     for Doctrine PHPCR-ODM to the `PHPCR-ODM documentation`_.
 
@@ -62,11 +71,11 @@ Besides the ``DoctrinePHPCRBundle`` you also need to instantiate the base
     {
         public function registerBundles()
         {
-            $bundles = array(
+            $bundles = [
                 // ...
                 new Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle(),
                 new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            );
+            ];
 
             // ...
         }
@@ -87,7 +96,7 @@ DBAL. The full documentation is in the :doc:`configuration reference <configurat
 
 To use Jackalope Doctrine DBAL, you need to configure a database connection
 with the DoctrineBundle. For detailed information, see the
-`Symfony2 Doctrine documentation`_. A simple example is:
+`Symfony Doctrine documentation`_. A simple example is:
 
 .. code-block:: yaml
 
@@ -139,15 +148,15 @@ with the DoctrineBundle. For detailed information, see the
     .. code-block:: php
 
         // app/config/config.php
-        $configuration->loadFromExtension('doctrine', array(
-            'dbal' => array(
+        $configuration->loadFromExtension('doctrine', [
+            'dbal' => [
                 'driver'   => '%database_driver%',
                 'host'     => '%database_host%',
                 'dbname'   => '%database_name%',
                 'user'     => '%database_user%',
                 'password' => '%database_password%',
-            ),
-        ));
+            ],
+        ]);
 
 Jackalope Doctrine DBAL provides a PHPCR implementation without any
 installation requirements beyond any of the RDBMS supported by Doctrine.
@@ -210,23 +219,23 @@ Once you set up Doctrine DBAL, you can configure Jackalope:
     .. code-block:: php
 
         // app/config/config.php
-        $container->loadFromExtension('doctrine_phpcr', array(
-            'session' => array(
-                'backend' => array(
+        $container->loadFromExtension('doctrine_phpcr', [
+            'session' => [
+                'backend' => [
                     'type'       => 'doctrinedbal',
                     //'connection': 'default',
                     'logging'    => true,
                     'profiling'  => true,
-                    //'caches' => array(
+                    //'caches' => [
                     //    'meta' => 'doctrine_cache.providers.phpcr_meta'
                     //    'nodes' => 'doctrine_cache.providers.phpcr_nodes'
-                    //),
-                ),
+                    //],
+                ],
                 'workspace' => 'default',
                 'username'  => 'admin',
                 'password'  => 'admin',
-            ),
-        ));
+            ],
+        ]);
 
 Now make sure the database exists and initialize it:
 
@@ -301,12 +310,12 @@ here, the ODM services will not be loaded.
     .. code-block:: php
 
         // app/config/config.php
-        $container->loadFromExtension('doctrine_phpcr', array(
-            'odm' => array(
+        $container->loadFromExtension('doctrine_phpcr', [
+            'odm' => [
                 'auto_mapping' => true,
                 'auto_generate_proxy_classes' => '%kernel.debug%',
-            ),
-        ));
+            ],
+        ]);
 
 Unless you disable ``auto_mapping``, you can place your documents in the
 ``Document`` folder inside your bundles and use annotations or name the
@@ -337,7 +346,7 @@ Profiling and Performance of Jackalope
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When using any of the Jackalope PHPCR implementations, you can activate logging
-to log to the symfony log, or profiling to show information in the Symfony2
+to log to the symfony log, or profiling to show information in the Symfony
 debug toolbar:
 
 .. configuration-block::
@@ -373,15 +382,15 @@ debug toolbar:
     .. code-block:: php
 
         // app/config/config.yml
-        $container->loadFromExtension('doctrine_phpcr', array(
-            'session' => array(
-                'backend' => array(
+        $container->loadFromExtension('doctrine_phpcr', [
+            'session' => [
+                'backend' => [
                     // ...
                     'logging'   => true,
                     'profiling' => true,
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
 
 Now that you can see the effects of changes, you can try if adjusting the global
 fetch depth reduces the number and duration for queries. Set the option
@@ -410,7 +419,7 @@ There are 3 main services provided by this bundle:
 * ``doctrine_phpcr.odm.default_document_manager`` - The PHPCR-ODM document
   manager instance.
 
-.. _bundle-phpcr-odm-commands:
+.. _bundles-phpcr-odm-commands:
 
 Doctrine PHPCR Commands
 -----------------------
@@ -507,6 +516,7 @@ remove the target node first:
 Read On
 -------
 
+* :doc:`models`
 * :doc:`events`
 * :doc:`forms`
 * :doc:`fixtures_initializers`
@@ -514,26 +524,16 @@ Read On
 * :doc:`multiple_sessions`
 * :doc:`configuration`
 
+.. _`Doctrine PHPCR-ODM`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/index.html
 .. _`DoctrinePHPCRBundle`: https://github.com/doctrine/DoctrinePHPCRBundle
-.. _`Symfony2 Doctrine documentation`: https://symfony.com/doc/current/book/doctrine.html
+.. _`Symfony Doctrine documentation`: https://symfony.com/doc/current/doctrine.html
 .. _`Jackalope`: http://jackalope.github.io/
 .. _`the PHPCR website`: http://phpcr.github.io/
 .. _`PHPCR-ODM documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/
 .. _`bug in libxml`: https://bugs.php.net/bug.php?id=36501
 .. _`with composer`: https://getcomposer.org
 .. _`doctrine/phpcr-bundle`: https://packagist.org/packages/doctrine/phpcr-bundle
-.. _`metadata caching`: https://symfony.com/doc/master/reference/configuration/doctrine.html
-.. _`PHPCR-ODM documentation on Multilanguage`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/multilang.html
 .. _`custom node type`: https://github.com/doctrine/phpcr-odm/wiki/Custom-node-type-phpcr%3Amanaged
-.. _`the PHPCR-ODM documentation`: http://docs.doctrine-project.org/projects/doctrine-phpcr-odm/en/latest/reference/events.html
-.. _`Symfony event subscriber`: https://symfony.com/doc/master/components/event_dispatcher/introduction.html#using-event-subscribers
-.. _`Symfony cookbook entry`: https://symfony.com/doc/current/cookbook/doctrine/event_listeners_subscribers.html
-.. _`Symfony documentation on the entity form type`: https://symfony.com/doc/current/reference/forms/types/entity.html
-.. _SonataDoctrinePHPCRAdminBundle: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
-.. _`currently broken`: https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues/145
 .. _`DoctrineMigrationsBundle`: https://symfony.com/doc/current/bundles/DoctrineMigrationsBundle/index.html
 .. _`DoctrineFixturesBundle`: https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
-.. _`Doctrine data-fixtures`: https://github.com/doctrine/data-fixtures
-.. _`documentation of the DoctrineFixturesBundle`: https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html
 .. _`SQL2 queries`: http://www.h2database.com/jcr/grammar.html
-.. _`BurgovKeyValueFormBundle`: https://github.com/Burgov/KeyValueFormBundle

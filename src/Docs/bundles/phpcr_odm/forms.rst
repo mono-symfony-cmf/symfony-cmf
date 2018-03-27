@@ -38,15 +38,17 @@ that the option for the document manager is called ``em``.
 
 A simple example of using the ``phpcr_document`` form type looks as follows::
 
+    use AppBundle\Document\TargetClass;
+
     $form
         ->add(
             'speakers',
             'phpcr_document',
-            array(
+            [
                 'property' => 'title',
-                'class'    => 'AppBundle\Document\TargetClass',
+                'class'    => TargetClass::class,
                 'multiple' => true,
-            )
+            ]
         )
     ;
 
@@ -80,25 +82,26 @@ targets as an array of PHPCR-ODM ids or PHPCR paths.
 
 The minimal code required to use this type looks as follows::
 
-    $dataArr = array(
+    use AppBundle\Document\Article;
+
+    $dataArr = [
         '/some/phpcr/path/item_1' => 'first item',
         '/some/phpcr/path/item_2' => 'second item',
-    );
+    ];
 
     $formMapper
         ->with('form.group_general')
-            ->add('myCollection', 'phpcr_odm_reference_collection', array(
+            ->add('myCollection', 'phpcr_odm_reference_collection', [
                 'choices'   => $dataArr,
-                'referenced_class'  => 'Class\Of\My\Referenced\Documents',
-            ))
+                'referenced_class'  => Article::class,
+            ])
         ->end();
 
 .. tip::
 
     When building an admin interface with the SonataDoctrinePHPCRAdminBundle_
     there is also the ``sonata_type_model``, which is more powerful, allowing to
-    add to the referenced documents on the fly. Unfortunately it is
-    `currently broken`_.
+    add to the referenced documents on the fly.
 
 phpcr_reference
 ~~~~~~~~~~~~~~~
@@ -182,4 +185,3 @@ correct.
 .. _BurgovKeyValueFormBundle: https://github.com/Burgov/KeyValueFormBundle
 .. _`Symfony documentation on the entity form type`: https://symfony.com/doc/current/reference/forms/types/entity.html
 .. _SonataDoctrinePHPCRAdminBundle: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/index.html
-.. _`currently broken`: https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues/145
