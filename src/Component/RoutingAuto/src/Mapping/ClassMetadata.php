@@ -24,12 +24,12 @@ class ClassMetadata extends MergeableClassMetadata
     /**
      * @var array
      */
-    protected $tokenProviders = [];
+    private $tokenProviders = [];
 
     /**
      * @var array
      */
-    protected $conflictResolver = ['name' => 'throw_exception', 'options' => []];
+    private $conflictResolver = ['name' => 'throw_exception', 'options' => []];
 
     /**
      * Defunct route handler, default to remove.
@@ -181,6 +181,7 @@ class ClassMetadata extends MergeableClassMetadata
         foreach ($metadata->getAutoRouteDefinitions() as $definitionName => $definition) {
             if (isset($this->definitions[$definitionName])) {
                 $this->definitions[$definitionName]->merge($definition);
+
                 continue;
             }
 
