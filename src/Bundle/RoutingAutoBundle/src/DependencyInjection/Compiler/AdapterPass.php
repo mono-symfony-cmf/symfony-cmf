@@ -44,6 +44,7 @@ class AdapterPass implements CompilerPassInterface
             $adapterNames[] = $alias;
             if ($adapter === $alias) {
                 $adapterId = $id;
+
                 break;
             }
         }
@@ -58,5 +59,6 @@ class AdapterPass implements CompilerPassInterface
 
         $managerDef = $container->getDefinition('cmf_routing_auto.auto_route_manager');
         $container->setAlias('cmf_routing_auto.adapter', $adapterId);
+        $container->getAlias('cmf_routing_auto.adapter')->setPublic(true);
     }
 }

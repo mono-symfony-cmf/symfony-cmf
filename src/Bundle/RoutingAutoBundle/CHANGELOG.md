@@ -1,6 +1,15 @@
 Changelog
 =========
 
+* **2017-11-15**: Removed php 5.6 and 7.0 support, removed Symfony 3.0.* and 3.1.* support
+
+
+2.0.0-RC3 (unreleased)
+----------------------
+
+* PhpcrOdmAdapter now updates the content document with the new route, if the 
+  content implements RouteReferrersInterface.
+
 2.0.0-RC1
 ---------
 
