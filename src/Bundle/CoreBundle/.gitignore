@@ -1,0 +1,5 @@
+tests/Resources/app/cache
+tests/Resources/app/logs
+composer.lock
+composer.phar
+vendor
