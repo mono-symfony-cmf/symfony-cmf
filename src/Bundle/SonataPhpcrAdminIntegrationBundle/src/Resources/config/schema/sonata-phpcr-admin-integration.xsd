@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns="http://cmf.symfony.com/schema/dic/sonata-phpcr-admin-integration"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://cmf.symfony.com/schema/dic/sonata-phpcr-admin-integration"
+    elementFormDefault="qualified">
+
+    <xsd:element name="config" type="config" />
+
+    <xsd:complexType name="config">
+        <xsd:sequence>
+            <xsd:element name="bundles" type="bundles" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="bundles">
+        <xsd:sequence>
+            <xsd:any minOccurs="0" processContents="skip" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>
