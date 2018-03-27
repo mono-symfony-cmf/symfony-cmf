@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="cmf_resource_rest.controller.resource" class="Symfony\Cmf\Bundle\ResourceRestBundle\Controller\ResourceController">
+            <argument type="service" id="jms_serializer" />
+            <argument type="service" id="cmf_resource.registry" />
+            <argument type="service" id="cmf_resource_rest.serializer.jms.handler.resource" />
+            <argument type="service" id="security.authorization_checker" on-invalid="ignore" />
+        </service>
+
+        <service id="cmf_resource_rest.registry.payload_alias" class="Symfony\Cmf\Bundle\ResourceRestBundle\Registry\PayloadAliasRegistry">
+            <argument type="service" id="cmf_resource.registry" />
+            <argument type="collection" />
+        </service>
+
+    </services>
+</container>
