@@ -1,0 +1,45 @@
+{
+    "name": "symfony-cmf/resource",
+    "description": "Bundle which facilitates document resource location via Puli",
+    "homepage": "http://cmf.symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Symfony CMF Community",
+            "homepage": "https://github.com/symfony-cmf/symfony-cmf/contributors"
+        }
+    ],
+    "minimum-stability": "RC",
+    "prefer-stable": true,
+    "require": {
+        "php": "^5.6|^7.0",
+        "dantleech/glob-finder": "~1.0",
+        "webmozart/assert": "^1.2",
+        "webmozart/path-util": "^2.3"
+    },
+    "require-dev": {
+        "jackalope/jackalope-doctrine-dbal": "^1.2",
+        "sonata-project/admin-bundle": "^3.1",
+        "sylius/resource-bundle": "^0.18",
+        "doctrine/phpcr-odm": "^1.4",
+        "symfony/phpunit-bridge": "^3.2"
+    },
+    "suggest": {
+        "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents",
+        "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents"
+    },
+    "autoload": {
+        "psr-4": {
+            "Symfony\\Cmf\\Component\\Resource\\Puli\\": "puli",
+            "Symfony\\Cmf\\Component\\Resource\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { "Symfony\\Cmf\\Component\\Resource\\Tests\\": "tests" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
