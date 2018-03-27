@@ -13,20 +13,14 @@ namespace Symfony\Cmf\Component\Testing\HttpKernel;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle;
-use FOS\JsRoutingBundle\FOSJsRoutingBundle;
-use Knp\Bundle\MenuBundle\KnpMenuBundle;
-use Sonata\AdminBundle\SonataAdminBundle;
-use Sonata\BlockBundle\SonataBlockBundle;
-use Sonata\CoreBundle\SonataCoreBundle;
-use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
-use Sonata\DoctrinePHPCRAdminBundle\SonataDoctrinePHPCRAdminBundle;
-use Sonata\jQueryBundle\SonatajQueryBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\MonologBundle\MonologBundle;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Bundle\WebServerBundle\WebServerBundle;
-use Symfony\Cmf\Bundle\TreeBrowserBundle\CmfTreeBrowserBundle;
+use Symfony\Cmf\Component\Testing\DependencyInjection\Compiler\TestContainerPass;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -38,8 +32,9 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 abstract class TestKernel extends Kernel
 {
-    protected $bundleSets = array();
-    protected $requiredBundles = array();
+    protected $bundleSets = [];
+
+    protected $requiredBundles = [];
 
     /**
      * Register commonly needed bundle sets and then
@@ -64,28 +59,6 @@ abstract class TestKernel extends Kernel
 
         $this->registerBundleSet('phpcr_odm', [DoctrineBundle::class, DoctrinePHPCRBundle::class]);
         $this->registerBundleSet('doctrine_orm', [DoctrineBundle::class]);
-
-        $baseSonataBundles = [
-            SonataBlockBundle::class,
-            SonataCoreBundle::class,
-            SonataAdminBundle::class,
-            KnpMenuBundle::class,
-            FOSJsRoutingBundle::class,
-        ];
-
-        if (class_exists(SonatajQueryBundle::class)) {
-            $baseSonataBundles[] = SonatajQueryBundle::class;
-        }
-
-        $this->registerBundleSet('sonata_admin_orm', array_merge(
-            [SonataDoctrineORMAdminBundle::class],
-            $baseSonataBundles
-        ));
-
-        $this->registerBundleSet('sonata_admin_phpcr', array_merge([
-            SonataDoctrinePHPCRAdminBundle::class,
-            CmfTreeBrowserBundle::class,
-        ], $baseSonataBundles));
 
         parent::__construct($env, $debug);
         $this->configure();
@@ -195,9 +168,53 @@ abstract class TestKernel extends Kernel
 
     public function getCacheDir()
     {
-        return implode('/', array(
+        return implode('/', [
             $this->getKernelDir(),
+            'var',
             'cache',
-        ));
+        ]);
+    }
+
+    public function getLogDir()
+    {
+        return implode('/', [
+            $this->getKernelDir(),
+            'var',
+            'logs',
+        ]);
+    }
+
+    /**
+     * Registers the bundles defined in config/bundles.php.
+     */
+    protected function registerConfiguredBundles()
+    {
+        $bundleFilePath = $this->getKernelDir().'/config/bundles.php';
+        if (!file_exists($bundleFilePath)) {
+            return;
+        }
+
+        $bundles = require $bundleFilePath;
+        foreach ($bundles as $class => $environments) {
+            if (isset($environments['all']) || isset($environments[$this->environment])) {
+                if (!class_exists($class)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'Bundle class "%s" does not exist.',
+                        $class
+                    ));
+                }
+
+                $this->requiredBundles[$class] = new $class();
+            }
+        }
+    }
+
+    protected function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+        if (in_array($this->getEnvironment(), ['test', 'phpcr']) && file_exists($this->getKernelDir().'/config/public_services.php')) {
+            $services = require $this->getKernelDir().'/config/public_services.php';
+            $container->addCompilerPass(new TestContainerPass($services), PassConfig::TYPE_OPTIMIZE);
+        }
     }
 }
