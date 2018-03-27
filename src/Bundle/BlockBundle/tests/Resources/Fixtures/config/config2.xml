@@ -1,0 +1,26 @@
+<config xmlns="http://cmf.symfony.com/schema/dic/block">
+    <persistence>
+        <phpcr block-basepath="/cms/block" manager-name="default" />
+    </persistence>
+
+    <twig>
+        <cmf-embed-blocks
+            prefix="%embed-block|"
+            postfix="|end%"
+        />
+    </twig>
+
+    <caches>
+        <varnish
+            token="xxx"
+            version="2"
+        >
+            <server>host1</server>
+            <server>host2</server>
+        </varnish>
+
+        <ssi
+            token="yyy"
+        />
+    </caches>
+</config>
