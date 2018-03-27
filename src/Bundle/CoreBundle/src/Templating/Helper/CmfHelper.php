@@ -204,7 +204,7 @@ class CmfHelper extends Helper
         if (empty($document)
             || (false === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ATTRIBUTE, $document))
             || (true === $ignoreRole && !$this->publishWorkflowChecker->isGranted(PublishWorkflowChecker::VIEW_ANONYMOUS_ATTRIBUTE, $document))
-            || (null != $class && !($document instanceof $class))
+            || (null !== $class && !($document instanceof $class))
         ) {
             return;
         }
@@ -345,8 +345,9 @@ class CmfHelper extends Helper
         $children = (array) $node->getNodeNames();
         foreach ($children as $key => $child) {
             // filter before fetching data already to save some traffic
-            if (strpos($child, 'phpcr_locale:') === 0) {
+            if (0 === strpos($child, 'phpcr_locale:')) {
                 unset($children[$key]);
+
                 continue;
             }
             $children[$key] = "$parent/$child";
@@ -362,7 +363,7 @@ class CmfHelper extends Helper
         $result = [];
         foreach ($children as $name => $child) {
             // if we requested all children above, we did not filter yet
-            if (strpos($name, 'phpcr_locale:') === 0) {
+            if (0 === strpos($name, 'phpcr_locale:')) {
                 continue;
             }
 
@@ -459,7 +460,7 @@ class CmfHelper extends Helper
         $node = $this->getDm()->getPhpcrSession()->getNode($path);
         $names = (array) $node->getNodeNames();
         foreach ($names as $name) {
-            if (strpos($name, 'phpcr_locale:') === 0) {
+            if (0 === strpos($name, 'phpcr_locale:')) {
                 continue;
             }
 
@@ -503,7 +504,7 @@ class CmfHelper extends Helper
     private function checkChildren(array $childNames, $path, $ignoreRole = false, $class = null)
     {
         foreach ($childNames as $name) {
-            if (strpos($name, 'phpcr_locale:') === 0) {
+            if (0 === strpos($name, 'phpcr_locale:')) {
                 continue;
             }
 

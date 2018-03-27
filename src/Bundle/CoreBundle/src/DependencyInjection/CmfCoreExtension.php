@@ -221,6 +221,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                         if (isset($bundles['CmfContentBundle'])) {
                             $prependConfig['dynamic']['generic_controller'] = 'cmf_content.controller:indexAction';
                         }
+
                         break;
 
                     case 'cmf_seo':
@@ -231,6 +232,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                                 ],
                             ],
                         ];
+
                         break;
                 }
 
@@ -261,11 +263,7 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
                 '%cmf_core.persistence.phpcr.manager_name%',
             ]);
         }
-        if ($config['publish_workflow']['enabled']) {
-            $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
-        } else {
-            $loader->load('no-publish-workflow.xml');
-        }
+        $this->loadPublishWorkflow($config['publish_workflow'], $loader, $container);
 
         if (isset($config['multilang'])) {
             $container->setParameter($this->getAlias().'.multilang.locales', $config['multilang']['locales']);
@@ -313,19 +311,40 @@ class CmfCoreExtension extends Extension implements PrependExtensionInterface
      */
     private function loadPublishWorkflow($config, XmlFileLoader $loader, ContainerBuilder $container)
     {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (false === $config['enabled']
+            || ('auto' === $config['enabled'] && !array_key_exists('SecurityBundle', $bundles))
+        ) {
+            $loader->load('no-publish-workflow.xml');
+
+            return;
+        }
+
+        if (!array_key_exists('SecurityBundle', $bundles)) {
+            throw new InvalidConfigurationException(
+                'The "publish_workflow" may not be enabled unless "symfony/security-bundle" is available.'
+            );
+        }
+
         $container->setParameter($this->getAlias().'.publish_workflow.view_non_published_role', $config['view_non_published_role']);
         $loader->load('publish-workflow.xml');
 
-        if (!$config['request_listener']) {
-            $container->removeDefinition($this->getAlias().'.publish_workflow.request_listener');
-        } elseif (!class_exists(DynamicRouter::class)) {
-            throw new InvalidConfigurationException(sprintf(
-                'The "publish_workflow.request_listener" may not be enabled unless "%s" is available.',
-                DynamicRouter::class
-            ));
-        }
-
         $container->setAlias('cmf_core.publish_workflow.checker', $config['checker_service']);
+        $container->getAlias('cmf_core.publish_workflow.checker')->setPublic(true);
+
+        if (false === $config['request_listener']
+            || ('auto' === $config['request_listener'] && !class_exists(DynamicRouter::class))
+        ) {
+            $container->removeDefinition($this->getAlias().'.publish_workflow.request_listener');
+
+            return;
+        }
+        if (!class_exists(DynamicRouter::class)) {
+            throw new InvalidConfigurationException(
+                'The "publish_workflow.request_listener" may not be enabled unless "symfony-cmf/routing-bundle" is available.'
+            );
+        }
     }
 
     /**
