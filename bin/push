@@ -32,27 +32,25 @@ $sourceBranch = 1 <= count($arguments) ? array_shift($arguments) : 'master';
 
 $project = getProjectDirectory($projectIdentifier, $projects);
 if (!$project) {
-    exit(sprintf("Project %s is not configured.\n"));
+    exit(sprintf("Project %s is not configured.\n", $projectIdentifier));
 }
+
+$projectDirectory = $project['directory'];
 if (!is_dir($project['directory'])) {
-    exit(sprintf('Remote %s does not exist in the configured list of projects.', $remote));
+    exit(sprintf('Director %s does not exist.', $projectDirectory));
 }
 
 // ToDo remove suffix when live
 $remote = str_replace('symfony-cmf', 'mono-symfony-cmf', $project['repository']);
-$projectDirectory = $project['directory'];
 
 if (!branchExistsOnSource($sourceBranch)) {
-    exit(sprintf("Branch %s does not exist.\n", $sourceBranch));
+    exit(sprintf("Branch %s does not exist in main repository.\n", $sourceBranch));
 }
 exec('git checkout ' . $sourceBranch);
 
-if (!remoteExists($remote)) {
-    exit(sprintf("Remote %s/%s does not exist.\n", $remote, $destinationBranch));
-}
-
 // push to remote
+printf("Push branch %s to remote %s on branch %s\n", $sourceBranch, $destinationBranch, $remote);
 exec(sprintf('git subtree push --prefix=%s %s %s', $projectDirectory, $remote, $destinationBranch), $output, $exitCode);
 if ($exitCode) {
-    exit($exitCode);
+    exit(sprintf("Exit 'git subtree push' with code %s \n", $exitCode));
 }

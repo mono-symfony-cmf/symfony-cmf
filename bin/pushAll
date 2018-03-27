@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+
+require_once __DIR__ . '/gitUtils.php';
+$projects = require __DIR__ . '/configuration.php';
+
+foreach ($projects as $name => $configuration) {
+    foreach ($configuration['branches'] as $targetBranch => $sourceBranch) {
+        exec(sprintf('./bin/push %s %s %s', $name, $targetBranch, $sourceBranch));
+    }
+}
